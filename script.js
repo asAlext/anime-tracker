@@ -219,6 +219,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return { checked, total };
     }
 
+    function updateGlobalProgress() {
+    let total = 0;
+    let checked = 0;
+    data.chapters.forEach(ch => {
+        const p = updateChapterProgress(ch.id);
+        total += p.total;
+        checked += p.checked;
+    });
+    const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+    const elem = document.getElementById('global-progress');
+    if (elem) {
+        elem.textContent = `Progression globale : ${percent}% (${checked}/${total} tâches)`;
+    }
+}
     data.chapters.forEach(chapter => {
         const li = document.createElement('li');
         const prog = updateChapterProgress(chapter.id);
