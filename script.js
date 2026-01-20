@@ -62,7 +62,7 @@ const data = {
                 { title: "🔧 Crafts clés", items: [
                     { text: "Constructeur d'habitats - Verre x2, Titane x2", icon: "https://static.wikia.nocookie.net/subnautica/images/7/7b/Habitat_Builder.png/revision/latest?cb=20180626194329" },
                     { text: "Baie véhicule mobile (MV Bay) - Lingot titane x2, Pile énergie x1, Graisse x1, Puce x1", icon: "https://static.wikia.nocookie.net/subnautica/images/8/8e/Mobile_Vehicle_Bay.png/revision/latest?cb=20180626194329" },
-                    { text: "Fabrique Seamoth", icon: "https://static.wikia.nocookie.net/subnautica/images/3/3e/Seamoth.png/revision/latest?cb=20180626194329" }
+                    { text: "Fabrique Seamoth", icon: "https://static.wikia.nocookie.net/subnautica/images/3/3e/Seamoth.png" }
                 ]},
                 { title: "🗺️ Zones", items: [
                     "Plateaux herbeux (Grassy Plateaus) : Prof. 50-200m. Dangers : Requins de sable",
