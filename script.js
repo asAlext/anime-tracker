@@ -4,7 +4,6 @@ const data = {
         {
             id: "chapitre-1",
             title: "Chapitre 1 : Le Crash et la Survie Initiale",
-            image: "https://static.wikia.nocookie.net/subnautica/images/0/0a/Safe_Shallows_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Objectif & Étapes détaillées", items: [
                     "Éteins l'incendie (Extincteur du conteneur)",
@@ -28,7 +27,6 @@ const data = {
         {
             id: "chapitre-2",
             title: "Chapitre 2 : Premiers Outils Avancés et Signaux de Détresse",
-            image: "https://static.wikia.nocookie.net/subnautica/images/9/9e/Kelp_Forest_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes détaillées", items: [
                     "Répare radio (Fabricator + énergie solaire)",
@@ -49,7 +47,6 @@ const data = {
         {
             id: "chapitre-3",
             title: "Chapitre 3 : Construction du Seamoth et Exploration Moyenne Profondeur",
-            image: "https://static.wikia.nocookie.net/subnautica/images/5/5a/Grassy_Plateaus_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Scan fragments Seamoth (épaves Plateaux herbeux)",
@@ -72,7 +69,6 @@ const data = {
         {
             id: "chapitre-4",
             title: "Chapitre 4 : Bases Avancées et Armes",
-            image: "https://static.wikia.nocookie.net/subnautica/images/3/3f/Mushroom_Forest_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Base en Plateaux/Champignons : Salle polyvalente x2+, Fabricator, Batteries",
@@ -94,7 +90,6 @@ const data = {
         {
             id: "chapitre-5",
             title: "Chapitre 5 : Construction Combinaison PRAWN",
-            image: "https://static.wikia.nocookie.net/subnautica/images/4/4e/Grand_Reef_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Plan Aurora Abordage 2/2",
@@ -109,7 +104,6 @@ const data = {
         {
             id: "chapitre-6",
             title: "Chapitre 6 : Construction Cyclops et Exploration Zone des Bulbes",
-            image: "https://static.wikia.nocookie.net/subnautica/images/2/2e/Bulb_Zone_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Scan 9 fragments (Champignons, Zone crash, etc.)",
@@ -124,7 +118,6 @@ const data = {
         {
             id: "chapitre-7",
             title: "Chapitre 7 : Profondeurs Fatales - Rivière Perdue et Lave",
-            image: "https://static.wikia.nocookie.net/subnautica/images/1/1d/Lost_River_Biome.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "PRAWN profondeur MK2/3 (Kyanite)",
@@ -140,7 +133,6 @@ const data = {
         {
             id: "chapitre-8",
             title: "Chapitre 8 : Bases Aliens et Guérison",
-            image: "https://static.wikia.nocookie.net/subnautica/images/8/8f/Primary_Containment_Facility.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Installation de recherche sur les maladies (tablette bleue)",
@@ -155,7 +147,6 @@ const data = {
         {
             id: "chapitre-9",
             title: "Chapitre 9 : Désactivation Canon et Évasion",
-            image: "https://static.wikia.nocookie.net/subnautica/images/5/5d/Aurora_Crashed.png/revision/latest?cb=20180726192315",
             sections: [
                 { title: "Étapes", items: [
                     "Désactive Plateforme de quarantaine (Cellule ionique)",
@@ -173,7 +164,6 @@ const data = {
         {
             id: "materiaux-upgrades",
             title: "Liste Complète Matériaux pour Véhicules (Base + Tous Améliorations)",
-            image: "https://static.wikia.nocookie.net/subnautica/images/3/3e/Seamoth.png/revision/latest?cb=20180626194329",
             sections: [
                 { title: "Seamoth (Base + Toutes les 12 améliorations)", items: [
                     "Base : Lingot plasteel x2, Pile énergie x1, Puce électronique x1",
