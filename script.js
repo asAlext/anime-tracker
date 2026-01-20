@@ -234,13 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const elem = document.getElementById('global-progress');
         if (elem) {
             elem.textContent = `Progression globale : ${percent}% (${checked}/${total} tâches)`;
-            console.log('Compteur global mis à jour :', percent + '%', checked + '/' + total); // Debug pour vérifier
-        } else {
-            console.warn('Élément #global-progress introuvable dans le DOM');
         }
     }
 
-    // Remplir la sidebar
+    // Remplir la sidebar une fois
     data.chapters.forEach(chapter => {
         const li = document.createElement('li');
         const prog = updateChapterProgress(chapter.id);
@@ -278,9 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
             localStorage.setItem('subnautica-progress', JSON.stringify(progress));
-            renderChapter(chapter);
+            renderChapter(chapter); // Re-rendu pour voir les coches
             updateGlobalProgress();
-            // Mise à jour compteur du chapitre dans la sidebar
+            // Mise à jour sidebar pour ce chapitre
             const link = document.querySelector(`a[href="#${chapter.id}"]`);
             if (link) {
                 const prog = updateChapterProgress(chapter.id);
@@ -320,11 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkbox.addEventListener('change', () => {
                     progress[key] = checkbox.checked;
                     localStorage.setItem('subnautica-progress', JSON.stringify(progress));
-                    console.log('Case cochée/décochée → clé:', key, 'état:', checkbox.checked); // Debug
                     const prog = updateChapterProgress(chapter.id);
                     const link = document.querySelector(`a[href="#${chapter.id}"]`);
                     if (link) link.textContent = `${chapter.title} (${prog.checked}/${prog.total})`;
-                    updateGlobalProgress(); // Appel ici = MAJ en temps réel du compteur global
+                    updateGlobalProgress(); // Mise à jour immédiate du compteur global
                 });
 
                 const label = document.createElement('label');
@@ -346,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hash = window.location.hash.substring(1);
     let initialChapter = data.chapters.find(ch => ch.id === hash) || data.chapters[0];
     renderChapter(initialChapter);
-    updateGlobalProgress(); // Initialisation
+    updateGlobalProgress(); // Appel initial fort
 
     resetLink.addEventListener('click', (e) => {
         e.preventDefault();
