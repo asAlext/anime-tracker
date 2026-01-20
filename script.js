@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Remplir la sidebar une fois
+    // Remplir sidebar
     data.chapters.forEach(chapter => {
         const li = document.createElement('li');
         const prog = updateChapterProgress(chapter.id);
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderChapter(chapter) {
         content.innerHTML = '';
 
-        // Bouton "Tout cocher ce chapitre"
+        // Bouton "Tout cocher"
         const checkAllBtn = document.createElement('button');
         checkAllBtn.textContent = "Tout cocher ce chapitre";
         checkAllBtn.style.margin = '0 0 20px 0';
@@ -266,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkAllBtn.style.border = '1px solid #00acc1';
         checkAllBtn.style.borderRadius = '8px';
         checkAllBtn.style.cursor = 'pointer';
-        checkAllBtn.style.fontSize = '1em';
         checkAllBtn.onclick = () => {
             chapter.sections.forEach(sec => {
                 sec.items.forEach((_, index) => {
@@ -275,9 +274,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
             localStorage.setItem('subnautica-progress', JSON.stringify(progress));
-            renderChapter(chapter); // Re-rendu pour voir les coches
+            renderChapter(chapter);
             updateGlobalProgress();
-            // Mise à jour sidebar pour ce chapitre
             const link = document.querySelector(`a[href="#${chapter.id}"]`);
             if (link) {
                 const prog = updateChapterProgress(chapter.id);
@@ -320,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const prog = updateChapterProgress(chapter.id);
                     const link = document.querySelector(`a[href="#${chapter.id}"]`);
                     if (link) link.textContent = `${chapter.title} (${prog.checked}/${prog.total})`;
-                    updateGlobalProgress(); // Mise à jour immédiate du compteur global
+                    updateGlobalProgress(); // MAJ immédiate du compteur dans la sidebar
                 });
 
                 const label = document.createElement('label');
@@ -342,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hash = window.location.hash.substring(1);
     let initialChapter = data.chapters.find(ch => ch.id === hash) || data.chapters[0];
     renderChapter(initialChapter);
-    updateGlobalProgress(); // Appel initial fort
+    updateGlobalProgress(); // Initial
 
     resetLink.addEventListener('click', (e) => {
         e.preventDefault();
