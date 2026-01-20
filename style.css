@@ -1,26 +1,43 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #1b1b1b;
-  color: #eaeaea;
+  background-color: #0a2633;
+  color: #e0f7fa;
   margin: 0;
-  padding: 20px;
+  padding: 15px;
 }
 
-h1 {
+header {
   text-align: center;
-  color: #6cf;
+  margin-bottom: 20px;
+}
+
+#search {
+  padding: 8px;
+  width: 80%;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: #0288d1;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
 }
 
 .section {
-  background: #2a2a2a;
+  background: #024055;
   border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 20px;
+  padding: 12px;
+  margin-bottom: 18px;
 }
 
 .section h2 {
   margin-top: 0;
-  color: #9df;
+  color: #4dd0e1;
 }
 
 label {
@@ -31,12 +48,4 @@ label {
 
 input[type="checkbox"] {
   margin-right: 8px;
-}
-.section-title {
-  cursor: pointer;
-  user-select: none;
-}
-
-.section-content {
-  margin-top: 10px;
 }
