@@ -6,14 +6,13 @@ const data = {
             title: "Chapitre 1 : Le Crash et la Survie Initiale",
             sections: [
                 { title: "🎯 Objectif & Étapes détaillées", items: [
-                    "Éteins l'incendie (Extincteur du conteneur)",
-                    "Scanner tout (PDA auto-guide)",
-                    "Répare les systèmes (Repair Tool : scan Titanium près capsule)",
-                    "Hydrate-toi (Bouteilles d'eau du conteneur), mange Blocs de nutriments si urgence",
+                    "Réparer la radio endommagée",
+                    "Scanner la faune/flore de base",
+                    "Collecter des ressources : Quartz (silice), Champi abyssal (champignons), Titane/Cuivre des affleurements calcaires",
                     "Explore autour : récolte Minerai de titane, Minerai de cuivre, Quartz, Minerai d'argent, Affleurements calcaires (pour Caoutchouc de silicone, Champignons acides)",
                     "Répare Fabricator de kits médicaux (gratuit, +50 PV)"
                 ]},
-                { title: "🔧 Crafts essentiels (Fabricator de la capsule)", items: [
+                { title: "🔧 Crafts essentiels", items: [
                     "Outil de réparation",
                     "Couteau de survie",
                     "Palmes",
@@ -22,29 +21,21 @@ const data = {
                     "Réservoir O2 standard"
                 ]},
                 { title: "🗺️ Zones à explorer", items: [
-                    "Bancs calmes (Safe Shallows) : Prof. 0-30m. Ressources abondantes, dangers : aucun"
+                    "Bancs calmes (Safe Shallows)"
                 ]}
             ]
         },
         {
             id: "chapitre-2",
-            title: "Chapitre 2 : Premiers Outils Avancés et Signaux de Détresse",
+            title: "Chapitre 2 : Outils Essentiels et Première Exploration",
             sections: [
                 { title: "🎯 Étapes détaillées", items: [
-                    "Répare radio (Fabricator + énergie solaire)",
-                    "Lance signal de détresse, écoute réponses (capsules de survie 3,6,7,12,13,17,19)",
-                    "Explore capsules pour plans (ex: capsule 3 = Seaglide, capsule 19 = Canon de propulsion)",
-                    "Récolte Champignons saignants pour Eau filtrée",
-                    "Explore épaves pour fragments (Coupeur laser)"
-                ]},
-                { title: "🔧 Crafts", items: [
-                    "Eau filtrée",
-                    "Seaglide",
-                    "Coupeur laser",
-                    "Réservoir O2 haute capacité"
+                    "Explorer des grottes pour récupérer du soufre de cave",
+                    "Répondre au signal de la Capsules de survie 3 (radio)"
                 ]},
                 { title: "🗺️ Zones", items: [
-                    "Forêt de varech (Kelp Forest) : Prof. 20-60m. Dangers : Stalkers près épaves"
+                    "Capsules de survie 3",
+                    "Grottes des Bancs calmes (Safe Shallows)"
                 ]}
             ]
         },
