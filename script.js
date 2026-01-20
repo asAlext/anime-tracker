@@ -14,12 +14,12 @@ const data = {
                     "Répare Fabricator de kits médicaux (gratuit, +50 PV)"
                 ]},
                 { title: "🔧 Crafts essentiels (Fabricator de la capsule)", items: [
-                    { text: "Outil de réparation - Silice x1, Caviar de Crushfish x2", icon: "https://static.wikia.nocookie.net/subnautica/images/5/5e/Repair_Tool.png/revision/latest?cb=20180626194329" },
-                    { text: "Couteau de survie - Silice x2", icon: "https://static.wikia.nocookie.net/subnautica/images/3/3a/Survival_Knife.png/revision/latest?cb=20180626194329" },
-                    { text: "Palmes - Silice x2", icon: "https://static.wikia.nocookie.net/subnautica/images/4/4e/Fins.png/revision/latest?cb=20180626194329" },
-                    { text: "Lampe torche - Silice x1, Lingot de titane x1, Batterie x1", icon: "https://static.wikia.nocookie.net/subnautica/images/7/7e/Flashlight.png/revision/latest?cb=20180626194329" },
-                    { text: "Scanner - Lingot de titane x2", icon: "https://static.wikia.nocookie.net/subnautica/images/6/6f/Scanner.png/revision/latest?cb=20180626194329" },
-                    { text: "Réservoir O2 standard - Silice x2, Titane x2", icon: "https://static.wikia.nocookie.net/subnautica/images/9/9d/Oxygen_Tank.png/revision/latest?cb=20180626194329" }
+                    "Outil de réparation",
+                    "Couteau de survie",
+                    "Palmes",
+                    "Lampe torche",
+                    "Scanner",
+                    "Réservoir O2 standard"
                 ]},
                 { title: "🗺️ Zones à explorer", items: [
                     "Bancs calmes (Safe Shallows) : Prof. 0-30m. Ressources abondantes, dangers : aucun"
