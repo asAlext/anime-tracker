@@ -9,7 +9,9 @@ const data = {
                     "Éteins l'incendie (Extincteur du conteneur)",
                     "Scanner tout (PDA auto-guide)",
                     "Répare les systèmes (Repair Tool : scan Titanium près capsule)",
+                    "Hydrate-toi (Bouteilles d'eau du conteneur), mange Blocs de nutriments si urgence",
                     "Explore autour : récolte Minerai de titane, Minerai de cuivre, Quartz, Minerai d'argent, Affleurements calcaires (pour Caoutchouc de silicone, Champignons acides)",
+                    "Répare Fabricator de kits médicaux (gratuit, +50 PV)"
                 ]},
                 { title: "🔧 Crafts essentiels (Fabricator de la capsule)", items: [
                     { text: "Outil de réparation - Silice x1, Caviar de Crushfish x2", icon: "https://static.wikia.nocookie.net/subnautica/images/5/5e/Repair_Tool.png/revision/latest?cb=20180626194329" },
@@ -32,9 +34,11 @@ const data = {
                     "Répare radio (Fabricator + énergie solaire)",
                     "Lance signal de détresse, écoute réponses (capsules de survie 3,6,7,12,13,17,19)",
                     "Explore capsules pour plans (ex: capsule 3 = Seaglide, capsule 19 = Canon de propulsion)",
+                    "Récolte Champignons saignants pour Eau filtrée",
                     "Explore épaves pour fragments (Coupeur laser)"
                 ]},
                 { title: "🔧 Crafts", items: [
+                    { text: "Eau filtrée - Morceaux de Bleeder x1", icon: "https://static.wikia.nocookie.net/subnautica/images/1/1b/Filter_Water.png/revision/latest?cb=20180626194329" },
                     { text: "Seaglide - Lingot titane x2, Lubrifiant x1, Batterie x3", icon: "https://static.wikia.nocookie.net/subnautica/images/3/3e/Seaglide.png/revision/latest?cb=20180626194329" },
                     { text: "Coupeur laser - Diamant x1, Lingot titane x2, Verre x2", icon: "https://static.wikia.nocookie.net/subnautica/images/4/4d/Laser_Cutter.png/revision/latest?cb=20180626194329" },
                     { text: "Réservoir O2 haute capacité - Verre x2, Titane x4, Alimentation x1", icon: "https://static.wikia.nocookie.net/subnautica/images/2/2f/High_Capacity_Tank.png/revision/latest?cb=20180626194329" }
@@ -66,34 +70,135 @@ const data = {
                 ]}
             ]
         },
-        // ... (les chapitres 4 à 9 restent identiques à ce que tu avais, tu peux leur ajouter des emojis si tu veux : ex title: "🔧 Crafts", "🗺️ Zones")
         {
             id: "chapitre-4",
             title: "Chapitre 4 : Bases Avancées et Armes",
             sections: [
-                { title: "🎯 Étapes", items: [ /* ... */ ] },
-                { title: "🔧 Crafts", items: [ /* ... */ ] },
-                { title: "🗺️ Zones", items: [ /* ... */ ] }
+                { title: "🎯 Étapes", items: [
+                    "Base en Plateaux/Champignons : Salle polyvalente x2+, Fabricator, Batteries",
+                    "Salle scanner + modules (HUD ressources)",
+                    "Canon de propulsion pour pousser objets/leurres",
+                    "Explore Aurora (code 2679 pour Quartiers du Capitaine)"
+                ]},
+                { title: "🔧 Crafts", items: [
+                    { text: "Salle scanner - Verre x3, Titane x3", icon: "https://static.wikia.nocookie.net/subnautica/images/1/1e/Scanner_Room.png/revision/latest?cb=20180626194329" },
+                    { text: "Canon propulsion - Titane x3, Pile x1, Piston x1", icon: "https://static.wikia.nocookie.net/subnautica/images/5/5d/Propulsion_Cannon.png/revision/latest?cb=20180626194329" },
+                    { text: "Canon répulsion - Titane x2, Pile x1, Aimant x3", icon: "https://static.wikia.nocookie.net/subnautica/images/7/7a/Repulsion_Cannon.png/revision/latest?cb=20180626194329" }
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Forêt de champignons (Mushroom Forest) : Prof. 100-300m",
+                    "Aurora : Radioactif (armure anti-radiation). Plans PRAWN/Cyclops"
+                ]}
             ]
         },
-        // Chapitre 5 à 9 : tu peux copier-coller et ajouter les emojis toi-même de la même façon
-        // Chapitre X (long) :
+        {
+            id: "chapitre-5",
+            title: "Chapitre 5 : Construction Combinaison PRAWN",
+            sections: [
+                { title: "🎯 Étapes", items: [
+                    "Plan Aurora Abordage 2/2",
+                    "Rubis (Évents thermiques), Sac de gel (Grottes Jellyshroom)",
+                    "Fragments bras (Grand Récif Profond)"
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Grand Récif (Grand Reef) : Prof. 200-500m. Dangers : Crabsquid, Sea Treader"
+                ]}
+            ]
+        },
+        {
+            id: "chapitre-6",
+            title: "Chapitre 6 : Construction Cyclops et Exploration Zone des Bulbes",
+            sections: [
+                { title: "🎯 Étapes", items: [
+                    "Scan 9 fragments (Champignons, Zone crash, etc.)",
+                    "Construis Cyclops (Baie véhicule mobile)",
+                    "Améliorations Cyclops (profondeur jusqu'à 1700m)"
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Zone des bulbes (Bulb Zone) : Prof. 300-500m. Ressources : Nickel"
+                ]}
+            ]
+        },
+        {
+            id: "chapitre-7",
+            title: "Chapitre 7 : Profondeurs Fatales - Rivière Perdue et Lave",
+            sections: [
+                { title: "🎯 Étapes", items: [
+                    "PRAWN profondeur MK2/3 (Kyanite)",
+                    "Explore Rivière perdue (Léviathans fantômes)",
+                    "Active Arches aliens (tablettes orange/violette)"
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Rivière perdue (Lost River) : Prof. 500-1100m. Dangers : Léviathans fantômes",
+                    "Lacs de lave (Lava Lakes) : Prof. 1300-1700m. Dangers : Dragons de mer !"
+                ]}
+            ]
+        },
+        {
+            id: "chapitre-8",
+            title: "Chapitre 8 : Bases Aliens et Guérison",
+            sections: [
+                { title: "🎯 Étapes", items: [
+                    "Installation de recherche sur les maladies (tablette bleue)",
+                    "Installation de confinement principal (incubation œufs Empereur de mer)",
+                    "Guérison Kharaa"
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Installation de confinement principal : Prof. 1400m"
+                ]}
+            ]
+        },
+        {
+            id: "chapitre-9",
+            title: "Chapitre 9 : Désactivation Canon et Évasion",
+            sections: [
+                { title: "🎯 Étapes", items: [
+                    "Désactive Plateforme de quarantaine (Cellule ionique)",
+                    "Plan Fusée (Quartiers Capitaine Aurora)",
+                    "Construis sur surface"
+                ]},
+                { title: "🗺️ Zones", items: [
+                    "Surface (Île flottante sûre)"
+                ]},
+                { title: "🏆 Fin du jeu", items: [
+                    "Lance fusée après guérison. Félicitations ! Explore 100% pour bases Degasi, Précurseurs"
+                ]}
+            ]
+        },
         {
             id: "materiaux-upgrades",
             title: "Liste Complète Matériaux pour Véhicules (Base + Tous Améliorations)",
             sections: [
-                { title: "🚗 Seamoth (Base + Toutes les 12 améliorations)", items: [ /* ... */ ] },
-                { title: "🤖 Combinaison PRAWN (Base + Tous Bras/Modules)", items: [ /* ... */ ] },
-                { title: "🛳️ Cyclops (Base + Toutes les 10 améliorations)", items: [ /* ... */ ] },
-                { title: "🚀 Fusée d'Évacuation Neptune (Complète)", items: [ /* ... */ ] }
+                { title: "🚗 Seamoth (Base + Toutes les 12 améliorations)", items: [
+                    "Base : Lingot plasteel x2, Pile énergie x1, Puce électronique x1",
+                    "Ressources brutes approx. (base) : Minerai de titane x20+, Cuivre x10, Argent x5, Or x2, Plomb x8",
+                    "Profondeur MK1 - Plasteel x1, Puce x1, Kit câblage x1",
+                    "Profondeur MK2 - Plasteel x1, Puce x1, Magnétite x2",
+                    "Profondeur MK3 - Plasteel x1, Puce x1, Kyanite x2",
+                    "Brut total approx. (tous) : Minerai de titane x100+, Nickel x20, Kyanite x10, etc."
+                ]},
+                { title: "🤖 Combinaison PRAWN (Base + Tous Bras/Modules)", items: [
+                    "Base : Lingot plasteel x2, Pile énergie x1, Puce électronique x1, Verre émaillé x1, Aérogel x2",
+                    "Brut base : Titane x30, Rubis x4, Sac de gel x4",
+                    "Bras forage - Plasteel x2, Moteur x2",
+                    "Profondeur MK2 - Plasteel x1, Kyanite x4",
+                    "Brut total : Titane x80+, Kyanite x20, Rubis x10"
+                ]},
+                { title: "🛳️ Cyclops (Base + Toutes les 10 améliorations)", items: [
+                    "Base : Lingot plasteel x4, Pile énergie x2, Puce électronique x2, Graisse x1, Verre renforcé x4",
+                    "Brut base : Titane x50+, Quartz x20",
+                    "Profondeur MK3 - Plasteel x1 + Kyanite x2",
+                    "Brut total : Titane x100+, Kyanite x10, Cubes ion x5"
+                ]},
+                { title: "🚀 Fusée d'Évacuation Neptune (Complète)", items: [
+                    "Toutes pièces : Lanceur, Gantry, Boosters Ion, Réserve carburant, Cockpit",
+                    "Matériaux agrégés : Fibre carbone x2, Puce électronique x3, Pile ionique x1, Kyanite x60, etc.",
+                    "Brut total : Minerai de titane x100+, Kyanite x60 (Lave), Uranium x2 (Rivière perdue)"
+                ]}
             ]
         }
     ]
 };
-
-// ──────────────────────────────────────────────────────────────
-// Le reste du code avec les ajouts : compteur global + bouton tout cocher
-// ──────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
     const chaptersList = document.getElementById('chapters-list');
@@ -117,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return { checked, total };
     }
 
-    // NOUVEAU : Compteur global
     function updateGlobalProgress() {
         let total = 0;
         let checked = 0;
@@ -152,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderChapter(chapter) {
         content.innerHTML = '';
 
-        // NOUVEAU : Bouton "Tout cocher ce chapitre"
+        // Bouton "Tout cocher ce chapitre"
         const checkAllBtn = document.createElement('button');
         checkAllBtn.textContent = "Tout cocher ce chapitre";
         checkAllBtn.style.margin = '0 0 20px 0';
@@ -174,19 +278,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             localStorage.setItem('subnautica-progress', JSON.stringify(progress));
             renderChapter(chapter); // Re-rendu pour voir les coches
-            updateGlobalProgress(); // Mise à jour compteur global
-            // Optionnel : update les compteurs sidebar
-            document.querySelector(`a[href="#${chapter.id}"]`).textContent = `${chapter.title} (${chapter.sections.reduce((sum, s) => sum + s.items.length, 0)}/${chapter.sections.reduce((sum, s) => sum + s.items.length, 0)})`;
+            updateGlobalProgress();
+            // Mise à jour compteur sidebar
+            const link = document.querySelector(`a[href="#${chapter.id}"]`);
+            if (link) {
+                const prog = updateChapterProgress(chapter.id);
+                link.textContent = `${chapter.title} (${prog.checked}/${prog.total})`;
+            }
         };
         content.appendChild(checkAllBtn);
-
-        if (chapter.image) {
-            const img = document.createElement('img');
-            img.src = chapter.image;
-            img.alt = chapter.title;
-            img.classList.add('chapter-image');
-            content.appendChild(img);
-        }
 
         const h2 = document.createElement('h2');
         h2.textContent = chapter.title;
@@ -222,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const prog = updateChapterProgress(chapter.id);
                     const link = document.querySelector(`a[href="#${chapter.id}"]`);
                     if (link) link.textContent = `${chapter.title} (${prog.checked}/${prog.total})`;
-                    updateGlobalProgress(); // Mise à jour globale
+                    updateGlobalProgress();
                 });
 
                 const label = document.createElement('label');
@@ -244,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hash = window.location.hash.substring(1);
     let initialChapter = data.chapters.find(ch => ch.id === hash) || data.chapters[0];
     renderChapter(initialChapter);
-    updateGlobalProgress(); // Initialisation compteur global
+    updateGlobalProgress(); // Initialisation du compteur
 
     resetLink.addEventListener('click', (e) => {
         e.preventDefault();
