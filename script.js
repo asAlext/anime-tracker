@@ -85,41 +85,57 @@ const data = {
             title: "Chapitre 5 : Construction Combinaison PRAWN",
             sections: [
                 { title: "🎯 Étapes", items: [
-                    "Plan Aurora Abordage 2/2",
-                    "Rubis (Évents thermiques), Sac de gel (Grottes Jellyshroom)",
-                    "Fragments bras (Grand Récif Profond)"
+                    "Explorer zone radiation",
+                    "Répondre Capsules de survie 19",
+                    "Scanner des fragments de la Station de Modification"
                 ]},
+                { title: "🔧 Crafts", items: [
+                    "Chambre d'immersion",
+                    "Console d'amélioration de véhicules",
+                    "Station de Modification",
+                    "Module Profondeur MK1"
+                ]},
+                
                 { title: "🗺️ Zones", items: [
-                    "Grand Récif (Grand Reef) : Prof. 200-500m. Dangers : Crabsquid, Sea Treader"
+                    "Récifs clairsemés",
+                    "Capsules de survie 19"
                 ]}
             ]
         },
         {
             id: "chapitre-6",
-            title: "Chapitre 6 : Construction Cyclops et Exploration Zone des Bulbes",
+            title: "Chapitre 6 : Degasi, Sunbeam et Premiers Aliens",
             sections: [
                 { title: "🎯 Étapes", items: [
-                    "Scan 9 fragments (Champignons, Zone crash, etc.)",
-                    "Construis Cyclops (Baie véhicule mobile)",
-                    "Construis Cyclops"
+                    "Suivre balises Degasi : Île Flottante, Grotte Méduse, Abysse des Grands récifs",
+                    "Aller au site Sunbeam",
+                    "Entrer dans la structure avec la tablette violette*",
+                    "Scanner l'Œuf du Câlineur"
                 ]},
+                { title: "🔧 Crafts", items: [
+                    "Salle Polyvalente, Centrale Thermique, Réacteur Nucléaire",
+                    "Fabriquer un Aquariums"
+                ]},
+                
                 { title: "🗺️ Zones", items: [
-                    "Zone des bulbes (Bulb Zone) : Prof. 300-500m. Ressources : Nickel"
+                    "Bases Degasi abandonnées",
+                    "Structure étrange (tablette violette)*",
+                    "Île montagneuse"
                 ]}
             ]
         },
         {
             id: "chapitre-7",
-            title: "Chapitre 7 : Profondeurs Fatales - Rivière Perdue et Lave",
+            title: "Chapitre 7 : Aurora, Prawn et Cyclops",
             sections: [
                 { title: "🎯 Étapes", items: [
-                    "PRAWN profondeur MK2/3 (Kyanite)",
-                    "Explore Rivière perdue (Léviathans fantômes)",
-                    "Active Arches aliens (tablettes orange/violette)"
+                    "",
+                    "",
+                    ""
                 ]},
                 { title: "🗺️ Zones", items: [
-                    "Rivière perdue (Lost River) : Prof. 500-1100m. Dangers : Léviathans fantômes",
-                    "Lacs de lave (Lava Lakes) : Prof. 1300-1700m. Dangers : Dragons de mer !"
+                    "",
+                    ""
                 ]}
             ]
         },
@@ -128,29 +144,12 @@ const data = {
             title: "Chapitre 8 : Bases Aliens et Guérison",
             sections: [
                 { title: "🎯 Étapes", items: [
-                    "Installation de recherche sur les maladies (tablette bleue)",
-                    "Installation de confinement principal (incubation œufs Empereur de mer)",
-                    "Guérison Kharaa"
+                    "",
+                    "",
+                    ""
                 ]},
                 { title: "🗺️ Zones", items: [
-                    "Installation de confinement principal : Prof. 1400m"
-                ]}
-            ]
-        },
-        {
-            id: "chapitre-9",
-            title: "Chapitre 9 : Désactivation Canon et Évasion",
-            sections: [
-                { title: "🎯 Étapes", items: [
-                    "Désactive Plateforme de quarantaine (Cellule ionique)",
-                    "Plan Fusée (Quartiers Capitaine Aurora)",
-                    "Construis sur surface"
-                ]},
-                { title: "🗺️ Zones", items: [
-                    "Surface (Île flottante sûre)"
-                ]},
-                { title: "🏆 Fin du jeu", items: [
-                    "Lance fusée après guérison. Félicitations ! Explore 100% pour bases Degasi, Précurseurs"
+                    ""
                 ]}
             ]
         },
