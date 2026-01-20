@@ -1,4 +1,4 @@
-// Données de la checklist pour Subnautica - Version COMPLÈTE avec 10 chapitres
+// Données de la checklist pour Subnautica - Version COMPLÈTE
 const data = {
     chapters: [
         {
