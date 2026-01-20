@@ -32,3 +32,11 @@ label {
 input[type="checkbox"] {
   margin-right: 8px;
 }
+.section-title {
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-content {
+  margin-top: 10px;
+}
