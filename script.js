@@ -3,187 +3,187 @@ const data = {
     chapters: [
         {
             id: "chapitre-1",
-            title: "Chapitre 1 : Le Crash et la Survie Initiale (Profondeur : 0-50m, Biomes : Détroits Sûrs)",
+            title: "Chapitre 1 : Le Crash et la Survie Initiale (Profondeur : 0-50 m, Biomes : Détroits sûrs)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Éteindre le feu dans la capsule avec l'extincteur",
-                    "Réparer la radio et les systèmes secondaires de la capsule (outil de réparation)",
-                    "Gérer faim/soif/O₂ : pêcher Bladderfish/Peeper, cuisiner, purifier eau",
-                    "Scanner faune/flore basique et fragments initiaux",
-                    "Répondre aux premiers signaux radio (Lifepod 3 à proximité)"
+                    "Éteins le feu dans la capsule avec l'extincteur",
+                    "Répare la radio et les systèmes secondaires de la capsule (Outil de réparation)",
+                    "Gère la faim/soif/O₂ : pêche Poisson-vessie/Peeper, cuisiner, purifier l'eau",
+                    "Scanner la faune/flore basique et les fragments initiaux",
+                    "Réponds aux premiers signaux radio (Capsule de survie 3 à proximité)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Autour de la capsule : affleurements calcaires (titane/cuivre), grottes sous la capsule (soufre)",
-                    "Lifepod 3 (-30, -20, 410) pour fragments Seaglide et Boussole"
+                    "Autour de la capsule : affleurements calcaires (Minerai de titane/Cuivre), grottes sous la capsule (Soufre)",
+                    "Capsule de survie 3 (-30, -20, 410) pour fragments Propulseur et Boussole"
                 ]},
-                { title: "🔧 À crafter (Fabricateur capsule)", items: [
-                    "Réservoir O₂ standard (+30s air)",
+                { title: "🔧 À crafter (Fabricateur de la capsule)", items: [
+                    "Réservoir d'oxygène standard (+30 s d'air)",
                     "Outil de réparation",
-                    "Trousse de premiers soins (générateur médical)",
-                    "Ailerons (+15% vitesse nage)",
+                    "Trousse de premiers soins (Générateur médical)",
+                    "Ailerons (+15 % vitesse de nage)",
                     "Lampe torche",
                     "Scanner",
                     "Couteau de survie",
-                    "Poches d'air, Fusées éclairantes"
+                    "Vessie d'air, Fusées éclairantes"
                 ]}
             ]
         },
         {
             id: "chapitre-2",
-            title: "Chapitre 2 : Outils Essentiels et Mobilité de Base (Profondeur : 50-150m, Biomes : Forêt de Varech, Plateaux Herbeux)",
+            title: "Chapitre 2 : Outils Essentiels et Mobilité de Base (Profondeur : 50-150 m, Biomes : Forêt de varech, Plateaux herbeux)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Explorer grottes pour soufre/acide",
-                    "Répondre signaux : Lifepod 17 (-515, -95, 55) pour fragments Seamoth/Bioréacteur",
-                    "Scanner fragments dans débris (ex. Gros Débris #1 : 65, -30, 385 pour Laser Coupeur)",
-                    "Collecter Argent (affleurements grès), Lithium (schiste)"
+                    "Explore les grottes pour Soufre/Goop acide",
+                    "Réponds aux signaux : Capsule de survie 17 (-515, -95, 55) pour fragments Seamoth/Bioréacteur",
+                    "Scanner les fragments dans les débris (ex. Gros Débris #1 : 65, -30, 385 pour Découpeur laser)",
+                    "Collecte Minerai d'argent (affleurements de grès), Minerai de lithium (Schiste)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Forêt de Varech : débris petits/gros pour Seaglide, fragments base",
-                    "Plateaux Herbeux : épaves pour Seamoth (Très Gros Débris #1 : -120, -180, 860)",
-                    "Lifepod 6 (360, 110, 310) pour Ailerons Glisse Ultra"
+                    "Forêt de varech : débris petits/gros pour Propulseur, fragments base",
+                    "Plateaux herbeux : épaves pour Seamoth (Très Gros Débris #1 : -120, -180, 860)",
+                    "Capsule de survie 6 (360, 110, 310) pour Ailerons ultra glissants"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Seaglide (mobilité rapide)",
+                    "Propulseur (mobilité rapide)",
                     "Boussole",
-                    "Constructeur Habitat",
-                    "Compartiments Habitat basiques : Ordinateur Base, Lit, Chargeur Batterie",
+                    "Constructeur d'habitat",
+                    "Compartiments d'habitat basiques : Ordinateur de base, Lit, Chargeur de batteries",
                     "Seamoth (après fragments)"
                 ]}
             ]
         },
         {
             id: "chapitre-3",
-            title: "Chapitre 3 : Première Base et Île du Sunbeam (Profondeur : 0-200m, Biomes : Détroits Sûrs, Île Flottante)",
+            title: "Chapitre 3 : Première Base et Île du Sunbeam (Profondeur : 0-200 m, Biomes : Détroits sûrs, Île flottante)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Choisir spot base (ex. -830, -190, 835 près titane)",
-                    "Répondre appel Sunbeam : arriver en <30min",
-                    "Explorer île : graines arbres bulbe (nourriture/eau), schiste (lithium/or/diamant)",
-                    "Entrer grottes île : sel, tablettes violettes (x3)",
-                    "Alien Quarantine : insérer tablettes violettes, scanner canon alien, cubes ion, activer arche (téléporteur)"
+                    "Choisis un spot pour la base (ex. -830, -190, 835 près du titane)",
+                    "Réponds à l'appel du Sunbeam : arrive en <30 min",
+                    "Explore l'île : graines d'arbres bulbeux (nourriture/eau), schiste (lithium/or/diamant)",
+                    "Entre dans les grottes de l'île : sel des dépôts, tablettes violettes (x3)",
+                    "Plateforme d'exécution de la quarantaine : insère les tablettes violettes, scanne le canon alien, cubes ioniques, active l'arche (téléporteur)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Île Sunbeam (275, 0, 1090)",
-                    "Grottes sous île : première (340, 10, 1030), seconde (360, 120, 1150)",
+                    "Île du Sunbeam (275, 0, 1090)",
+                    "Grottes sous l'île : première (340, 10, 1030), seconde (360, 120, 1150)",
                     "Bâtiment alien (390, 5, 1120)"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Baie Véhicules Mobile",
-                    "Piscine Lune",
-                    "Combinaison Radiologique (zinc/fibres)",
-                    "Salle Multifonction, Salle Scanner (débloqués via fragments)"
+                    "Baie de véhicules mobiles",
+                    "Bassin lunaire",
+                    "Combinaison radiologique (Zinc/Fibres de corail)",
+                    "Salle polyvalente, Salle de scanner (débloqués via fragments)"
                 ]}
             ]
         },
         {
             id: "chapitre-4",
-            title: "Chapitre 4 : Abordage de l'Aurora - Extérieur et Baies (Profondeur : 100-300m, Biomes : Récifs Clairsemés)",
+            title: "Chapitre 4 : Abordage de l'Aurora - Extérieur et Baies (Profondeur : 100-300 m, Biomes : Récifs clairsemés)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Approcher Aurora par arrière gauche",
-                    "Éteindre incendies, réparer câblages, tuer Cave Crawlers",
-                    "Explorer sédiments : capsules temporaires (foreuse Prawn, barres réacteur)",
-                    "Baie Cargo 3 (code 1454) : kits médicaux",
-                    "Baie Seamoth : scanner Module Profondeur MK1"
+                    "Approche l'Aurora par l'arrière gauche",
+                    "Éteins les incendies, répare les câblages, tue les Rampants des grottes",
+                    "Explore les sédiments : capsules de données temporaires (Bras foreuse PRAWN, Barres de réacteur)",
+                    "Baie de cargaison 3 (code 1454) : trousses médicales",
+                    "Baie à Seamoth : scanner Module de profondeur MK1"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Extérieur Aurora (470, -5, -310)",
+                    "Extérieur de l'Aurora (470, -5, -310)",
                     "Entrée frontale (1150, 2, 112)",
-                    "Salle Machines : réparer 11 brèches"
+                    "Salle des machines : répare 11 brèches"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Extincteurs (titane)",
-                    "Fusil Propulsion (fragments)",
-                    "Rebreather (silice/titane)"
+                    "Extincteurs (Titane)",
+                    "Canon de propulsion (fragments)",
+                    "Recycleur (Silice/Titane)"
                 ]}
             ]
         },
         {
             id: "chapitre-5",
-            title: "Chapitre 5 : Abordage de l'Aurora - Intérieur et Quartiers (Profondeur : 100-300m, Biomes : Zone Crash Aurora)",
+            title: "Chapitre 5 : Abordage de l'Aurora - Intérieur et Quartiers (Profondeur : 100-300 m, Biomes : Zone de crash de l'Aurora)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Administration : télécharger données, scanner posters",
-                    "Quartiers Résidentiels : éteindre feux, scanner tables bar/chaises",
-                    "Cabines (codes : 1869 cab1, 2679 capitaine, 6483 échantillons) : bagages, eau",
-                    "Baie Prawn : scanner combinaisons",
-                    "Salle Cœur : couper portes (laser), PDA/code 6483"
+                    "Bureau d'administration : télécharge les données, scanne les posters",
+                    "Quartiers d'habitation : éteins les feux, scanne les tables bar/chaises",
+                    "Cabines (codes : 1869 cabine 1, 2679 capitaine, 6483 échantillons) : bagages, eau",
+                    "Baie à PRAWN : scanne les combinaisons",
+                    "Salle du cœur : coupe les portes (Découpeur laser), PDA/code 6483"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Pont Supérieur, Ponts Résidentiels",
-                    "Baie Prawn"
+                    "Pont supérieur, Ponts résidentiels",
+                    "Baie à PRAWN"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Station Modification (fragments)",
+                    "Station de modification (fragments)",
                     "Cyclops (fragments moteurs Aurora/débris)",
-                    "Modules Profondeur MK1/MK2 Seamoth/Cyclops"
+                    "Modules de profondeur MK1/MK2 Seamoth/Cyclops"
                 ]}
             ]
         },
         {
             id: "chapitre-6",
-            title: "Chapitre 6 : Grotte Champis-Gelées et Base Degasi (Profondeur : 200-600m, Biomes : Grotte Méduse, Grand Récif)",
+            title: "Chapitre 6 : Grotte des champignons-gélifiés et Base Degasi (Profondeur : 200-600 m, Biomes : Grotte des champignons-gélifiés, Grand récif)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Miner lithium/or/magnétite (foreuse Prawn)",
-                    "Explorer base Degasi : scanner Salle Multifonction/Observatoire",
-                    "Collecter œufs créatures, photos, lits",
-                    "Répondre signaux capsules profondes (ex. Lifepod 19 : réservoir haute capacité)"
+                    "Mine le lithium/or/magnétite (Bras foreuse PRAWN)",
+                    "Explore la base Degasi : scanne Salle polyvalente/Observatoire",
+                    "Collecte les œufs de créatures, photos, lits",
+                    "Réponds aux signaux des capsules profondes (ex. Capsule de survie 19 : réservoir haute capacité)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Grotte Champis-Gelées (-370, -90, -160)",
+                    "Grotte des champignons-gélifiés (-370, -90, -160)",
                     "Base Degasi (-650, -503, -950)"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Combinaison Prawn (fragments Aurora)",
-                    "Bras Prawn : Foreuse, Grappin",
-                    "Centrale Thermique, Chargeur Batterie Avancé"
+                    "Combinaison PRAWN (fragments Aurora)",
+                    "Bras PRAWN : Foreuse, Grappin",
+                    "Centrale thermique, Chargeur de batteries avancé"
                 ]}
             ]
         },
         {
             id: "chapitre-7",
-            title: "Chapitre 7 : Structures Alien Profondes (Profondeur : 700-1400m, Biomes : Rivière Perdue, Grotte Fossiles, Labo Maladies, Centrale Thermique)",
+            title: "Chapitre 7 : Structures Alien Profondes (Profondeur : 700-1400 m, Biomes : Rivière perdue, Champ des os, Installation de recherche sur les maladies, Centrale thermique)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Grotte Fossiles : eau acide, tablettes orange/violettes, scanner fossiles/œufs",
-                    "Labo Maladies : scanner Warpers, infection Kharaa révélée",
-                    "Centrale Thermique : miner Kyanite/cubes ion, activer téléporteur Sunbeam",
-                    "Désactiver champs de force (tablettes)"
+                    "Champ des os : eau acide, tablettes orange/violettes, scanne fossiles/œufs",
+                    "Installation de recherche sur les maladies : scanne les Warpers, infection Kharaa révélée",
+                    "Centrale thermique : mine Kyanite/cubes ioniques, active le téléporteur Sunbeam",
+                    "Désactive les champs de force (tablettes)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Grotte Fossiles (-710, -710, -710)",
-                    "Labo Maladies (-240, -795, 310)",
-                    "Centrale Thermique (-70, -1180, 10)"
+                    "Champ des os (-710, -710, -710)",
+                    "Installation de recherche sur les maladies (-240, -795, 310)",
+                    "Centrale thermique (-70, -1180, 10)"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Modules Profondeur MK3 (Kyanite)",
-                    "Fusil Stase (fragments)",
-                    "Cellules Ion",
-                    "Bras Coupeur Laser Prawn"
+                    "Modules de profondeur MK3 (Kyanite)",
+                    "Fusil de stase (fragments)",
+                    "Piles ioniques",
+                    "Bras découpeur laser PRAWN"
                 ]}
             ]
         },
         {
             id: "chapitre-8",
-            title: "Chapitre 8 : Installation Contention, Guérison et Évasion (Profondeur : 1400-1700m, Biomes : Lacs Lava, Château Lava)",
+            title: "Chapitre 8 : Installation de confinement, Guérison et Évasion (Profondeur : 1400-1700 m, Biomes : Lacs de lave, Château de lave)",
             sections: [
                 { title: "🎯 À faire / Étapes détaillées", items: [
-                    "Miner gros nœuds Kyanite",
-                    "Installation : scanner expositions/œufs/fœtus, interagir Empereur (confiance)",
-                    "Incuber Enzyme 42 (guérison), désactiver canon alien",
-                    "Récup blueprint Fusée Neptune (terminal Aurora)",
-                    "Construire/Activer fusée : plateforme, rampe, propulseurs, réservoir carburant, cockpit ; activer modules (énergie, comms, hydraulique)"
+                    "Mine les gros nœuds de Kyanite",
+                    "Installation de confinement primaire : scanne expositions/œufs/fœtus, interagit avec l'Empereur des mers (confiance)",
+                    "Incube l'Enzyme 42 (guérison), désactive le canon alien",
+                    "Récupère le plan de la Fusée Neptune (terminal Aurora)",
+                    "Construis/Active la fusée : plateforme, rampe, propulseurs, réservoir carburant, cockpit ; active les modules (énergie, comms, hydraulique)"
                 ]},
                 { title: "🗺️ À visiter", items: [
-                    "Installation Contention Primaire (220, -1451, -260)",
-                    "Aquarium Empereur"
+                    "Installation de confinement primaire (220, -1451, -260)",
+                    "Aquarium de l'Empereur"
                 ]},
                 { title: "🔧 À crafter", items: [
-                    "Enzymes Incubation",
-                    "Composants Fusée Neptune",
-                    "Base finale : Salle Polyvalente, Réacteur Nucléaire si besoin"
+                    "Enzymes d'incubation",
+                    "Composants de la Fusée Neptune",
+                    "Base finale : Salle polyvalente, Réacteur nucléaire si besoin"
                 ]}
             ]
         }
