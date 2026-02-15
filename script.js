@@ -82,7 +82,7 @@ function afficherListe(filtreNom = '') {
             <span class="item-statut">${item.statut}</span>
             <span class="item-type">${item.type}</span>
           </div>
-          <span class="item-note">Note : ${item.note.toFixed(1)}/10</span>
+          <span class="item-note">Note : ${Number(item.note)}/10</span>
         </div>
         <div class="actions">
           <button onclick="editerItem(${indexOriginal})">Modifier</button>
