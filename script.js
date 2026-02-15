@@ -27,19 +27,16 @@ function afficherListe(filtreNom = '') {
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // Filtre par statut
   const filtreStatut = document.getElementById('filtre-statut')?.value || '';
   if (filtreStatut) {
     resultat = resultat.filter(item => item.statut === filtreStatut);
   }
 
-  // Filtre par type
   const filtreType = document.getElementById('filtre-type')?.value || '';
   if (filtreType) {
     resultat = resultat.filter(item => item.type === filtreType);
   }
 
-  // Tri
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
