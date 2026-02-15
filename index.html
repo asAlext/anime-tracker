@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subnautica Progression Checklist</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex"> <!-- Pour éviter l'indexation Google -->
+  <title>Mon Tracker Anime / Film</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Subnautica Progression Checklist 🌊</h1>
-        <p>Guide complet de survie et d'exploration sous-marine</p>
-        <a href="#" id="reset-progress">Réinitialiser la progression</a>
-    </header>
 
-    <div class="container">
-       <nav>
-    <h2>Chapitres</h2>
-    <p id="global-progress" style="font-size: 1.1em; color: #80deea; margin: 10px 0 15px; text-align: center; font-weight: bold;">
-        Progression globale : 0% (0/0 tâches)
-    </p>
-    <ul id="chapters-list"></ul>
-</nav>
+  <h1>Mon Tracker Anime / Film</h1>
 
-        <main id="content"></main>
-    </div>
+  <!-- Formulaire d'ajout / édition -->
+  <form id="formAjout">
+    <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
+    
+    <select id="type" required>
+      <option value="">Type</option>
+      <option value="anime">Anime</option>
+      <option value="film">Film</option>
+    </select>
+    
+    <select id="statut" required>
+      <option value="">Statut</option>
+      <option value="fini">Fini</option>
+      <option value="abandon">Abandon</option>
+      <option value="en pause">En pause</option>
+      <option value="a regarder">À regarder</option>
+      <option value="en cours">En cours</option>
+      <option value="plus jamais">Plus jamais</option>
+    </select>
+    
+    <select id="note" required>
+      <option value="">Note (1-10)</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <!-- ... jusqu'à 10 -->
+      <option value="10">10</option>
+    </select>
+    
+    <button type="submit">Ajouter</button>
+    <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler édition</button>
+  </form>
 
-    <footer>
-        <p>Mis à jour le 20 janvier 2026 • Inspiré de Terraria Checklist • Par asAlext</p>
-    </footer>
+  <!-- Recherche -->
+  <input type="text" id="recherche" placeholder="Rechercher par nom...">
 
-    <script src="script.js"></script>
+  <!-- Liste -->
+  <ul id="liste"></ul>
+
+  <!-- Export / Import -->
+  <div>
+    <button id="exporter">Exporter ma liste (JSON)</button>
+    <input type="file" id="importeur" accept=".json">
+    <button id="importer">Importer</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
