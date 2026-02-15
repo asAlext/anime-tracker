@@ -16,7 +16,7 @@
       <form id="formAjout">
         <div class="champ">
           <label for="nom">Nom</label>
-          <input type="text" id="nom" placeholder="Nom " required>
+          <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
         </div>
         
         <div class="champ">
@@ -42,8 +42,8 @@
         </div>
         
         <div class="champ">
-          <label for="note">Note </label>
-          <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 5.5" required>
+          <label for="note">Note (0 à 10, ex: 9.5)</label>
+          <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 9.5" required>
         </div>
         
         <div class="boutons-form">
@@ -63,7 +63,6 @@
     <div class="contenu-droit">
       <div class="header-droit">
         <div class="zone-filtres-tris">
-          <!-- Trier par nom -->
           <div class="zone-tris">
             <label>Trier par nom :</label>
             <select id="tri-nom">
@@ -73,7 +72,6 @@
             </select>
           </div>
           
-          <!-- Trier par note -->
           <div class="zone-tris">
             <label>Trier par note :</label>
             <select id="tri-note">
@@ -83,7 +81,6 @@
             </select>
           </div>
           
-          <!-- Filtrer par statut -->
           <div class="filtre-statut">
             <label>Filtrer par statut :</label>
             <select id="filtre-statut">
@@ -97,7 +94,6 @@
             </select>
           </div>
           
-          <!-- Filtrer par type -->
           <div class="filtre-type">
             <label>Filtrer par type :</label>
             <select id="filtre-type">
