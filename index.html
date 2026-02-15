@@ -52,44 +52,51 @@
         </div>
       </form>
 
-      <!-- NOUVEAU : Compteurs en temps réel -->
+      <!-- Compteurs en temps réel -->
       <div class="compteurs-container">
-        <div class="compteurs-colonne gauche">
+        <!-- Ligne du haut : Total seul -->
+        <div class="compteur-total">
           <div class="compteur">
             <span class="label">Total</span>
             <span id="count-total" class="valeur">0</span>
           </div>
-          <div class="compteur">
-            <span class="label">Fini</span>
-            <span id="count-fini" class="valeur">0</span>
-          </div>
-          <div class="compteur">
-            <span class="label">En Cours</span>
-            <span id="count-en-cours" class="valeur">0</span>
-          </div>
-          <div class="compteur">
-            <span class="label">En Pause</span>
-            <span id="count-en-pause" class="valeur">0</span>
-          </div>
         </div>
 
-        <div class="compteurs-colonne droite">
-          <div class="compteur">
-            <span class="label">A Regarder</span>
-            <span id="count-a-regarder" class="valeur">0</span>
+        <!-- Ligne du milieu : 4 + 3 -->
+        <div class="compteurs-ligne">
+          <div class="compteurs-colonne gauche">
+            <div class="compteur">
+              <span class="label">Fini</span>
+              <span id="count-fini" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">En Cours</span>
+              <span id="count-en-cours" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">En Pause</span>
+              <span id="count-en-pause" class="valeur">0</span>
+            </div>
           </div>
-          <div class="compteur">
-            <span class="label">Abandon</span>
-            <span id="count-abandon" class="valeur">0</span>
-          </div>
-          <div class="compteur">
-            <span class="label">Plus Jamais</span>
-            <span id="count-plus-jamais" class="valeur">0</span>
+
+          <div class="compteurs-colonne droite">
+            <div class="compteur">
+              <span class="label">A Regarder</span>
+              <span id="count-a-regarder" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">Abandon</span>
+              <span id="count-abandon" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">Plus Jamais</span>
+              <span id="count-plus-jamais" class="valeur">0</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Export / Import en bas -->
+      <!-- Export / Import -->
       <div class="zone-export">
         <button id="exporter">Exporter la liste (JSON)</button>
         <input type="file" id="importeur" accept=".json">
