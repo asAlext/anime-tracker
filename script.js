@@ -17,7 +17,7 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// Mise à jour des 7 compteurs
+// Mise à jour des compteurs
 function mettreAJourCompteurs() {
   const total = items.length;
   const counts = {
@@ -45,7 +45,7 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste
+// Afficher la liste (inchangé)
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
@@ -150,7 +150,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
 
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
-  mettreAJourCompteurs(); // mise à jour des compteurs
+  mettreAJourCompteurs();
   this.reset();
 });
 
@@ -178,7 +178,7 @@ function supprimerItem(index) {
   items.splice(index, 1);
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
-  mettreAJourCompteurs(); // mise à jour des compteurs
+  mettreAJourCompteurs();
 }
 
 // Événements
@@ -232,7 +232,7 @@ document.getElementById('importer').addEventListener('click', function() {
       items = data;
       sauvegarder();
       afficherListe();
-      mettreAJourCompteurs(); // mise à jour après import
+      mettreAJourCompteurs();
       alert('Import réussi !');
       fileInput.value = '';
     } catch (err) {
