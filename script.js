@@ -16,18 +16,25 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// Afficher la liste avec la disposition demandée
-function afficherListe(filtre = '') {
+// Afficher la liste
+function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
 
-  const rechercheLower = filtre.toLowerCase();
+  const rechercheLower = filtreNom.toLowerCase();
 
+  // 1. Filtre par nom (recherche texte)
   let resultat = items.filter(item =>
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // Gestion des tris
+  // 2. Filtre par statut (nouveau)
+  const filtreStatut = document.getElementById('filtre-statut')?.value || '';
+  if (filtreStatut) {
+    resultat = resultat.filter(item => item.statut === filtreStatut);
+  }
+
+  // 3. Tri
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
@@ -58,6 +65,7 @@ function afficherListe(filtre = '') {
     });
   }
 
+  // Affichage
   if (resultat.length === 0) {
     document.getElementById('message-vide').style.display = 'block';
   } else {
@@ -142,17 +150,23 @@ function supprimerItem(index) {
   afficherListe(document.getElementById('recherche').value);
 }
 
-// Recherche temps réel
+// Recherche par nom (temps réel)
 document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
 
-// Tris via select (reset l'autre tri pour éviter conflits)
+// Filtre par statut
+document.getElementById('filtre-statut').addEventListener('change', function() {
+  afficherListe(document.getElementById('recherche').value);
+});
+
+// Tri par nom
 document.getElementById('tri-nom').addEventListener('change', function() {
   document.getElementById('tri-note').value = '';
   afficherListe(document.getElementById('recherche').value);
 });
 
+// Tri par note
 document.getElementById('tri-note').addEventListener('change', function() {
   document.getElementById('tri-nom').value = '';
   afficherListe(document.getElementById('recherche').value);
