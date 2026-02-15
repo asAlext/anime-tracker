@@ -33,7 +33,7 @@ function afficherListe(filtreNom = '') {
     resultat = resultat.filter(item => item.statut === filtreStatut);
   }
 
-  // Filtre par type (nouveau)
+  // Filtre par type
   const filtreType = document.getElementById('filtre-type')?.value || '';
   if (filtreType) {
     resultat = resultat.filter(item => item.type === filtreType);
@@ -61,7 +61,9 @@ function afficherListe(filtreNom = '') {
       return ordre === 'asc' ? nomA.localeCompare(nomB) : nomB.localeCompare(nomA);
     });
   } else if (typeTri === 'note') {
-    resultat.sort((a, b) => ordre === 'asc' ? a.note - b.note : b.note - a.note);
+    resultat.sort((a, b) => {
+      return ordre === 'asc' ? a.note - b.note : b.note - a.note;
+    });
   }
 
   if (resultat.length === 0) {
@@ -80,7 +82,7 @@ function afficherListe(filtreNom = '') {
             <span class="item-statut">${item.statut}</span>
             <span class="item-type">${item.type}</span>
           </div>
-          <span class="item-note">Note : ${item.note}/10</span>
+          <span class="item-note">Note : ${item.note.toFixed(1)}/10</span>
         </div>
         <div class="actions">
           <button onclick="editerItem(${indexOriginal})">Modifier</button>
@@ -93,18 +95,24 @@ function afficherListe(filtreNom = '') {
   }
 }
 
-// Ajout / Modification (inchangé)
+// Ajout / Modification (adapté pour note en texte)
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom = document.getElementById('nom').value.trim();
-  const type = document.getElementById('type').value;
+  const nom    = document.getElementById('nom').value.trim();
+  const type   = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
-  const note = document.getElementById('note').value;
+  const noteStr = document.getElementById('note').value.trim();
 
-  if (!nom || !type || !statut || !note) return;
+  if (!nom || !type || !statut || !noteStr) return;
 
-  const nouvelItem = { nom, type, statut, note: parseInt(note) };
+  const note = parseFloat(noteStr);
+  if (isNaN(note) || note < 0 || note > 10) {
+    alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
+    return;
+  }
+
+  const nouvelItem = { nom, type, statut, note };
 
   const editIndex = this.dataset.editIndex;
 
@@ -121,13 +129,13 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   this.reset();
 });
 
-// Edition (inchangé)
+// Edition (adapté pour note en texte)
 function editerItem(index) {
   const item = items[index];
-  document.getElementById('nom').value = item.nom;
-  document.getElementById('type').value = item.type;
+  document.getElementById('nom').value    = item.nom;
+  document.getElementById('type').value   = item.type;
   document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value = item.note;
+  document.getElementById('note').value   = item.note;
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
@@ -139,7 +147,7 @@ document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   this.style.display = 'none';
 });
 
-// Suppression (inchangé)
+// Suppression
 function supprimerItem(index) {
   if (!confirm('Supprimer cet élément ?')) return;
   items.splice(index, 1);
@@ -170,10 +178,11 @@ document.getElementById('tri-note').addEventListener('change', function() {
   afficherListe(document.getElementById('recherche').value);
 });
 
-// Export / Import (inchangé)
+// Export
 document.getElementById('exporter').addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
+
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -183,6 +192,7 @@ document.getElementById('exporter').addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
+// Import
 document.getElementById('importer').addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
   const file = fileInput.files[0];
