@@ -37,11 +37,11 @@ body {
 
 .sidebar-ajout h2 {
   margin-bottom: 24px;
-  color: #d4c3e8; /* violet doux pastel */
+  color: #d4c3e8;
   font-size: 1.4rem;
 }
 
-/* Champs formulaire (inchangé mais cohérent) */
+/* Champs formulaire */
 .champ {
   margin-bottom: 20px;
 }
@@ -90,7 +90,7 @@ body {
 }
 
 .boutons-form button[type="submit"] {
-  background: #a8d5ba; /* vert pastel doux */
+  background: #a8d5ba;
   color: #000000;
 }
 
@@ -124,7 +124,7 @@ body {
   padding: 24px;
 }
 
-/* Zone filtres + tris (décalée vers la gauche + ordre demandé) */
+/* Filtres + tris */
 .header-droit {
   margin-bottom: 24px;
 }
@@ -134,8 +134,8 @@ body {
   align-items: center;
   gap: 24px;
   flex-wrap: wrap;
-  justify-content: flex-start; /* décalage vers la gauche */
-  padding-left: 20px; /* petit décalage supplémentaire à gauche */
+  justify-content: flex-start;
+  padding-left: 20px;
 }
 
 .filtre-statut,
@@ -150,7 +150,7 @@ body {
 .filtre-type label,
 .zone-tris label {
   font-weight: 600;
-  color: #d4c3e8; /* violet doux */
+  color: #d4c3e8;
 }
 
 .filtre-statut select,
@@ -175,7 +175,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items (couleurs douces) */
+/* === LISTE ITEMS – STATUT, TYPE, NOTE FIXES À DROITE === */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -188,44 +188,54 @@ body {
   gap: 20px;
 }
 
-.info-container {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  flex: 1;
-}
-
 .item-nom {
   font-weight: bold;
   font-size: 1.1rem;
-  min-width: 200px;
-  color: #e0e0ff; /* bleu-gris très doux pour nom */
+  flex: 1;                    /* prend tout l'espace restant à gauche */
+  min-width: 0;               /* permet au texte long de ne pas déborder */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;    /* coupe avec ... si trop long */
 }
 
-.milieu-statut {
+.right-fixed {
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 40px;                  /* espace fixe entre Statut / Type / Note */
+  min-width: 420px;           /* largeur minimale fixe pour que ça reste stable */
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .item-statut {
-  color: #a8d5ba; /* vert pastel doux */
+  color: #a8d5ba;
   font-weight: 600;
   min-width: 120px;
+  text-align: right;
   text-transform: capitalize;
 }
 
 .item-type {
-  color: #b3c7ff; /* bleu pastel doux */
+  color: #b3c7ff;
   font-weight: 500;
   min-width: 80px;
+  text-align: right;
   text-transform: capitalize;
 }
 
 .item-note {
-  color: #f0d9a2; /* jaune/or pâle doux */
+  color: #f0d9a2;
   font-weight: bold;
   min-width: 120px;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 160px;
+  justify-content: flex-end;
 }
 
 .actions button {
@@ -235,11 +245,48 @@ body {
   border-radius: 6px;
   color: white;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
-/* Responsive (inchangé) */
+.actions button:hover {
+  background: #b74c6a;
+}
+
+/* Responsive mobile */
 @media (max-width: 850px) {
-  .sidebar-ajout { position: static; width: 100%; height: auto; }
-  .contenu-droit { margin-left: 0; }
-  .zone-filtres-tris { flex-direction: column; align-items: stretch; gap: 16px; }
+  .sidebar-ajout {
+    position: static;
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 20px;
+  }
+
+  .contenu-droit {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .zone-filtres-tris {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .right-fixed {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: auto;
+  }
+
+  .actions {
+    justify-content: flex-end;
+  }
+
+  .item-nom {
+    white-space: normal;
+  }
 }
