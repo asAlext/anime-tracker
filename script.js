@@ -1,14 +1,14 @@
 // Clé unique pour localStorage
 const CLE_STORAGE = 'mesAnimesTracker';
 
-// Tableau global (contient TOUTES les entrées dans l'ordre d'ajout/original)
+// Tableau global
 let items = [];
 
 // Charger les données au démarrage
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
-  afficherListe();  // affiche avec tri par défaut
+  afficherListe();
 }
 
 // Sauvegarder dans localStorage
@@ -16,100 +16,84 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// =============================================
-//      FONCTION PRINCIPALE D'AFFICHAGE (filtre + tri)
-// =============================================
+// Afficher la liste
 function afficherListe(filtre = '') {
   const ul = document.getElementById('liste');
-  if (!ul) return; // sécurité si élément absent
-
   ul.innerHTML = '';
 
   const rechercheLower = filtre.toLowerCase();
 
-  // 1. Filtrer par recherche (sur nom)
   let resultat = items.filter(item =>
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // 2. Appliquer le tri actif (priorité : note > nom)
-  const selectNom  = document.getElementById('tri-nom');
-  const selectNote = document.getElementById('tri-note');
+  // Gestion des tris via les select
+  const triNom = document.getElementById('tri-nom')?.value || '';
+  const triNote = document.getElementById('tri-note')?.value || '';
 
   let typeTri = '';
-  let ordre   = '';
+  let ordre = '';
 
-  if (selectNote && selectNote.value) {
+  if (triNote) {
     typeTri = 'note';
-    ordre   = selectNote.value; // 'asc' ou 'desc'
-  } else if (selectNom && selectNom.value) {
+    ordre = triNote;
+  } else if (triNom) {
     typeTri = 'nom';
-    ordre   = selectNom.value;  // 'asc' ou 'desc'
+    ordre = triNom;
   }
 
-  if (typeTri) {
-    if (typeTri === 'nom') {
-      resultat.sort((a, b) => {
-        const nomA = a.nom.toLowerCase();
-        const nomB = b.nom.toLowerCase();
-        return ordre === 'asc'
-          ? nomA.localeCompare(nomB)
-          : nomB.localeCompare(nomA);
-      });
-    } else if (typeTri === 'note') {
-      resultat.sort((a, b) => {
-        return ordre === 'asc'
-          ? a.note - b.note
-          : b.note - a.note;
-      });
-    }
+  if (typeTri === 'nom') {
+    resultat.sort((a, b) => {
+      const nomA = a.nom.toLowerCase();
+      const nomB = b.nom.toLowerCase();
+      return ordre === 'asc'
+        ? nomA.localeCompare(nomB)
+        : nomB.localeCompare(nomA);
+    });
+  } else if (typeTri === 'note') {
+    resultat.sort((a, b) => {
+      return ordre === 'asc'
+        ? a.note - b.note
+        : b.note - a.note;
+    });
   }
 
-  // 3. Affichage
   if (resultat.length === 0) {
-    const msgVide = document.getElementById('message-vide');
-    if (msgVide) msgVide.style.display = 'block';
+    document.getElementById('message-vide').style.display = 'block';
   } else {
-    const msgVide = document.getElementById('message-vide');
-    if (msgVide) msgVide.style.display = 'none';
+    document.getElementById('message-vide').style.display = 'none';
 
-    resultat.forEach(item => {
-      // Retrouver l'index ORIGINAL dans items (pour edit/delete)
-      const indexOriginal = items.findIndex(i =>
-        i.nom === item.nom &&
-        i.type === item.type &&
-        i.statut === item.statut &&
-        i.note === item.note
-      );
-
-      if (indexOriginal === -1) return; // sécurité (ne devrait pas arriver)
+    resultat.forEach((item) => {
+      const indexOriginal = items.indexOf(item);
 
       const li = document.createElement('li');
+
       li.innerHTML = `
-        <strong>${item.nom}</strong> 
-        (${item.type}) — 
-        ${item.statut} — 
-        Note : ${item.note}/10
+        <div class="item-info">
+          <span class="item-nom">${item.nom}</span>
+          <span class="item-statut">${item.statut}</span>
+          <span class="item-type">${item.type}</span>
+          <span class="item-note">Note : ${item.note}/10</span>
+        </div>
         <div class="actions">
           <button onclick="editerItem(${indexOriginal})">Modifier</button>
           <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
         </div>
       `;
+
       ul.appendChild(li);
     });
   }
 }
 
-// =============================================
-//           AJOUT / MODIFICATION
-// =============================================
-document.getElementById('formAjout')?.addEventListener('submit', function(e) {
+// Ajouter ou modifier
+document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom    = document.getElementById('nom')?.value.trim();
-  const type   = document.getElementById('type')?.value;
-  const statut = document.getElementById('statut')?.value;
-  const note   = document.getElementById('note')?.value;
+  const nom    = document.getElementById('nom').value.trim();
+  const type   = document.getElementById('type').value;
+  const statut = document.getElementById('statut').value;
+  const note   = document.getElementById('note').value;
 
   if (!nom || !type || !statut || !note) return;
 
@@ -118,84 +102,63 @@ document.getElementById('formAjout')?.addEventListener('submit', function(e) {
   const editIndex = this.dataset.editIndex;
 
   if (editIndex !== undefined) {
-    // Modification
     items[parseInt(editIndex)] = nouvelItem;
     delete this.dataset.editIndex;
-    const btnAnnuler = document.getElementById('btnAnnulerEdit');
-    if (btnAnnuler) btnAnnuler.style.display = 'none';
+    document.getElementById('btnAnnulerEdit').style.display = 'none';
   } else {
-    // Ajout
     items.push(nouvelItem);
   }
 
   sauvegarder();
-  afficherListe(document.getElementById('recherche')?.value || '');
+  afficherListe(document.getElementById('recherche').value);
   this.reset();
 });
 
-// =============================================
-//           EDITION & ANNULATION
-// =============================================
+// Edition
 function editerItem(index) {
   const item = items[index];
-  if (!item) return;
-
-  document.getElementById('nom')?.setAttribute('value', item.nom);
-  document.getElementById('type')?.setAttribute('value', item.type);
-  document.getElementById('statut')?.setAttribute('value', item.statut);
-  document.getElementById('note')?.setAttribute('value', item.note);
+  document.getElementById('nom').value    = item.nom;
+  document.getElementById('type').value   = item.type;
+  document.getElementById('statut').value = item.statut;
+  document.getElementById('note').value   = item.note;
 
   document.getElementById('formAjout').dataset.editIndex = index;
-
-  const btnAnnuler = document.getElementById('btnAnnulerEdit');
-  if (btnAnnuler) btnAnnuler.style.display = 'inline';
+  document.getElementById('btnAnnulerEdit').style.display = 'inline';
 }
 
-document.getElementById('btnAnnulerEdit')?.addEventListener('click', function() {
-  document.getElementById('formAjout')?.reset();
-  delete document.getElementById('formAjout')?.dataset.editIndex;
+document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
+  document.getElementById('formAjout').reset();
+  delete document.getElementById('formAjout').dataset.editIndex;
   this.style.display = 'none';
 });
 
-// =============================================
-//           SUPPRESSION
-// =============================================
+// Suppression
 function supprimerItem(index) {
   if (!confirm('Supprimer cet élément ?')) return;
-
+  
   items.splice(index, 1);
   sauvegarder();
-  afficherListe(document.getElementById('recherche')?.value || '');
+  afficherListe(document.getElementById('recherche').value);
 }
 
-// =============================================
-//           RECHERCHE EN TEMPS RÉEL
-// =============================================
-document.getElementById('recherche')?.addEventListener('input', function() {
+// Recherche temps réel
+document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
 
-// =============================================
-//           ÉCOUTE DES MENUS DÉROULANTS DE TRI
-// =============================================
-['tri-nom', 'tri-note'].forEach(id => {
-  const select = document.getElementById(id);
-  if (select) {
-    select.addEventListener('change', function() {
-      // Si on change un tri, on remet l'autre à vide (priorité unique)
-      const autreId = id === 'tri-nom' ? 'tri-note' : 'tri-nom';
-      const autreSelect = document.getElementById(autreId);
-      if (autreSelect) autreSelect.value = '';
-
-      afficherListe(document.getElementById('recherche')?.value || '');
-    });
-  }
+// Tris via select
+document.getElementById('tri-nom').addEventListener('change', function() {
+  document.getElementById('tri-note').value = ''; // reset l'autre tri
+  afficherListe(document.getElementById('recherche').value);
 });
 
-// =============================================
-//           EXPORT / IMPORT
-// =============================================
-document.getElementById('exporter')?.addEventListener('click', function() {
+document.getElementById('tri-note').addEventListener('change', function() {
+  document.getElementById('tri-nom').value = ''; // reset l'autre tri
+  afficherListe(document.getElementById('recherche').value);
+});
+
+// Export
+document.getElementById('exporter').addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
 
@@ -208,10 +171,9 @@ document.getElementById('exporter')?.addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
-document.getElementById('importer')?.addEventListener('click', function() {
+// Import
+document.getElementById('importer').addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
-  if (!fileInput) return alert('Élément importeur introuvable');
-
   const file = fileInput.files[0];
   if (!file) return alert('Sélectionne un fichier JSON');
 
@@ -232,7 +194,5 @@ document.getElementById('importer')?.addEventListener('click', function() {
   reader.readAsText(file);
 });
 
-// =============================================
-//           DÉMARRAGE
-// =============================================
+// Démarrage
 chargerDonnees();
