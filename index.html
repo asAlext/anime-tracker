@@ -12,8 +12,17 @@
   <div class="container">
   <!-- Header avec tris (on le mettra après) -->
   <header class="header">
-    <!-- Les tris viendront ici -->
-  </header>
+  <h1>Mon Tracker Anime / Film</h1>
+  
+  <!-- Bloc export/import en haut à droite -->
+  <div class="backup-top-right">
+    <button id="exporter">Exporter la liste (JSON)</button>
+    <input type="file" id="importeur" accept=".json" style="display: none;">
+    <button id="importer">Importer</button>
+  </div>
+  
+  <!-- Les tris viendront juste en dessous -->
+</header>
 
   <div class="main-layout">
     <!-- Sidebar gauche : formulaire d'ajout (fixe à gauche) -->
