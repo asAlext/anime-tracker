@@ -42,20 +42,8 @@
         </div>
         
         <div class="champ">
-          <label for="note">Note (1-10)</label>
-          <select id="note" required>
-            <option value="">Choisir</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-          </select>
+          <label for="note">Note (0 à 10, ex: 9.5)</label>
+          <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 9.5" required>
         </div>
         
         <div class="boutons-form">
@@ -75,7 +63,7 @@
     <div class="contenu-droit">
       <div class="header-droit">
         <div class="zone-filtres-tris">
-          <!-- 1. Trier par nom -->
+          <!-- Trier par nom -->
           <div class="zone-tris">
             <label>Trier par nom :</label>
             <select id="tri-nom">
@@ -85,17 +73,17 @@
             </select>
           </div>
           
-          <!-- 2. Trier par note -->
+          <!-- Trier par note -->
           <div class="zone-tris">
             <label>Trier par note :</label>
             <select id="tri-note">
               <option value="">Aucun</option>
-              <option value="asc">1 → 10</option>
-              <option value="desc">10 → 1</option>
+              <option value="asc">0 → 10</option>
+              <option value="desc">10 → 0</option>
             </select>
           </div>
           
-          <!-- 3. Filtrer par statut -->
+          <!-- Filtrer par statut -->
           <div class="filtre-statut">
             <label>Filtrer par statut :</label>
             <select id="filtre-statut">
@@ -109,7 +97,7 @@
             </select>
           </div>
           
-          <!-- 4. Filtrer par type -->
+          <!-- Filtrer par type -->
           <div class="filtre-type">
             <label>Filtrer par type :</label>
             <select id="filtre-type">
