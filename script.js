@@ -1,14 +1,14 @@
 // Clé unique pour localStorage
 const CLE_STORAGE = 'mesAnimesTracker';
 
-// Tableau global
+// Tableau global (contient TOUTES les entrées dans l'ordre d'ajout/original)
 let items = [];
 
 // Charger les données au démarrage
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
-  afficherListe();          // affiche avec le tri par défaut
+  afficherListe();  // affiche avec tri par défaut
 }
 
 // Sauvegarder dans localStorage
@@ -17,25 +17,37 @@ function sauvegarder() {
 }
 
 // =============================================
-//            FONCTION PRINCIPALE D'AFFICHAGE
+//      FONCTION PRINCIPALE D'AFFICHAGE (filtre + tri)
 // =============================================
 function afficherListe(filtre = '') {
   const ul = document.getElementById('liste');
+  if (!ul) return; // sécurité si élément absent
+
   ul.innerHTML = '';
 
   const rechercheLower = filtre.toLowerCase();
 
-  // On filtre d'abord
+  // 1. Filtrer par recherche (sur nom)
   let resultat = items.filter(item =>
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // Puis on trie selon le critère actif
-  const triActif = document.querySelector('.sort-btn.active');
-  if (triActif) {
-    const typeTri = triActif.dataset.type;   // "nom" ou "note"
-    const ordre = triActif.dataset.ordre;    // "asc" ou "desc"
+  // 2. Appliquer le tri actif (priorité : note > nom)
+  const selectNom  = document.getElementById('tri-nom');
+  const selectNote = document.getElementById('tri-note');
 
+  let typeTri = '';
+  let ordre   = '';
+
+  if (selectNote && selectNote.value) {
+    typeTri = 'note';
+    ordre   = selectNote.value; // 'asc' ou 'desc'
+  } else if (selectNom && selectNom.value) {
+    typeTri = 'nom';
+    ordre   = selectNom.value;  // 'asc' ou 'desc'
+  }
+
+  if (typeTri) {
     if (typeTri === 'nom') {
       resultat.sort((a, b) => {
         const nomA = a.nom.toLowerCase();
@@ -44,8 +56,7 @@ function afficherListe(filtre = '') {
           ? nomA.localeCompare(nomB)
           : nomB.localeCompare(nomA);
       });
-    }
-    else if (typeTri === 'note') {
+    } else if (typeTri === 'note') {
       resultat.sort((a, b) => {
         return ordre === 'asc'
           ? a.note - b.note
@@ -54,16 +65,24 @@ function afficherListe(filtre = '') {
     }
   }
 
-  // Affichage final
+  // 3. Affichage
   if (resultat.length === 0) {
-    document.getElementById('message-vide')?.style.setProperty('display', 'block');
+    const msgVide = document.getElementById('message-vide');
+    if (msgVide) msgVide.style.display = 'block';
   } else {
-    document.getElementById('message-vide')?.style.setProperty('display', 'none');
+    const msgVide = document.getElementById('message-vide');
+    if (msgVide) msgVide.style.display = 'none';
 
-    resultat.forEach((item) => {
-      // On retrouve l'index ORIGINAL dans le tableau items
-      // (important pour edit et delete)
-      const indexOriginal = items.indexOf(item);
+    resultat.forEach(item => {
+      // Retrouver l'index ORIGINAL dans items (pour edit/delete)
+      const indexOriginal = items.findIndex(i =>
+        i.nom === item.nom &&
+        i.type === item.type &&
+        i.statut === item.statut &&
+        i.note === item.note
+      );
+
+      if (indexOriginal === -1) return; // sécurité (ne devrait pas arriver)
 
       const li = document.createElement('li');
       li.innerHTML = `
@@ -82,15 +101,15 @@ function afficherListe(filtre = '') {
 }
 
 // =============================================
-//                  AJOUT / MODIFICATION
+//           AJOUT / MODIFICATION
 // =============================================
-document.getElementById('formAjout').addEventListener('submit', function(e) {
+document.getElementById('formAjout')?.addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom    = document.getElementById('nom').value.trim();
-  const type   = document.getElementById('type').value;
-  const statut = document.getElementById('statut').value;
-  const note   = document.getElementById('note').value;
+  const nom    = document.getElementById('nom')?.value.trim();
+  const type   = document.getElementById('type')?.value;
+  const statut = document.getElementById('statut')?.value;
+  const note   = document.getElementById('note')?.value;
 
   if (!nom || !type || !statut || !note) return;
 
@@ -99,75 +118,84 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   const editIndex = this.dataset.editIndex;
 
   if (editIndex !== undefined) {
-    // === Modification ===
+    // Modification
     items[parseInt(editIndex)] = nouvelItem;
     delete this.dataset.editIndex;
-    document.getElementById('btnAnnulerEdit').style.display = 'none';
+    const btnAnnuler = document.getElementById('btnAnnulerEdit');
+    if (btnAnnuler) btnAnnuler.style.display = 'none';
   } else {
-    // === Ajout ===
+    // Ajout
     items.push(nouvelItem);
   }
 
   sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
+  afficherListe(document.getElementById('recherche')?.value || '');
   this.reset();
 });
 
 // =============================================
-//                  EDITION & SUPPRESSION
+//           EDITION & ANNULATION
 // =============================================
 function editerItem(index) {
   const item = items[index];
-  document.getElementById('nom').value    = item.nom;
-  document.getElementById('type').value   = item.type;
-  document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value   = item.note;
+  if (!item) return;
+
+  document.getElementById('nom')?.setAttribute('value', item.nom);
+  document.getElementById('type')?.setAttribute('value', item.type);
+  document.getElementById('statut')?.setAttribute('value', item.statut);
+  document.getElementById('note')?.setAttribute('value', item.note);
 
   document.getElementById('formAjout').dataset.editIndex = index;
-  document.getElementById('btnAnnulerEdit').style.display = 'inline';
+
+  const btnAnnuler = document.getElementById('btnAnnulerEdit');
+  if (btnAnnuler) btnAnnuler.style.display = 'inline';
 }
 
-document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
-  document.getElementById('formAjout').reset();
-  delete document.getElementById('formAjout').dataset.editIndex;
+document.getElementById('btnAnnulerEdit')?.addEventListener('click', function() {
+  document.getElementById('formAjout')?.reset();
+  delete document.getElementById('formAjout')?.dataset.editIndex;
   this.style.display = 'none';
 });
 
+// =============================================
+//           SUPPRESSION
+// =============================================
 function supprimerItem(index) {
   if (!confirm('Supprimer cet élément ?')) return;
-  
+
   items.splice(index, 1);
   sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
+  afficherListe(document.getElementById('recherche')?.value || '');
 }
 
 // =============================================
-//               RECHERCHE TEMPS RÉEL
+//           RECHERCHE EN TEMPS RÉEL
 // =============================================
-document.getElementById('recherche').addEventListener('input', function() {
+document.getElementById('recherche')?.addEventListener('input', function() {
   afficherListe(this.value);
 });
 
 // =============================================
-//               GESTION DES BOUTONS DE TRI
+//           ÉCOUTE DES MENUS DÉROULANTS DE TRI
 // =============================================
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    // Retire la classe active à tous les boutons
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+['tri-nom', 'tri-note'].forEach(id => {
+  const select = document.getElementById(id);
+  if (select) {
+    select.addEventListener('change', function() {
+      // Si on change un tri, on remet l'autre à vide (priorité unique)
+      const autreId = id === 'tri-nom' ? 'tri-note' : 'tri-nom';
+      const autreSelect = document.getElementById(autreId);
+      if (autreSelect) autreSelect.value = '';
 
-    // Active le bouton cliqué
-    this.classList.add('active');
-
-    // On réaffiche avec le nouveau tri
-    afficherListe(document.getElementById('recherche').value);
-  });
+      afficherListe(document.getElementById('recherche')?.value || '');
+    });
+  }
 });
 
 // =============================================
-//               EXPORT / IMPORT
+//           EXPORT / IMPORT
 // =============================================
-document.getElementById('exporter').addEventListener('click', function() {
+document.getElementById('exporter')?.addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
 
@@ -180,8 +208,10 @@ document.getElementById('exporter').addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
-document.getElementById('importer').addEventListener('click', function() {
+document.getElementById('importer')?.addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
+  if (!fileInput) return alert('Élément importeur introuvable');
+
   const file = fileInput.files[0];
   if (!file) return alert('Sélectionne un fichier JSON');
 
@@ -203,10 +233,6 @@ document.getElementById('importer').addEventListener('click', function() {
 });
 
 // =============================================
-//                   DÉMARRAGE
+//           DÉMARRAGE
 // =============================================
 chargerDonnees();
-
-// Par défaut on peut activer un tri (optionnel)
-document.getElementById('sort-nom-asc')?.classList.add('active');
-afficherListe();
