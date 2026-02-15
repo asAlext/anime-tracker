@@ -76,17 +76,15 @@ function afficherListe(filtreNom = '') {
 
       const li = document.createElement('li');
       li.innerHTML = `
-        <div class="info-container">
-          <span class="item-nom">${item.nom}</span>
-          <div class="milieu-statut">
-            <span class="item-statut">${item.statut}</span>
-            <span class="item-type">${item.type}</span>
-          </div>
+        <span class="item-nom">${item.nom}</span>
+        <div class="right-fixed">
+          <span class="item-statut">${item.statut}</span>
+          <span class="item-type">${item.type}</span>
           <span class="item-note">Note : ${Number(item.note)}/10</span>
-        </div>
-        <div class="actions">
-          <button onclick="editerItem(${indexOriginal})">Modifier</button>
-          <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+          <div class="actions">
+            <button onclick="editerItem(${indexOriginal})">Modifier</button>
+            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+          </div>
         </div>
       `;
 
@@ -95,7 +93,7 @@ function afficherListe(filtreNom = '') {
   }
 }
 
-// Ajout / Modification (adapté pour note en texte)
+// Ajout / Modification
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -129,7 +127,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   this.reset();
 });
 
-// Edition (adapté pour note en texte)
+// Edition
 function editerItem(index) {
   const item = items[index];
   document.getElementById('nom').value    = item.nom;
