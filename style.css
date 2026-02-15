@@ -180,7 +180,7 @@ body {
   font-size: 1rem;
 }
 
-/* === NOUVELLE DISPOSITION DE CHAQUE ITEM DANS LA LISTE === */
+/* === DISPOSITION DEMANDÉE POUR CHAQUE ITEM === */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -188,40 +188,49 @@ body {
   border-radius: 8px;
   border: 1px solid #2a2a2a;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.item-info {
+.info-container {
   display: flex;
   align-items: center;
-  gap: 32px;          /* espace entre statut / type / note (environ 2-3 cm) */
+  gap: 40px;          /* Espace global ~2-3 cm entre les groupes (ajustable) */
   flex: 1;
 }
 
 .item-nom {
   font-weight: bold;
   font-size: 1.1rem;
-  min-width: 180px;    /* garde le nom à gauche sans trop bouger */
+  min-width: 200px;    /* Garde le nom à gauche sans trop d'espace vide */
+  flex-shrink: 0;
+}
+
+.milieu-statut {
+  display: flex;
+  align-items: center;
+  gap: 50px;           /* ~2 cm entre statut et type (ajuste ce gap si besoin) */
 }
 
 .item-statut {
   color: #03dac6;
   font-weight: 600;
   min-width: 120px;
+  text-transform: capitalize;
 }
 
 .item-type {
   color: #bb86fc;
   font-weight: 500;
   min-width: 80px;
+  text-transform: capitalize;
 }
 
 .item-note {
   color: #ffd54f;
   font-weight: bold;
+  min-width: 120px;
 }
 
 .actions {
@@ -277,13 +286,19 @@ body {
     margin-top: 20px;
   }
 
-  .item-info {
+  .info-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .milieu-statut {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
 
-  .item-nom {
+  .item-nom, .item-statut, .item-type, .item-note {
     min-width: auto;
   }
 }
