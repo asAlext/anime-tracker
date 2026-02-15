@@ -31,12 +31,9 @@ body {
   height: 100vh;
   overflow-y: auto;
   z-index: 10;
-}
-
-.contenu-droit {
-  margin-left: 340px;     /* ← augmente un peu pour laisser de l'air */
-  flex: 1;
-  padding: 24px;
+  
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-ajout h2 {
@@ -80,6 +77,7 @@ body {
 /* Boutons du formulaire */
 .boutons-form {
   margin-top: 12px;
+  margin-bottom: 40px; /* espace avant les boutons export/import */
 }
 
 .boutons-form button {
@@ -110,24 +108,17 @@ body {
   background: #555;
 }
 
-/* Contenu principal (droite) */
-.contenu-droit {
-  margin-left: 320px; /* Même largeur que la sidebar fixe */
-  flex: 1;
-  padding: 24px;
-}
-
-/* Header droit (export + tris) */
-.header-droit {
+/* Export/Import en BAS de la sidebar */
+.zone-export {
+  margin-top: auto;           /* ← pousse tout en bas */
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.zone-export button {
+.zone-export button,
+.zone-export input[type="file"] {
+  width: 100%;
   padding: 10px 16px;
   background: #2a2a2a;
   color: #ffffff;
@@ -135,13 +126,27 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s;
+  font-size: 0.95rem;
 }
 
 .zone-export button:hover {
   background: #3a3a3a;
 }
 
-/* Zone tris */
+/* Contenu principal (droite) */
+.contenu-droit {
+  margin-left: 340px; /* ← espace pour la sidebar fixe + un peu d'air */
+  flex: 1;
+  padding: 24px;
+}
+
+/* Header droit (tris) */
+.header-droit {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
 .zone-tris {
   display: flex;
   align-items: center;
@@ -219,12 +224,18 @@ body {
   }
 
   .header-droit {
-    flex-direction: column;
-    align-items: stretch;
+    justify-content: center;
   }
 
   .zone-tris {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .zone-export {
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
   }
 }
