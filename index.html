@@ -12,7 +12,22 @@
   <div class="container">
   <!-- Header avec tris (on le mettra après) -->
   <header class="header">
-  <h1>Mon Tracker Anime / Film</h1>
+  <h1>Tracker Anime / Film</h1>
+    <div class="sort-section">
+  <label for="tri-nom">Trier par nom :</label>
+  <select id="tri-nom">
+    <option value="">Sans tri nom</option>
+    <option value="asc">A → Z</option>
+    <option value="desc">Z → A</option>
+  </select>
+
+  <label for="tri-note">Trier par note :</label>
+  <select id="tri-note">
+    <option value="">Sans tri note</option>
+    <option value="asc">1 → 10</option>
+    <option value="desc">10 → 1</option>
+  </select>
+</div>
   
   <!-- Bloc export/import en haut à droite -->
   <div class="backup-top-right">
