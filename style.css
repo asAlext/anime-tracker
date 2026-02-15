@@ -77,7 +77,7 @@ body {
 /* Boutons du formulaire */
 .boutons-form {
   margin-top: 12px;
-  margin-bottom: 40px; /* espace avant les boutons export/import */
+  margin-bottom: 40px;
 }
 
 .boutons-form button {
@@ -110,7 +110,7 @@ body {
 
 /* Export/Import en BAS de la sidebar */
 .zone-export {
-  margin-top: auto;           /* ← pousse tout en bas */
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -135,7 +135,7 @@ body {
 
 /* Contenu principal (droite) */
 .contenu-droit {
-  margin-left: 340px; /* ← espace pour la sidebar fixe + un peu d'air */
+  margin-left: 340px;
   flex: 1;
   padding: 24px;
 }
@@ -180,29 +180,67 @@ body {
   font-size: 1rem;
 }
 
-/* Liste des items */
+/* === NOUVELLE DISPOSITION DE CHAQUE ITEM DANS LA LISTE === */
 #liste li {
   background: #1f1f1f;
-  padding: 16px;
+  padding: 16px 20px;
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #2a2a2a;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-#liste li button {
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 32px;          /* espace entre statut / type / note (environ 2-3 cm) */
+  flex: 1;
+}
+
+.item-nom {
+  font-weight: bold;
+  font-size: 1.1rem;
+  min-width: 180px;    /* garde le nom à gauche sans trop bouger */
+}
+
+.item-statut {
+  color: #03dac6;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.item-type {
+  color: #bb86fc;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.item-note {
+  color: #ffd54f;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.actions button {
   padding: 8px 14px;
   background: #cf6679;
   border: none;
   border-radius: 6px;
   color: white;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
-#liste li button:hover {
+.actions button:hover {
   background: #b74c6a;
 }
 
@@ -237,5 +275,15 @@ body {
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+  }
+
+  .item-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .item-nom {
+    min-width: auto;
   }
 }
