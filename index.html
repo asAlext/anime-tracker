@@ -58,15 +58,6 @@
         </div>
       </form>
     </div>
-
-    <!-- Colonne de droite : recherche + liste + tris/export -->
-    <div class="contenu-droit">
-      <div class="header-droit">
-        <div class="zone-export">
-          <button id="exporter">Exporter la liste (JSON)</button>
-          <input type="file" id="importeur" accept=".json" style="display:none;">
-          <button id="importer">Importer</button>
-        </div>
         
         <div class="zone-tris">
           <label>Trier par nom :</label>
@@ -96,5 +87,12 @@
   </div>
 
   <script src="script.js"></script>
+ <div class="backup-bas-gauche">
+  <button id="exporter">Exporter la liste (JSON)</button>
+  <input type="file" id="importeur" accept=".json">
+  <button id="importer">Importer</button>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
