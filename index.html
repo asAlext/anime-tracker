@@ -72,24 +72,39 @@
       </div>
     </div>
 
-    <!-- Colonne droite : tris, recherche, liste -->
+    <!-- Colonne droite : filtres, tris, recherche, liste -->
     <div class="contenu-droit">
       <div class="header-droit">
-        <!-- Tris en haut à droite -->
-        <div class="zone-tris">
-          <label>Trier par nom :</label>
-          <select id="tri-nom">
-            <option value="">Aucun</option>
-            <option value="asc">A → Z</option>
-            <option value="desc">Z → A</option>
-          </select>
-          
-          <label>Trier par note :</label>
-          <select id="tri-note">
-            <option value="">Aucun</option>
-            <option value="asc">1 → 10</option>
-            <option value="desc">10 → 1</option>
-          </select>
+        <!-- Filtres et tris (nouveau filtre statut à gauche) -->
+        <div class="zone-filtres-tris">
+          <div class="filtre-statut">
+            <label>Filtrer par statut :</label>
+            <select id="filtre-statut">
+              <option value="">Tous</option>
+              <option value="fini">Fini</option>
+              <option value="abandon">Abandon</option>
+              <option value="en pause">En pause</option>
+              <option value="a regarder">A Regarder</option>
+              <option value="en cours">En Cours</option>
+              <option value="plus jamais">Plus Jamais</option>
+            </select>
+          </div>
+
+          <div class="zone-tris">
+            <label>Trier par nom :</label>
+            <select id="tri-nom">
+              <option value="">Aucun</option>
+              <option value="asc">A → Z</option>
+              <option value="desc">Z → A</option>
+            </select>
+            
+            <label>Trier par note :</label>
+            <select id="tri-note">
+              <option value="">Aucun</option>
+              <option value="asc">1 → 10</option>
+              <option value="desc">10 → 1</option>
+            </select>
+          </div>
         </div>
       </div>
       
