@@ -10,92 +10,46 @@
 </head>
 <body>
   <div class="container">
-    <!-- Header avec tris -->
-    <header class="header">
-      <h1>Tracker Anime / Film</h1>
+  <!-- Header avec tris (on le mettra après) -->
+  <header class="header">
+    <!-- Les tris viendront ici -->
+  </header>
+
+  <div class="main-layout">
+    <!-- Sidebar gauche : formulaire d'ajout (fixe à gauche) -->
+    <aside class="sidebar-left">
+      <h2>Ajouter / Modifier</h2>
       
-      <div class="sort-controls">
-  <div class="sort-group">
-    <label>Par nom :</label>
-    <button class="sort-btn" id="sort-nom-asc" data-type="nom" data-ordre="asc">A → Z</button>
-    <button class="sort-btn" id="sort-nom-desc" data-type="nom" data-ordre="desc">Z → A</button>
-  </div>
-  
-  <div class="sort-group">
-    <label>Par note :</label>
-    <button class="sort-btn" id="sort-note-asc" data-type="note" data-ordre="asc">1 → 10</button>
-    <button class="sort-btn" id="sort-note-desc" data-type="note" data-ordre="desc">10 → 1</button>
+      <form id="formAjout">
+        <!-- Ton formulaire actuel reste inchangé ici -->
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
+        
+        <label for="type">Type :</label>
+        <select id="type" required>
+          <option value="">Choisir</option>
+          <option value="anime">Anime</option>
+          <option value="film">Film</option>
+        </select>
+        
+        <!-- ... le reste de tes selects (statut, note) ... -->
+        
+        <button type="submit">Ajouter</button>
+        <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler édition</button>
+      </form>
+    </aside>
+
+    <!-- Contenu principal droit : recherche + liste -->
+    <main class="content-right">
+      <!-- Les tris et export viendront ici -->
+      <input type="text" id="recherche" placeholder="Rechercher par nom...">
+      <ul id="liste"></ul>
+      <p id="message-vide" style="display:none; text-align:center; color:#888;">
+        Aucune entrée pour le moment
+      </p>
+    </main>
   </div>
 </div>
-    </header>
-
-    <!-- Contenu principal : sidebar gauche + liste droite -->
-    <div class="main-layout">
-      <!-- Sidebar gauche : formulaire -->
-      <aside class="sidebar">
-        <h2>Ajouter / Modifier</h2>
-        
-        <form id="formAjout">
-          <label for="nom">Nom :</label>
-          <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
-          
-          <label for="type">Type :</label>
-          <select id="type" required>
-            <option value="">Choisir</option>
-            <option value="anime">Anime</option>
-            <option value="film">Film</option>
-          </select>
-          
-          <label for="statut">Statut :</label>
-          <select id="statut" required>
-            <option value="">Choisir</option>
-            <option value="fini">Fini</option>
-            <option value="abandon">Abandon</option>
-            <option value="en pause">En pause</option>
-            <option value="a regarder">À regarder</option>
-            <option value="en cours">En cours</option>
-            <option value="plus jamais">Plus jamais</option>
-          </select>
-          
-          <label for="note">Note (1-10) :</label>
-          <select id="note" required>
-            <option value="">Choisir</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-          </select>
-          
-          <button type="submit">Ajouter</button>
-          <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler édition</button>
-        </form>
-
-        <!-- Export/Import (déplacé ici ou garde-le en bas si tu préfères) -->
-        <div class="backup">
-          <button id="exporter">Exporter ma liste (JSON)</button>
-          <input type="file" id="importeur" accept=".json">
-          <button id="importer">Importer</button>
-        </div>
-      </aside>
-
-      <!-- Contenu principal : recherche + liste -->
-      <main class="content">
-        <input type="text" id="recherche" placeholder="Rechercher par nom...">
-        
-        <ul id="liste"></ul>
-        
-        <p id="message-vide" style="display:none; text-align:center; color:#888;">
-          Aucune entrée pour le moment
-        </p>
-      </main>
-    </div>
-  </div>
 
   <script src="script.js"></script>
 </body>
