@@ -33,6 +33,12 @@ body {
   z-index: 10;
 }
 
+.contenu-droit {
+  margin-left: 340px;     /* ← augmente un peu pour laisser de l'air */
+  flex: 1;
+  padding: 24px;
+}
+
 .sidebar-ajout h2 {
   margin-bottom: 24px;
   color: #bb86fc;
