@@ -1,9 +1,5 @@
 /* Reset et global */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -13,10 +9,7 @@ body {
   line-height: 1.5;
 }
 
-.global-container {
-  display: flex;
-  min-height: 100vh;
-}
+.global-container { display: flex; min-height: 100vh; }
 
 /* Sidebar */
 .sidebar-ajout {
@@ -42,9 +35,7 @@ body {
 }
 
 /* Champs formulaire */
-.champ {
-  margin-bottom: 20px;
-}
+.champ { margin-bottom: 20px; }
 
 .champ label {
   display: block;
@@ -76,7 +67,7 @@ body {
 /* Boutons formulaire */
 .boutons-form {
   margin-top: 12px;
-  margin-bottom: 40px;
+  margin-bottom: 20px; /* réduit l'espace pour laisser place aux compteurs */
 }
 
 .boutons-form button {
@@ -94,8 +85,47 @@ body {
   color: #000000;
 }
 
-.boutons-form button[type="submit"]:hover {
-  background: #8fc9a0;
+.boutons-form button[type="submit"]:hover { background: #8fc9a0; }
+
+/* === NOUVEAU : COMPTEURS === */
+.compteurs-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 30px 0;
+  gap: 16px;
+}
+
+.compteurs-colonne {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compteurs-colonne.gauche { align-items: flex-start; }
+.compteurs-colonne.droite { align-items: flex-end; }
+
+.compteur {
+  background: #1e1e1e;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 130px;
+}
+
+.compteur .label {
+  font-size: 0.95rem;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.compteur .valeur {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e0e0ff;
 }
 
 /* Export/Import */
@@ -124,10 +154,8 @@ body {
   padding: 24px;
 }
 
-/* Filtres + tris (ordre modifié, décalage gauche conservé) */
-.header-droit {
-  margin-bottom: 24px;
-}
+/* Filtres + tris */
+.header-droit { margin-bottom: 24px; }
 
 .zone-filtres-tris {
   display: flex;
@@ -175,7 +203,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items (inchangé) */
+/* Liste items */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -248,37 +276,13 @@ body {
   font-size: 0.9rem;
 }
 
-.actions button:hover {
-  background: #b74c6a;
-}
+.actions button:hover { background: #b74c6a; }
 
 /* Responsive */
 @media (max-width: 850px) {
-  .sidebar-ajout {
-    position: static;
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid #2a2a2a;
-    padding: 20px;
-  }
-
-  .contenu-droit {
-    margin-left: 0;
-    padding: 16px;
-  }
-
-  .zone-filtres-tris {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-
-  .right-fixed {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-    min-width: auto;
-  }
+  .sidebar-ajout { position: static; width: 100%; height: auto; }
+  .contenu-droit { margin-left: 0; }
+  .zone-filtres-tris { flex-direction: column; align-items: stretch; gap: 16px; }
+  .compteurs-container { flex-direction: column; gap: 20px; }
+  .right-fixed { flex-direction: column; align-items: flex-end; gap: 8px; min-width: auto; }
 }
