@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="global-container">
-    <!-- Colonne gauche fixe : formulaire d'ajout -->
+    <!-- Colonne gauche fixe : formulaire + boutons export/import en bas -->
     <div class="sidebar-ajout">
       <h2>Ajouter / Modifier</h2>
       
@@ -63,19 +63,19 @@
           <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler</button>
         </div>
       </form>
+
+      <!-- Export / Import TOUT EN BAS À GAUCHE -->
+      <div class="zone-export">
+        <button id="exporter">Exporter la liste (JSON)</button>
+        <input type="file" id="importeur" accept=".json">
+        <button id="importer">Importer</button>
+      </div>
     </div>
 
-    <!-- Colonne droite : tris, export, recherche, liste -->
+    <!-- Colonne droite : tris, recherche, liste -->
     <div class="contenu-droit">
       <div class="header-droit">
-        <!-- Export/Import en haut à droite -->
-        <div class="zone-export">
-          <button id="exporter">Exporter la liste (JSON)</button>
-          <input type="file" id="importeur" accept=".json">
-          <button id="importer">Importer</button>
-        </div>
-
-        <!-- Tris en haut -->
+        <!-- Tris en haut à droite -->
         <div class="zone-tris">
           <label>Trier par nom :</label>
           <select id="tri-nom">
