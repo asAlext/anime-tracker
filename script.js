@@ -11,7 +11,7 @@ function chargerDonnees() {
   afficherListe();
 }
 
-// Sauvegarder dans localStorage
+// Sauvegarder
 function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
@@ -23,18 +23,23 @@ function afficherListe(filtreNom = '') {
 
   const rechercheLower = filtreNom.toLowerCase();
 
-  // 1. Filtre par nom (recherche texte)
   let resultat = items.filter(item =>
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // 2. Filtre par statut (nouveau)
+  // Filtre par statut
   const filtreStatut = document.getElementById('filtre-statut')?.value || '';
   if (filtreStatut) {
     resultat = resultat.filter(item => item.statut === filtreStatut);
   }
 
-  // 3. Tri
+  // Filtre par type (nouveau)
+  const filtreType = document.getElementById('filtre-type')?.value || '';
+  if (filtreType) {
+    resultat = resultat.filter(item => item.type === filtreType);
+  }
+
+  // Tri
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
@@ -53,19 +58,12 @@ function afficherListe(filtreNom = '') {
     resultat.sort((a, b) => {
       const nomA = a.nom.toLowerCase();
       const nomB = b.nom.toLowerCase();
-      return ordre === 'asc'
-        ? nomA.localeCompare(nomB)
-        : nomB.localeCompare(nomA);
+      return ordre === 'asc' ? nomA.localeCompare(nomB) : nomB.localeCompare(nomA);
     });
   } else if (typeTri === 'note') {
-    resultat.sort((a, b) => {
-      return ordre === 'asc'
-        ? a.note - b.note
-        : b.note - a.note;
-    });
+    resultat.sort((a, b) => ordre === 'asc' ? a.note - b.note : b.note - a.note);
   }
 
-  // Affichage
   if (resultat.length === 0) {
     document.getElementById('message-vide').style.display = 'block';
   } else {
@@ -95,14 +93,14 @@ function afficherListe(filtreNom = '') {
   }
 }
 
-// Ajouter ou modifier
+// Ajout / Modification (inchangé)
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom    = document.getElementById('nom').value.trim();
-  const type   = document.getElementById('type').value;
+  const nom = document.getElementById('nom').value.trim();
+  const type = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
-  const note   = document.getElementById('note').value;
+  const note = document.getElementById('note').value;
 
   if (!nom || !type || !statut || !note) return;
 
@@ -123,13 +121,13 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   this.reset();
 });
 
-// Edition
+// Edition (inchangé)
 function editerItem(index) {
   const item = items[index];
-  document.getElementById('nom').value    = item.nom;
-  document.getElementById('type').value   = item.type;
+  document.getElementById('nom').value = item.nom;
+  document.getElementById('type').value = item.type;
   document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value   = item.note;
+  document.getElementById('note').value = item.note;
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
@@ -141,42 +139,41 @@ document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   this.style.display = 'none';
 });
 
-// Suppression
+// Suppression (inchangé)
 function supprimerItem(index) {
   if (!confirm('Supprimer cet élément ?')) return;
-  
   items.splice(index, 1);
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
 }
 
-// Recherche par nom (temps réel)
+// Événements
 document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
 
-// Filtre par statut
 document.getElementById('filtre-statut').addEventListener('change', function() {
   afficherListe(document.getElementById('recherche').value);
 });
 
-// Tri par nom
+document.getElementById('filtre-type').addEventListener('change', function() {
+  afficherListe(document.getElementById('recherche').value);
+});
+
 document.getElementById('tri-nom').addEventListener('change', function() {
   document.getElementById('tri-note').value = '';
   afficherListe(document.getElementById('recherche').value);
 });
 
-// Tri par note
 document.getElementById('tri-note').addEventListener('change', function() {
   document.getElementById('tri-nom').value = '';
   afficherListe(document.getElementById('recherche').value);
 });
 
-// Export
+// Export / Import (inchangé)
 document.getElementById('exporter').addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
-
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -186,7 +183,6 @@ document.getElementById('exporter').addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
-// Import
 document.getElementById('importer').addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
   const file = fileInput.files[0];
