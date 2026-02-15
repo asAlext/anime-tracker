@@ -9,11 +9,40 @@ function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
   afficherListe();
+  mettreAJourCompteurs();
 }
 
 // Sauvegarder
 function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
+}
+
+// Mise à jour des 7 compteurs
+function mettreAJourCompteurs() {
+  const total = items.length;
+  const counts = {
+    fini: 0,
+    abandon: 0,
+    'en pause': 0,
+    'a regarder': 0,
+    'en cours': 0,
+    'plus jamais': 0
+  };
+
+  items.forEach(item => {
+    const s = item.statut.toLowerCase();
+    if (counts.hasOwnProperty(s)) {
+      counts[s]++;
+    }
+  });
+
+  document.getElementById('count-total').textContent = total;
+  document.getElementById('count-fini').textContent = counts.fini;
+  document.getElementById('count-en-cours').textContent = counts['en cours'];
+  document.getElementById('count-en-pause').textContent = counts['en pause'];
+  document.getElementById('count-a-regarder').textContent = counts['a regarder'];
+  document.getElementById('count-abandon').textContent = counts.abandon;
+  document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
 // Afficher la liste
@@ -121,6 +150,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
 
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
+  mettreAJourCompteurs(); // mise à jour des compteurs
   this.reset();
 });
 
@@ -148,6 +178,7 @@ function supprimerItem(index) {
   items.splice(index, 1);
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
+  mettreAJourCompteurs(); // mise à jour des compteurs
 }
 
 // Événements
@@ -201,6 +232,7 @@ document.getElementById('importer').addEventListener('click', function() {
       items = data;
       sauvegarder();
       afficherListe();
+      mettreAJourCompteurs(); // mise à jour après import
       alert('Import réussi !');
       fileInput.value = '';
     } catch (err) {
