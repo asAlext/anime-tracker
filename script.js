@@ -16,7 +16,7 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// Afficher la liste
+// Afficher la liste avec la disposition demandée
 function afficherListe(filtre = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
@@ -27,7 +27,7 @@ function afficherListe(filtre = '') {
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // Gestion des tris via les select
+  // Gestion des tris
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
@@ -67,12 +67,13 @@ function afficherListe(filtre = '') {
       const indexOriginal = items.indexOf(item);
 
       const li = document.createElement('li');
-
       li.innerHTML = `
-        <div class="item-info">
+        <div class="info-container">
           <span class="item-nom">${item.nom}</span>
-          <span class="item-statut">${item.statut}</span>
-          <span class="item-type">${item.type}</span>
+          <div class="milieu-statut">
+            <span class="item-statut">${item.statut}</span>
+            <span class="item-type">${item.type}</span>
+          </div>
           <span class="item-note">Note : ${item.note}/10</span>
         </div>
         <div class="actions">
@@ -146,14 +147,14 @@ document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
 
-// Tris via select
+// Tris via select (reset l'autre tri pour éviter conflits)
 document.getElementById('tri-nom').addEventListener('change', function() {
-  document.getElementById('tri-note').value = ''; // reset l'autre tri
+  document.getElementById('tri-note').value = '';
   afficherListe(document.getElementById('recherche').value);
 });
 
 document.getElementById('tri-note').addEventListener('change', function() {
-  document.getElementById('tri-nom').value = ''; // reset l'autre tri
+  document.getElementById('tri-nom').value = '';
   afficherListe(document.getElementById('recherche').value);
 });
 
