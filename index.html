@@ -5,28 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Ajoute cette ligne ici ↓ -->
   <meta name="robots" content="noindex">
-  <title>Mon Tracker Anime / Film</title>
+  <title>Tracker Anime / Film</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <!-- Header avec tris -->
     <header class="header">
-      <h1>Mon Tracker Anime / Film</h1>
+      <h1>Tracker Anime / Film</h1>
       
       <div class="sort-controls">
-        <div class="sort-group">
-          <label>Par nom :</label>
-          <button id="sort-nom-asc">A → Z</button>
-          <button id="sort-nom-desc">Z → A</button>
-        </div>
-        
-        <div class="sort-group">
-          <label>Par note :</label>
-          <button id="sort-note-asc">1 → 10</button>
-          <button id="sort-note-desc">10 → 1</button>
-        </div>
-      </div>
+  <div class="sort-group">
+    <label>Par nom :</label>
+    <button class="sort-btn" id="sort-nom-asc" data-type="nom" data-ordre="asc">A → Z</button>
+    <button class="sort-btn" id="sort-nom-desc" data-type="nom" data-ordre="desc">Z → A</button>
+  </div>
+  
+  <div class="sort-group">
+    <label>Par note :</label>
+    <button class="sort-btn" id="sort-note-asc" data-type="note" data-ordre="asc">1 → 10</button>
+    <button class="sort-btn" id="sort-note-desc" data-type="note" data-ordre="desc">10 → 1</button>
+  </div>
+</div>
     </header>
 
     <!-- Contenu principal : sidebar gauche + liste droite -->
