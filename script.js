@@ -8,7 +8,7 @@ let items = [];
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
-  afficherListe();
+  afficherListe();          // affiche avec le tri par défaut
 }
 
 // Sauvegarder dans localStorage
@@ -16,93 +16,157 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// Afficher la liste (avec filtres si recherche)
+// =============================================
+//            FONCTION PRINCIPALE D'AFFICHAGE
+// =============================================
 function afficherListe(filtre = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
 
   const rechercheLower = filtre.toLowerCase();
 
-  items
-    .filter(item => item.nom.toLowerCase().includes(rechercheLower))
-    .forEach((item, index) => {
+  // On filtre d'abord
+  let resultat = items.filter(item =>
+    item.nom.toLowerCase().includes(rechercheLower)
+  );
+
+  // Puis on trie selon le critère actif
+  const triActif = document.querySelector('.sort-btn.active');
+  if (triActif) {
+    const typeTri = triActif.dataset.type;   // "nom" ou "note"
+    const ordre = triActif.dataset.ordre;    // "asc" ou "desc"
+
+    if (typeTri === 'nom') {
+      resultat.sort((a, b) => {
+        const nomA = a.nom.toLowerCase();
+        const nomB = b.nom.toLowerCase();
+        return ordre === 'asc'
+          ? nomA.localeCompare(nomB)
+          : nomB.localeCompare(nomA);
+      });
+    }
+    else if (typeTri === 'note') {
+      resultat.sort((a, b) => {
+        return ordre === 'asc'
+          ? a.note - b.note
+          : b.note - a.note;
+      });
+    }
+  }
+
+  // Affichage final
+  if (resultat.length === 0) {
+    document.getElementById('message-vide')?.style.setProperty('display', 'block');
+  } else {
+    document.getElementById('message-vide')?.style.setProperty('display', 'none');
+
+    resultat.forEach((item) => {
+      // On retrouve l'index ORIGINAL dans le tableau items
+      // (important pour edit et delete)
+      const indexOriginal = items.indexOf(item);
+
       const li = document.createElement('li');
       li.innerHTML = `
         <strong>${item.nom}</strong> 
         (${item.type}) — 
-        Statut : ${item.statut} — 
+        ${item.statut} — 
         Note : ${item.note}/10
-        <button onclick="editerItem(${index})">Modifier</button>
-        <button onclick="supprimerItem(${index})">Supprimer</button>
+        <div class="actions">
+          <button onclick="editerItem(${indexOriginal})">Modifier</button>
+          <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+        </div>
       `;
       ul.appendChild(li);
     });
+  }
 }
 
-// Ajouter ou modifier
+// =============================================
+//                  AJOUT / MODIFICATION
+// =============================================
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom = document.getElementById('nom').value.trim();
-  const type = document.getElementById('type').value;
+  const nom    = document.getElementById('nom').value.trim();
+  const type   = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
-  const note = document.getElementById('note').value;
+  const note   = document.getElementById('note').value;
 
   if (!nom || !type || !statut || !note) return;
 
-  const editIndex = this.dataset.editIndex; // Si en mode édition
-
   const nouvelItem = { nom, type, statut, note: parseInt(note) };
 
+  const editIndex = this.dataset.editIndex;
+
   if (editIndex !== undefined) {
-    // Mode édition
+    // === Modification ===
     items[parseInt(editIndex)] = nouvelItem;
     delete this.dataset.editIndex;
     document.getElementById('btnAnnulerEdit').style.display = 'none';
   } else {
-    // Ajout normal
+    // === Ajout ===
     items.push(nouvelItem);
   }
 
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
-  this.reset(); // Vide le formulaire
+  this.reset();
 });
 
-// Mode édition : remplir le formulaire
+// =============================================
+//                  EDITION & SUPPRESSION
+// =============================================
 function editerItem(index) {
   const item = items[index];
-  document.getElementById('nom').value = item.nom;
-  document.getElementById('type').value = item.type;
+  document.getElementById('nom').value    = item.nom;
+  document.getElementById('type').value   = item.type;
   document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value = item.note;
+  document.getElementById('note').value   = item.note;
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
 }
 
-// Annuler édition
 document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   document.getElementById('formAjout').reset();
   delete document.getElementById('formAjout').dataset.editIndex;
   this.style.display = 'none';
 });
 
-// Supprimer
 function supprimerItem(index) {
-  if (confirm('Supprimer cet élément ?')) {
-    items.splice(index, 1);
-    sauvegarder();
-    afficherListe(document.getElementById('recherche').value);
-  }
+  if (!confirm('Supprimer cet élément ?')) return;
+  
+  items.splice(index, 1);
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
 }
 
-// Recherche en temps réel
+// =============================================
+//               RECHERCHE TEMPS RÉEL
+// =============================================
 document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
 
-// Export JSON
+// =============================================
+//               GESTION DES BOUTONS DE TRI
+// =============================================
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // Retire la classe active à tous les boutons
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+
+    // Active le bouton cliqué
+    this.classList.add('active');
+
+    // On réaffiche avec le nouveau tri
+    afficherListe(document.getElementById('recherche').value);
+  });
+});
+
+// =============================================
+//               EXPORT / IMPORT
+// =============================================
 document.getElementById('exporter').addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
@@ -116,7 +180,6 @@ document.getElementById('exporter').addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
-// Import JSON
 document.getElementById('importer').addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
   const file = fileInput.files[0];
@@ -131,13 +194,19 @@ document.getElementById('importer').addEventListener('click', function() {
       sauvegarder();
       afficherListe();
       alert('Import réussi !');
-      fileInput.value = ''; // Reset input file
+      fileInput.value = '';
     } catch (err) {
-      alert('Erreur : fichier invalide ou corrompu (' + err.message + ')');
+      alert('Erreur : fichier invalide ou corrompu\n' + err.message);
     }
   };
   reader.readAsText(file);
 });
 
-// Démarrage
+// =============================================
+//                   DÉMARRAGE
+// =============================================
 chargerDonnees();
+
+// Par défaut on peut activer un tri (optionnel)
+document.getElementById('sort-nom-asc')?.classList.add('active');
+afficherListe();
