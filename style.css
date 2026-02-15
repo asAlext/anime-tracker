@@ -124,7 +124,7 @@ body {
   padding: 24px;
 }
 
-/* Filtres + tris */
+/* Filtres + tris (ordre modifié, décalage gauche conservé) */
 .header-droit {
   margin-bottom: 24px;
 }
@@ -175,7 +175,7 @@ body {
   border-radius: 6px;
 }
 
-/* === LISTE ITEMS – STATUT, TYPE, NOTE FIXES À DROITE === */
+/* Liste items (inchangé) */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -191,18 +191,18 @@ body {
 .item-nom {
   font-weight: bold;
   font-size: 1.1rem;
-  flex: 1;                    /* prend tout l'espace restant à gauche */
-  min-width: 0;               /* permet au texte long de ne pas déborder */
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;    /* coupe avec ... si trop long */
+  text-overflow: ellipsis;
 }
 
 .right-fixed {
   display: flex;
   align-items: center;
-  gap: 40px;                  /* espace fixe entre Statut / Type / Note */
-  min-width: 420px;           /* largeur minimale fixe pour que ça reste stable */
+  gap: 40px;
+  min-width: 420px;
   justify-content: flex-end;
   flex-shrink: 0;
 }
@@ -252,7 +252,7 @@ body {
   background: #b74c6a;
 }
 
-/* Responsive mobile */
+/* Responsive */
 @media (max-width: 850px) {
   .sidebar-ajout {
     position: static;
@@ -280,13 +280,5 @@ body {
     align-items: flex-end;
     gap: 8px;
     min-width: auto;
-  }
-
-  .actions {
-    justify-content: flex-end;
-  }
-
-  .item-nom {
-    white-space: normal;
   }
 }
