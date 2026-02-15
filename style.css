@@ -140,32 +140,40 @@ body {
   padding: 24px;
 }
 
-/* Header droit (tris) */
+/* Zone filtres + tris */
 .header-droit {
-  display: flex;
-  justify-content: flex-end;
   margin-bottom: 24px;
 }
 
+.zone-filtres-tris {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.filtre-statut,
 .zone-tris {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 12px;
 }
 
+.filtre-statut label,
 .zone-tris label {
   font-weight: 600;
   color: #bb86fc;
 }
 
+.filtre-statut select,
 .zone-tris select {
   padding: 10px 14px;
   background: #1e1e1e;
   border: 1px solid #444;
   color: #ffffff;
   border-radius: 6px;
-  min-width: 140px;
+  min-width: 160px;
 }
 
 /* Champ recherche */
@@ -180,7 +188,7 @@ body {
   font-size: 1rem;
 }
 
-/* === DISPOSITION DEMANDÉE POUR CHAQUE ITEM === */
+/* Liste des items */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -196,21 +204,21 @@ body {
 .info-container {
   display: flex;
   align-items: center;
-  gap: 40px;          /* Espace global ~2-3 cm entre les groupes (ajustable) */
+  gap: 40px;
   flex: 1;
 }
 
 .item-nom {
   font-weight: bold;
   font-size: 1.1rem;
-  min-width: 200px;    /* Garde le nom à gauche sans trop d'espace vide */
+  min-width: 200px;
   flex-shrink: 0;
 }
 
 .milieu-statut {
   display: flex;
   align-items: center;
-  gap: 50px;           /* ~2 cm entre statut et type (ajuste ce gap si besoin) */
+  gap: 50px;
 }
 
 .item-statut {
@@ -270,20 +278,14 @@ body {
     padding: 16px;
   }
 
-  .header-droit {
-    justify-content: center;
-  }
-
-  .zone-tris {
+  .zone-filtres-tris {
     flex-direction: column;
     align-items: stretch;
+    gap: 16px;
   }
 
-  .zone-export {
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+  .filtre-statut, .zone-tris {
+    justify-content: space-between;
   }
 
   .info-container {
@@ -296,9 +298,5 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-  }
-
-  .item-nom, .item-statut, .item-type, .item-note {
-    min-width: auto;
   }
 }
