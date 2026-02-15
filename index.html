@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="global-container">
-    <!-- Colonne de gauche : formulaire d'ajout (le plus à gauche possible) -->
+    <!-- Colonne gauche fixe : formulaire d'ajout -->
     <div class="sidebar-ajout">
       <h2>Ajouter / Modifier</h2>
       
@@ -45,9 +45,15 @@
           <label for="note">Note (1-10)</label>
           <select id="note" required>
             <option value="">Choisir</option>
-            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-            <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
             <option value="10">10</option>
           </select>
         </div>
@@ -58,7 +64,18 @@
         </div>
       </form>
     </div>
-        
+
+    <!-- Colonne droite : tris, export, recherche, liste -->
+    <div class="contenu-droit">
+      <div class="header-droit">
+        <!-- Export/Import en haut à droite -->
+        <div class="zone-export">
+          <button id="exporter">Exporter la liste (JSON)</button>
+          <input type="file" id="importeur" accept=".json">
+          <button id="importer">Importer</button>
+        </div>
+
+        <!-- Tris en haut -->
         <div class="zone-tris">
           <label>Trier par nom :</label>
           <select id="tri-nom">
@@ -87,12 +104,5 @@
   </div>
 
   <script src="script.js"></script>
- <div class="backup-bas-gauche">
-  <button id="exporter">Exporter la liste (JSON)</button>
-  <input type="file" id="importeur" accept=".json">
-  <button id="importer">Importer</button>
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
