@@ -63,6 +63,7 @@
     <div class="contenu-droit">
       <div class="header-droit">
         <div class="zone-filtres-tris">
+          <!-- 1. Trier par nom -->
           <div class="zone-tris">
             <label>Trier par nom :</label>
             <select id="tri-nom">
@@ -72,15 +73,7 @@
             </select>
           </div>
           
-          <div class="zone-tris">
-            <label>Trier par note :</label>
-            <select id="tri-note">
-              <option value="">Aucun</option>
-              <option value="asc">0 → 10</option>
-              <option value="desc">10 → 0</option>
-            </select>
-          </div>
-          
+          <!-- 2. Filtrer par statut -->
           <div class="filtre-statut">
             <label>Filtrer par statut :</label>
             <select id="filtre-statut">
@@ -94,12 +87,23 @@
             </select>
           </div>
           
+          <!-- 3. Filtrer par type -->
           <div class="filtre-type">
             <label>Filtrer par type :</label>
             <select id="filtre-type">
               <option value="">Tous</option>
               <option value="anime">Anime</option>
               <option value="film">Film</option>
+            </select>
+          </div>
+          
+          <!-- 4. Trier par note -->
+          <div class="zone-tris">
+            <label>Trier par note :</label>
+            <select id="tri-note">
+              <option value="">Aucun</option>
+              <option value="asc">0 → 10</option>
+              <option value="desc">10 → 0</option>
             </select>
           </div>
         </div>
