@@ -64,17 +64,16 @@ body {
   box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
 }
 
-/* Boutons formulaire – EXACTEMENT comme ton script initial */
+/* Boutons formulaire – exact comme ton initial */
 .boutons-form {
   margin: 12px 0 20px 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .boutons-form button {
   padding: 12px 20px;
-  margin-right: 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -89,9 +88,10 @@ body {
 
 .boutons-form button[type="submit"]:hover { background: #8fc9a0; }
 
-/* Case à cocher Sous Menu – alignée avec le bouton Ajouter */
+/* Case à cocher Sous Menu – alignée avec les boutons */
 .checkbox-sousmenu {
-  margin-right: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .checkbox-sousmenu label {
@@ -104,15 +104,8 @@ body {
 }
 
 /* Compteurs (inchangé) */
-.compteurs-container {
-  margin: 20px 0 30px 0;
-}
-
-.compteur-total {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
+.compteurs-container { margin: 20px 0 30px 0; }
+.compteur-total { margin-bottom: 20px; text-align: center; }
 .compteur-total .compteur {
   display: inline-flex;
   background: #1e1e1e;
@@ -123,20 +116,8 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
-.compteurs-ligne {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.compteurs-colonne {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+.compteurs-ligne { display: flex; justify-content: space-between; gap: 20px; }
+.compteurs-colonne { flex: 1; display: flex; flex-direction: column; gap: 12px; }
 .compteur {
   background: #1e1e1e;
   padding: 10px 14px;
@@ -147,27 +128,11 @@ body {
   align-items: center;
   min-width: 130px;
 }
-
-.compteur .label {
-  font-size: 0.95rem;
-  color: #cccccc;
-  font-weight: 500;
-}
-
-.compteur .valeur {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #e0e0ff;
-}
+.compteur .label { font-size: 0.95rem; color: #cccccc; font-weight: 500; }
+.compteur .valeur { font-size: 1.3rem; font-weight: bold; color: #e0e0ff; }
 
 /* Export/Import */
-.zone-export {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+.zone-export { margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
 .zone-export button,
 .zone-export input[type="file"] {
   width: 100%;
@@ -230,7 +195,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items – position restaurée */
+/* Liste items */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -239,7 +204,7 @@ body {
   border: 1px solid #2a2a2a;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .main-row {
@@ -326,32 +291,47 @@ body {
   gap: 8px;
   margin-bottom: 12px;
   flex-wrap: wrap;
+  justify-content: flex-end; /* plus à droite */
 }
 
 .sub-form input,
 .sub-form select {
-  padding: 8px;
+  padding: 6px 10px; /* plus petit */
   background: #2a2a2a;
   border: 1px solid #444;
   color: #fff;
   border-radius: 4px;
-  flex: 1;
-  min-width: 120px;
+  flex: 0 1 140px; /* plus petit */
+  min-width: 100px;
 }
 
 .sub-form button {
-  padding: 8px 12px;
+  padding: 6px 12px; /* plus petit */
   background: #03dac6;
   color: #000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .separator {
   height: 1px;
   background: #444;
   margin: 12px 0;
+}
+
+/* Sous-entrées ajoutées – même taille que les noms principaux */
+.sub-item {
+  font-size: 1.1rem; /* même taille que .item-nom */
+  font-weight: bold;
+  margin-left: 20px;
+  margin-bottom: 6px;
+}
+
+.sub-item button {
+  font-size: 0.9rem;
+  margin-left: 10px;
 }
 
 /* Responsive */
