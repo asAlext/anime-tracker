@@ -125,6 +125,31 @@ li.innerHTML = `
 `;
 
 ul.appendChild(li);;
+      if (item.aSousMenu && item.ouvert) {
+  const sousUl = document.createElement('ul');
+  sousUl.classList.add('sous-menu');
+
+  item.sousMenu.forEach((sub, subIndex) => {
+    const subLi = document.createElement('li');
+
+    if (sub.type === 'separateur') {
+      subLi.classList.add('separateur');
+      subLi.textContent = "────────────";
+    } else {
+      subLi.innerHTML = `
+        <span class="item-nom">${sub.nom}</span>
+        <div class="right-fixed">
+          <span class="item-statut">${sub.statut}</span>
+          <span class="item-type">${sub.type}</span>
+        </div>
+      `;
+    }
+
+    sousUl.appendChild(subLi);
+  });
+
+  ul.appendChild(sousUl);
+}
     });
   }
 }
