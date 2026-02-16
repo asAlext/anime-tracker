@@ -124,7 +124,7 @@ function afficherListe(filtreNom = '') {
             <input type="text" placeholder="Nom" class="sub-nom">
             <select class="sub-statut">
               <option value="fini">Fini</option>
-              <option value="en cours">En Cours</option>
+              <option value="en cours">En cours</option>
               <option value="en pause">En pause</option>
               <option value="a regarder">A Regarder</option>
               <option value="abandon">Abandon</option>
@@ -197,11 +197,9 @@ function renderSubItems(mainIndex) {
       div.innerHTML = `
         <span class="prefix">-</span>
         <span class="sub-nom">${sub.nom}</span>
-        <div class="middle">
-          <span class="sub-statut">${sub.statut}</span>
-          <span class="sub-type">${sub.type}</span>
-        </div>
-        <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:auto;color:#ff6b6b;">×</button>
+        <span class="sub-statut">${sub.statut}</span>
+        <span class="sub-type">${sub.type}</span>
+        <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:10px;color:#ff6b6b;">×</button>
       `;
     }
     container.appendChild(div);
