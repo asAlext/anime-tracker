@@ -8,13 +8,6 @@ let items = [];
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
-
-// Correction automatique des anciens items
-items.forEach(item => {
-  if (item.aSousMenu === undefined) item.aSousMenu = false;
-  if (!Array.isArray(item.sousMenu)) item.sousMenu = [];
-  if (item.ouvert === undefined) item.ouvert = false;
-});
   afficherListe();
   mettreAJourCompteurs();
 }
@@ -108,55 +101,20 @@ function afficherListe(filtreNom = '') {
       const indexOriginal = items.indexOf(item);
 
       const li = document.createElement('li');
-li.classList.add('item-principal');
-
-let flecheHTML = '';
-if (item.aSousMenu) {
-  flecheHTML = `<span class="fleche" onclick="toggleSousMenu(${indexOriginal})">▼</span>`;
-}
-
-li.innerHTML = `
-  <div class="ligne-principale">
-    ${flecheHTML}
-    <span class="item-nom">${item.nom}</span>
-    <div class="right-fixed">
-      <span class="item-statut">${item.statut}</span>
-      <span class="item-type">${item.type}</span>
-      <span class="item-note">Note : ${Number(item.note)}/10</span>
-      <div class="actions">
-        <button onclick="editerItem(${indexOriginal})">Modifier</button>
-        <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
-      </div>
-    </div>
-  </div>
-`;
-
-ul.appendChild(li);;
-      if (item.aSousMenu && item.ouvert) {
-  const sousUl = document.createElement('ul');
-  sousUl.classList.add('sous-menu');
-
-  item.sousMenu.forEach((sub, subIndex) => {
-    const subLi = document.createElement('li');
-
-    if (sub.type === 'separateur') {
-      subLi.classList.add('separateur');
-      subLi.textContent = "────────────";
-    } else {
-      subLi.innerHTML = `
-        <span class="item-nom">${sub.nom}</span>
+      li.innerHTML = `
+        <span class="item-nom">${item.nom}</span>
         <div class="right-fixed">
-          <span class="item-statut">${sub.statut}</span>
-          <span class="item-type">${sub.type}</span>
+          <span class="item-statut">${item.statut}</span>
+          <span class="item-type">${item.type}</span>
+          <span class="item-note">Note : ${Number(item.note)}/10</span>
+          <div class="actions">
+            <button onclick="editerItem(${indexOriginal})">Modifier</button>
+            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+          </div>
         </div>
       `;
-    }
 
-    sousUl.appendChild(subLi);
-  });
-
-  ul.appendChild(sousUl);
-}
+      ul.appendChild(li);
     });
   }
 }
@@ -178,28 +136,12 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  const aSousMenu = document.getElementById('aSousMenu').checked;
-
-const nouvelItem = {
-  nom,
-  type,
-  statut,
-  note,
-  aSousMenu,
-  sousMenu: [],
-  ouvert: false
-};
+  const nouvelItem = { nom, type, statut, note };
 
   const editIndex = this.dataset.editIndex;
 
   if (editIndex !== undefined) {
-    const i = parseInt(editIndex);
-
-// on garde l'ancien sousMenu et ouvert
-nouvelItem.sousMenu = items[i].sousMenu || [];
-nouvelItem.ouvert = items[i].ouvert || false;
-
-items[i] = nouvelItem;
+    items[parseInt(editIndex)] = nouvelItem;
     delete this.dataset.editIndex;
     document.getElementById('btnAnnulerEdit').style.display = 'none';
   } else {
@@ -210,7 +152,6 @@ items[i] = nouvelItem;
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
   this.reset();
-  document.getElementById('aSousMenu').checked = false;
 });
 
 // Edition
@@ -220,8 +161,6 @@ function editerItem(index) {
   document.getElementById('type').value   = item.type;
   document.getElementById('statut').value = item.statut;
   document.getElementById('note').value   = item.note;
-
-  document.getElementById('aSousMenu').checked = item.aSousMenu || false;
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
