@@ -172,6 +172,8 @@ function editerItem(index) {
   document.getElementById('statut').value = item.statut;
   document.getElementById('note').value   = item.note;
 
+  document.getElementById('aSousMenu').checked = item.aSousMenu || false;
+
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
 }
