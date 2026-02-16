@@ -162,6 +162,7 @@ const nouvelItem = {
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
   this.reset();
+  document.getElementById('aSousMenu').checked = false;
 });
 
 // Edition
