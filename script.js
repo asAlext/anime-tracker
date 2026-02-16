@@ -190,12 +190,12 @@ function renderSubItems(mainIndex) {
 
   subItems.forEach((sub, i) => {
     const div = document.createElement('div');
-    div.style.marginBottom = '8px';
+    div.className = 'sub-item';
     if (sub.isSeparator) {
-      div.innerHTML = `<div style="height:1px;background:#444;margin:12px 0;"></div>`;
+      div.innerHTML = `<div class="separator"></div>`;
     } else {
       div.innerHTML = `
-        <strong>${sub.nom}</strong> — ${sub.statut} — ${sub.type}
+        - <strong>${sub.nom}</strong> — ${sub.statut} — ${sub.type}
         <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:10px;color:#ff6b6b;">×</button>
       `;
     }
