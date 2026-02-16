@@ -195,7 +195,9 @@ function renderSubItems(mainIndex) {
       div.innerHTML = `<div class="separator"></div>`;
     } else {
       div.innerHTML = `
-        - <strong>${sub.nom}</strong> — ${sub.statut} — ${sub.type}
+        <span class="sub-nom">${sub.nom}</span>
+        <span class="sub-statut">${sub.statut}</span>
+        <span class="sub-type">${sub.type}</span>
         <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:10px;color:#ff6b6b;">×</button>
       `;
     }
