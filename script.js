@@ -8,6 +8,13 @@ let items = [];
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
+
+// Correction automatique des anciens items
+items.forEach(item => {
+  if (item.aSousMenu === undefined) item.aSousMenu = false;
+  if (!Array.isArray(item.sousMenu)) item.sousMenu = [];
+  if (item.ouvert === undefined) item.ouvert = false;
+});
   afficherListe();
   mettreAJourCompteurs();
 }
@@ -186,7 +193,13 @@ const nouvelItem = {
   const editIndex = this.dataset.editIndex;
 
   if (editIndex !== undefined) {
-    items[parseInt(editIndex)] = nouvelItem;
+    const i = parseInt(editIndex);
+
+// on garde l'ancien sousMenu et ouvert
+nouvelItem.sousMenu = items[i].sousMenu || [];
+nouvelItem.ouvert = items[i].ouvert || false;
+
+items[i] = nouvelItem;
     delete this.dataset.editIndex;
     document.getElementById('btnAnnulerEdit').style.display = 'none';
   } else {
@@ -289,47 +302,6 @@ document.getElementById('importer').addEventListener('click', function() {
   };
   reader.readAsText(file);
 });
-
-function supprimerItem(index) {
-  if (!confirm('Supprimer cet élément ?')) return;
-  items.splice(index, 1);
-  sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
-  mettreAJourCompteurs();
-}
-
-
-// ======== NOUVELLES FONCTIONS SOUS MENU ========
-
-function toggleSousMenu(index) {
-  items[index].ouvert = !items[index].ouvert;
-  sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
-}
-
-function ajouterSousElement(index) {
-  const nom = prompt("Nom du sous élément ?");
-  if (!nom) return;
-
-  const statut = prompt("Statut ?");
-  const type = prompt("Type ?");
-
-  items[index].sousMenu.push({
-    nom,
-    statut,
-    type
-  });
-
-  sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
-}
-
-function ajouterSeparateur(index) {
-  items[index].sousMenu.push({ type: "separateur" });
-  sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
-}
-
 
 // Démarrage
 chargerDonnees();
