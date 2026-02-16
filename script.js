@@ -1,6 +1,10 @@
+// Clé unique pour localStorage
 const CLE_STORAGE = 'mesAnimesTracker';
+
+// Tableau global
 let items = [];
 
+// Charger les données au démarrage
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
@@ -8,17 +12,28 @@ function chargerDonnees() {
   mettreAJourCompteurs();
 }
 
+// Sauvegarder
 function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
+// Mise à jour des compteurs
 function mettreAJourCompteurs() {
   const total = items.length;
-  const counts = { fini:0, abandon:0, 'en pause':0, 'a regarder':0, 'en cours':0, 'plus jamais':0 };
+  const counts = {
+    fini: 0,
+    abandon: 0,
+    'en pause': 0,
+    'a regarder': 0,
+    'en cours': 0,
+    'plus jamais': 0
+  };
 
   items.forEach(item => {
     const s = item.statut.toLowerCase();
-    if (counts.hasOwnProperty(s)) counts[s]++;
+    if (counts.hasOwnProperty(s)) {
+      counts[s]++;
+    }
   });
 
   document.getElementById('count-total').textContent = total;
@@ -30,29 +45,51 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
+// Afficher la liste
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
 
   const rechercheLower = filtreNom.toLowerCase();
 
-  let resultat = items.filter(item => item.nom.toLowerCase().includes(rechercheLower));
+  let resultat = items.filter(item =>
+    item.nom.toLowerCase().includes(rechercheLower)
+  );
 
   const filtreStatut = document.getElementById('filtre-statut')?.value || '';
-  if (filtreStatut) resultat = resultat.filter(item => item.statut === filtreStatut);
+  if (filtreStatut) {
+    resultat = resultat.filter(item => item.statut === filtreStatut);
+  }
 
   const filtreType = document.getElementById('filtre-type')?.value || '';
-  if (filtreType) resultat = resultat.filter(item => item.type === filtreType);
+  if (filtreType) {
+    resultat = resultat.filter(item => item.type === filtreType);
+  }
 
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
+  let typeTri = '';
+  let ordre = '';
+
   if (triNote) {
-    resultat.sort((a, b) => triNote === 'asc' ? a.note - b.note : b.note - a.note);
+    typeTri = 'note';
+    ordre = triNote;
   } else if (triNom) {
-    resultat.sort((a, b) => triNom === 'asc' 
-      ? a.nom.toLowerCase().localeCompare(b.nom.toLowerCase())
-      : b.nom.toLowerCase().localeCompare(a.nom.toLowerCase()));
+    typeTri = 'nom';
+    ordre = triNom;
+  }
+
+  if (typeTri === 'nom') {
+    resultat.sort((a, b) => {
+      const nomA = a.nom.toLowerCase();
+      const nomB = b.nom.toLowerCase();
+      return ordre === 'asc' ? nomA.localeCompare(nomB) : nomB.localeCompare(nomA);
+    });
+  } else if (typeTri === 'note') {
+    resultat.sort((a, b) => {
+      return ordre === 'asc' ? a.note - b.note : b.note - a.note;
+    });
   }
 
   if (resultat.length === 0) {
@@ -67,17 +104,15 @@ function afficherListe(filtreNom = '') {
       li.className = item.hasSubMenu ? 'li' : '';
 
       li.innerHTML = `
-        <div class="main-row">
-          <span class="item-nom">${item.nom}</span>
-          <div class="right-fixed">
-            <span class="item-statut">${item.statut}</span>
-            <span class="item-type">${item.type}</span>
-            <span class="item-note">Note : ${Number(item.note)}/10</span>
-            <div class="actions">
-              <button onclick="editerItem(${indexOriginal})">Modifier</button>
-              <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
-              ${item.hasSubMenu ? `<span class="arrow" onclick="toggleSubMenu(this)">▼</span>` : ''}
-            </div>
+        <span class="item-nom">${item.nom}</span>
+        <div class="right-fixed">
+          <span class="item-statut">${item.statut}</span>
+          <span class="item-type">${item.type}</span>
+          <span class="item-note">Note : ${Number(item.note)}/10</span>
+          <div class="actions">
+            <button onclick="editerItem(${indexOriginal})">Modifier</button>
+            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+            ${item.hasSubMenu ? `<span class="arrow" onclick="toggleSubMenu(this)">▼</span>` : ''}
           </div>
         </div>
 
@@ -87,11 +122,11 @@ function afficherListe(filtreNom = '') {
             <input type="text" placeholder="Nom" class="sub-nom">
             <select class="sub-statut">
               <option value="fini">Fini</option>
-              <option value="abandon">Abandon</option>
-              <option value="en pause">En pause</option>
-              <option value="a regarder">À regarder</option>
               <option value="en cours">En cours</option>
-              <option value="plus jamais">Plus jamais</option>
+              <option value="en pause">En pause</option>
+              <option value="a regarder">A Regarder</option>
+              <option value="abandon">Abandon</option>
+              <option value="plus jamais">Plus Jamais</option>
             </select>
             <select class="sub-type">
               <option value="anime">Anime</option>
@@ -178,8 +213,8 @@ function supprimerSousItem(mainIndex, subIndex) {
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom = document.getElementById('nom').value.trim();
-  const type = document.getElementById('type').value;
+  const nom    = document.getElementById('nom').value.trim();
+  const type   = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
   const noteStr = document.getElementById('note').value.trim();
   const hasSubMenu = document.getElementById('hasSubMenu').checked;
@@ -188,15 +223,11 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
 
   const note = parseFloat(noteStr);
   if (isNaN(note) || note < 0 || note > 10) {
-    alert("La note doit être entre 0 et 10");
+    alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
     return;
   }
 
-  const nouvelItem = { 
-    nom, type, statut, note, 
-    hasSubMenu, 
-    subItems: hasSubMenu ? [] : undefined 
-  };
+  const nouvelItem = { nom, type, statut, note, hasSubMenu, subItems: hasSubMenu ? [] : undefined };
 
   const editIndex = this.dataset.editIndex;
 
@@ -266,9 +297,11 @@ document.getElementById('tri-note').addEventListener('change', function() {
   afficherListe(document.getElementById('recherche').value);
 });
 
+// Export
 document.getElementById('exporter').addEventListener('click', function() {
   const data = localStorage.getItem(CLE_STORAGE);
   if (!data) return alert('Aucune donnée à exporter');
+
   const blob = new Blob([data], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -278,6 +311,7 @@ document.getElementById('exporter').addEventListener('click', function() {
   URL.revokeObjectURL(url);
 });
 
+// Import
 document.getElementById('importer').addEventListener('click', function() {
   const fileInput = document.getElementById('importeur');
   const file = fileInput.files[0];
@@ -295,7 +329,7 @@ document.getElementById('importer').addEventListener('click', function() {
       alert('Import réussi !');
       fileInput.value = '';
     } catch (err) {
-      alert('Erreur : fichier invalide\n' + err.message);
+      alert('Erreur : fichier invalide ou corrompu\n' + err.message);
     }
   };
   reader.readAsText(file);
