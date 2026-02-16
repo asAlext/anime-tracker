@@ -9,14 +9,14 @@
 </head>
 <body>
   <div class="global-container">
-    <!-- Colonne gauche fixe -->
+    <!-- Sidebar gauche -->
     <div class="sidebar-ajout">
       <h2>Ajouter / Modifier</h2>
       
       <form id="formAjout">
         <div class="champ">
           <label for="nom">Nom</label>
-          <input type="text" id="nom" placeholder="Nom " required>
+          <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
         </div>
         
         <div class="champ">
@@ -33,16 +33,16 @@
           <select id="statut" required>
             <option value="">Choisir</option>
             <option value="fini">Fini</option>
-            <option value="en cours">En cours</option>
+            <option value="abandon">Abandon</option>
             <option value="en pause">En pause</option>
             <option value="a regarder">À regarder</option>
-            <option value="abandon">Abandon</option>
+            <option value="en cours">En cours</option>
             <option value="plus jamais">Plus jamais</option>
           </select>
         </div>
         
         <div class="champ">
-          <label for="note">Note </label>
+          <label for="note">Note (0 à 10, ex: 9.5)</label>
           <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 9.5" required>
         </div>
         
@@ -52,79 +52,13 @@
         </div>
       </form>
 
-      <!-- Checkbox pour Sous Menu -->
-      <div class="champ checkbox-sous-menu">
-        <label for="sous-menu">Ajout Sous Menu</label>
+      <!-- Checkbox + label -->
+      <div class="checkbox-sous-menu">
         <input type="checkbox" id="sous-menu">
+        <label for="sous-menu">Ajout Sous Menu</label>
       </div>
 
-      <!-- Section pour gérer les sous-items (cachée par défaut) -->
-      <div id="sous-items-section" style="display: none;">
-        <h3>Sous-items</h3>
-        <ul id="sous-items-list"></ul>
-        <div class="add-sous-item">
-          <input type="text" id="sub-nom" placeholder="Nom sous-item" required>
-          <select id="sub-statut" required>
-            <option value="">Statut</option>
-            <option value="fini">Fini</option>
-            <option value="a regarder">À regarder</option>
-            <option value="en pause">En pause</option>
-            <option value="abandon">Abandon</option>
-            <option value="en cours">En cours</option>
-            <option value="plus jamais">Plus Jamais</option>
-          </select>
-          <select id="sub-type" required>
-            <option value="">Type</option>
-            <option value="anime">Anime</option>
-            <option value="film">Film</option>
-          </select>
-          <button id="add-sous-item-btn">Ajouter sous-item</button>
-        </div>
-      </div>
-
-      <!-- Compteurs -->
-      <div class="compteurs-container">
-        <div class="compteur-total">
-          <div class="compteur">
-            <span class="label">Total</span>
-            <span id="count-total" class="valeur">0</span>
-          </div>
-        </div>
-
-        <div class="compteurs-ligne">
-          <div class="compteurs-colonne gauche">
-            <div class="compteur">
-              <span class="label">Fini</span>
-              <span id="count-fini" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">En Cours</span>
-              <span id="count-en-cours" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">En Pause</span>
-              <span id="count-en-pause" class="valeur">0</span>
-            </div>
-          </div>
-
-          <div class="compteurs-colonne droite">
-            <div class="compteur">
-              <span class="label">A Regarder</span>
-              <span id="count-a-regarder" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">Abandon</span>
-              <span id="count-abandon" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">Plus Jamais</span>
-              <span id="count-plus-jamais" class="valeur">0</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Export / Import -->
+      <!-- Export/Import -->
       <div class="zone-export">
         <button id="exporter">Exporter la liste (JSON)</button>
         <input type="file" id="importeur" accept=".json">
@@ -132,32 +66,30 @@
       </div>
     </div>
 
-    <!-- Colonne droite -->
+    <!-- Contenu principal -->
     <div class="contenu-droit">
       <div class="header-droit">
         <div class="zone-filtres-tris">
           <div class="zone-tris">
-            <label>Trier par Nom :</label>
+            <label>Trier par nom :</label>
             <select id="tri-nom">
               <option value="">Aucun</option>
-              <option value="asc">A - Z</option>
-              <option value="desc">Z - A</option>
+              <option value="asc">A → Z</option>
+              <option value="desc">Z → A</option>
             </select>
           </div>
-          
           <div class="filtre-statut">
-            <label>Filtrer par Statut :</label>
+            <label>Filtrer par statut :</label>
             <select id="filtre-statut">
               <option value="">Tous</option>
-              <option value="en cours">En Cours</option>
               <option value="fini">Fini</option>
+              <option value="abandon">Abandon</option>
               <option value="en pause">En pause</option>
               <option value="a regarder">A Regarder</option>
-              <option value="abandon">Abandon</option>
+              <option value="en cours">En Cours</option>
               <option value="plus jamais">Plus Jamais</option>
             </select>
           </div>
-          
           <div class="filtre-type">
             <label>Filtrer par Type :</label>
             <select id="filtre-type">
@@ -166,7 +98,6 @@
               <option value="film">Film</option>
             </select>
           </div>
-          
           <div class="zone-tris">
             <label>Trier par Note :</label>
             <select id="tri-note">
