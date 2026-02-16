@@ -152,6 +152,10 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
   this.reset();
+
+  // Réinitialiser la checkbox et la section sous-items après ajout
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 });
 
 // Edition
@@ -164,12 +168,20 @@ function editerItem(index) {
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
+
+  // Réinitialiser la checkbox et la section lors de l'édition
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 }
 
 document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   document.getElementById('formAjout').reset();
   delete document.getElementById('formAjout').dataset.editIndex;
   this.style.display = 'none';
+
+  // Réinitialiser la checkbox et la section
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 });
 
 // Suppression
@@ -202,6 +214,38 @@ document.getElementById('tri-nom').addEventListener('change', function() {
 document.getElementById('tri-note').addEventListener('change', function() {
   document.getElementById('tri-nom').value = '';
   afficherListe(document.getElementById('recherche').value);
+});
+
+// Gestion de la checkbox "Ajout Sous Menu"
+document.getElementById('sous-menu').addEventListener('change', function() {
+  const section = document.getElementById('sous-items-section');
+  if (this.checked) {
+    section.style.display = 'block';
+  } else {
+    section.style.display = 'none';
+  }
+});
+
+// Gestion du bouton "Ajouter sous-item" (exemple basique d'affichage)
+document.getElementById('add-sous-item-btn').addEventListener('click', function() {
+  const subNom = document.getElementById('sub-nom').value.trim();
+  const subStatut = document.getElementById('sub-statut').value;
+  const subType = document.getElementById('sub-type').value;
+
+  if (!subNom || !subStatut || !subType) {
+    alert("Remplis tous les champs du sous-item");
+    return;
+  }
+
+  // Affichage temporaire dans la liste visuelle
+  const li = document.createElement('li');
+  li.textContent = `${subNom} — ${subStatut} — ${subType}`;
+  document.getElementById('sous-items-list').appendChild(li);
+
+  // Vider les champs
+  document.getElementById('sub-nom').value = '';
+  document.getElementById('sub-statut').value = '';
+  document.getElementById('sub-type').value = '';
 });
 
 // Export
