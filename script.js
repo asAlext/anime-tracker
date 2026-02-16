@@ -45,7 +45,7 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste (inchangé)
+// Afficher la liste
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
