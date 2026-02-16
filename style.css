@@ -64,12 +64,9 @@ body {
   box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
 }
 
-/* Boutons formulaire – EXACTEMENT comme ton script initial */
+/* Boutons formulaire – exact comme ton initial */
 .boutons-form {
   margin: 12px 0 20px 0;
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .boutons-form button {
@@ -105,7 +102,7 @@ body {
   cursor: pointer;
 }
 
-/* Compteurs (inchangé) */
+/* Compteurs */
 .compteurs-container { margin: 20px 0 30px 0; }
 .compteur-total { margin-bottom: 20px; text-align: center; }
 .compteur-total .compteur {
@@ -134,13 +131,7 @@ body {
 .compteur .valeur { font-size: 1.3rem; font-weight: bold; color: #e0e0ff; }
 
 /* Export/Import */
-.zone-export {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+.zone-export { margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
 .zone-export button,
 .zone-export input[type="file"] {
   width: 100%;
@@ -203,7 +194,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items – position exacte comme avant */
+/* Liste items */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -235,8 +226,8 @@ body {
 .right-fixed {
   display: flex;
   align-items: center;
-  gap: 50px; /* plus d'espace à gauche pour que Statut/Type/Note soient plus à droite */
-  min-width: 460px;
+  gap: 40px;
+  min-width: 420px;
   justify-content: flex-end;
   flex-shrink: 0;
 }
@@ -244,27 +235,24 @@ body {
 .item-statut {
   color: #a8d5ba;
   font-weight: 600;
-  min-width: 130px; /* plus gros et statique */
+  min-width: 120px;
   text-align: right;
   text-transform: capitalize;
-  font-size: 1.05rem;
 }
 
 .item-type {
   color: #b3c7ff;
   font-weight: 500;
-  min-width: 90px; /* plus gros et statique */
+  min-width: 80px;
   text-align: right;
   text-transform: capitalize;
-  font-size: 1.05rem;
 }
 
 .item-note {
   color: #f0d9a2;
   font-weight: bold;
-  min-width: 130px;
+  min-width: 120px;
   text-align: right;
-  font-size: 1.05rem;
 }
 
 .actions {
@@ -287,7 +275,7 @@ body {
 
 .actions button:hover { background: #b74c6a; }
 
-/* Sous-menu – juste en dessous + Statut/Type plus à droite et statiques */
+/* Sous-menu – placé juste en dessous */
 .sub-menu {
   display: none;
   margin-top: 12px;
@@ -299,23 +287,25 @@ body {
 
 .sub-form {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 12px;
-  justify-content: flex-end; /* pousse tout vers la droite */
+  flex-wrap: wrap;
+  justify-content: flex-end; /* plus à droite */
 }
 
-.sub-form input { /* Nom */
-  flex: 1;
-  max-width: 220px;
-}
-
-.sub-form select { /* Statut et Type – plus à droite et statiques */
-  flex: 0 0 140px;
-  min-width: 140px;
+.sub-form input,
+.sub-form select {
+  padding: 6px 10px; /* plus petit */
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #fff;
+  border-radius: 4px;
+  flex: 0 1 140px; /* plus petit */
+  min-width: 100px;
 }
 
 .sub-form button {
-  padding: 8px 14px;
+  padding: 6px 12px; /* plus petit */
   background: #03dac6;
   color: #000;
   border: none;
@@ -324,19 +314,35 @@ body {
   font-size: 0.9rem;
 }
 
+.separator {
+  height: 1px;
+  background: #444;
+  margin: 12px 0;
+}
+
 /* Sous-entrées ajoutées – même taille que les noms principaux */
 .sub-item {
-  font-size: 1.1rem;
+  font-size: 1.1rem; /* même taille que .item-nom */
   font-weight: bold;
   margin-left: 20px;
   margin-bottom: 6px;
-  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: flex-end; /* plus à droite */
+}
+
+.sub-item .sub-statut,
+.sub-item .sub-type {
+  min-width: 100px;
+  text-align: right;
+  font-size: 1.1rem; /* plus gros et statique */
+  font-weight: 600;
 }
 
 .sub-item button {
   font-size: 0.9rem;
   margin-left: 10px;
-  color: #ff6b6b;
 }
 
 /* Responsive */
@@ -346,4 +352,5 @@ body {
   .zone-filtres-tris { flex-direction: column; align-items: stretch; }
   .compteurs-container { flex-direction: column; }
   .compteurs-ligne { flex-direction: column; gap: 20px; }
+  .sub-item { justify-content: flex-start; flex-direction: column; align-items: flex-start; }
 }
