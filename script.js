@@ -136,7 +136,17 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  const nouvelItem = { nom, type, statut, note };
+  const aSousMenu = document.getElementById('aSousMenu').checked;
+
+const nouvelItem = {
+  nom,
+  type,
+  statut,
+  note,
+  aSousMenu,
+  sousMenu: [],
+  ouvert: false
+};
 
   const editIndex = this.dataset.editIndex;
 
