@@ -64,7 +64,7 @@ body {
   box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
 }
 
-/* Boutons formulaire – inchangé */
+/* Boutons formulaire */
 .boutons-form {
   margin: 12px 0 20px 0;
 }
@@ -102,7 +102,7 @@ body {
   cursor: pointer;
 }
 
-/* Compteurs – inchangé */
+/* Compteurs */
 .compteurs-container { margin: 20px 0 30px 0; }
 .compteur-total { margin-bottom: 20px; text-align: center; }
 .compteur-total .compteur {
@@ -194,7 +194,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items – inchangé */
+/* Liste items */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -314,14 +314,14 @@ body {
   font-size: 0.9rem;
 }
 
-/* Sous-entrées – placement EXACT comme ta capture (statut au cercle bleu, type au cercle jaune) */
+/* Sous-entrées ajoutées – EXACTEMENT comme demandé */
 .sub-item {
   display: flex;
   align-items: center;
+  gap: 30px;           /* espace entre nom / statut / type */
   font-size: 1.1rem;
   margin-left: 20px;
   margin-bottom: 6px;
-  gap: 80px;               /* espace global pour centrer statut et type */
 }
 
 .sub-item .prefix {
@@ -333,30 +333,27 @@ body {
 .sub-item .sub-nom {
   flex: 1;
   font-weight: bold;
-  text-align: left;
+  min-width: 180px;
 }
 
 .sub-item .sub-statut {
   color: #a8d5ba;
   font-weight: 600;
-  width: 140px;             /* fixe pour rester centré */
+  min-width: 120px;
   text-align: center;
-  flex-shrink: 0;
 }
 
 .sub-item .sub-type {
   color: #b3c7ff;
   font-weight: 500;
-  width: 100px;             /* fixe, proche du statut */
+  min-width: 90px;
   text-align: left;
-  flex-shrink: 0;
 }
 
 .sub-item button {
-  margin-left: 12px;
-  color: #ff6b6b;
   font-size: 0.9rem;
-  flex-shrink: 0;
+  margin-left: 10px;
+  color: #ff6b6b;
 }
 
 /* Responsive */
@@ -366,5 +363,4 @@ body {
   .zone-filtres-tris { flex-direction: column; align-items: stretch; }
   .compteurs-container { flex-direction: column; }
   .compteurs-ligne { flex-direction: column; gap: 20px; }
-  .sub-item { gap: 40px; }
 }
