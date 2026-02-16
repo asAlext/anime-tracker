@@ -86,7 +86,7 @@ body {
 
 .boutons-form button[type="submit"]:hover { background: #8fc9a0; }
 
-/* Case à cocher Sous Menu – alignée avec les boutons */
+/* Case à cocher Sous Menu – alignée avec le bouton Ajouter */
 .checkbox-sousmenu {
   margin: 0 12px 0 0;
   display: inline-flex;
@@ -229,7 +229,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items – restauré exactement comme avant */
+/* Liste items – RESTAURÉ EXACTEMENT COMME TON SCRIPT INITIAL */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
