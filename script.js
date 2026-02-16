@@ -45,31 +45,27 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste – version corrigée
+// Afficher la liste
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
 
   const rechercheLower = filtreNom.toLowerCase();
 
-  // Filtrer d'abord
-  let resultat = items.filter(item => 
+  let resultat = items.filter(item =>
     item.nom.toLowerCase().includes(rechercheLower)
   );
 
-  // Filtre statut
   const filtreStatut = document.getElementById('filtre-statut')?.value || '';
   if (filtreStatut) {
     resultat = resultat.filter(item => item.statut === filtreStatut);
   }
 
-  // Filtre type
   const filtreType = document.getElementById('filtre-type')?.value || '';
   if (filtreType) {
     resultat = resultat.filter(item => item.type === filtreType);
   }
 
-  // Tri
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
@@ -91,7 +87,9 @@ function afficherListe(filtreNom = '') {
       return ordre === 'asc' ? nomA.localeCompare(nomB) : nomB.localeCompare(nomA);
     });
   } else if (typeTri === 'note') {
-    resultat.sort((a, b) => ordre === 'asc' ? a.note - b.note : b.note - a.note);
+    resultat.sort((a, b) => {
+      return ordre === 'asc' ? a.note - b.note : b.note - a.note;
+    });
   }
 
   if (resultat.length === 0) {
@@ -100,15 +98,7 @@ function afficherListe(filtreNom = '') {
     document.getElementById('message-vide').style.display = 'none';
 
     resultat.forEach((item) => {
-      // Utiliser l'index dans le tableau original (pas dans resultat)
-      const indexOriginal = items.findIndex(i => 
-        i.nom === item.nom && 
-        i.statut === item.statut && 
-        i.type === item.type && 
-        i.note === item.note
-      );
-
-      if (indexOriginal === -1) return; // sécurité
+      const indexOriginal = items.indexOf(item);
 
       const li = document.createElement('li');
       li.innerHTML = `
@@ -162,6 +152,10 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
   this.reset();
+
+  // Réinitialiser la checkbox et la section sous-items après ajout
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 });
 
 // Edition
@@ -174,12 +168,20 @@ function editerItem(index) {
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
+
+  // Réinitialiser la checkbox et la section lors de l'édition
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 }
 
 document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   document.getElementById('formAjout').reset();
   delete document.getElementById('formAjout').dataset.editIndex;
   this.style.display = 'none';
+
+  // Réinitialiser la checkbox et la section
+  document.getElementById('sous-menu').checked = false;
+  document.getElementById('sous-items-section').style.display = 'none';
 });
 
 // Suppression
@@ -212,6 +214,38 @@ document.getElementById('tri-nom').addEventListener('change', function() {
 document.getElementById('tri-note').addEventListener('change', function() {
   document.getElementById('tri-nom').value = '';
   afficherListe(document.getElementById('recherche').value);
+});
+
+// Gestion de la checkbox "Ajout Sous Menu"
+document.getElementById('sous-menu').addEventListener('change', function() {
+  const section = document.getElementById('sous-items-section');
+  if (this.checked) {
+    section.style.display = 'block';
+  } else {
+    section.style.display = 'none';
+  }
+});
+
+// Gestion du bouton "Ajouter sous-item" (exemple basique d'affichage)
+document.getElementById('add-sous-item-btn').addEventListener('click', function() {
+  const subNom = document.getElementById('sub-nom').value.trim();
+  const subStatut = document.getElementById('sub-statut').value;
+  const subType = document.getElementById('sub-type').value;
+
+  if (!subNom || !subStatut || !subType) {
+    alert("Remplis tous les champs du sous-item");
+    return;
+  }
+
+  // Affichage temporaire dans la liste visuelle
+  const li = document.createElement('li');
+  li.textContent = `${subNom} — ${subStatut} — ${subType}`;
+  document.getElementById('sous-items-list').appendChild(li);
+
+  // Vider les champs
+  document.getElementById('sub-nom').value = '';
+  document.getElementById('sub-statut').value = '';
+  document.getElementById('sub-type').value = '';
 });
 
 // Export
