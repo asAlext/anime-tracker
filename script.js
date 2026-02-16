@@ -4,17 +4,10 @@ const CLE_STORAGE = 'mesAnimesTracker';
 // Tableau global
 let items = [];
 
-// Ensemble pour suivre les items expansés (non sauvegardé, session seulement)
-let expandedItems = new Set();
-
 // Charger les données au démarrage
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
-  items = data ? JSON.parse(data).map(item => ({
-    ...item,
-    hasSubmenu: item.hasSubmenu ?? false,
-    subItems: item.subItems ?? []
-  })) : [];
+  items = data ? JSON.parse(data) : [];
   afficherListe();
   mettreAJourCompteurs();
 }
@@ -52,7 +45,7 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste
+// Afficher la liste (inchangé)
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
@@ -106,11 +99,10 @@ function afficherListe(filtreNom = '') {
 
     resultat.forEach((item) => {
       const indexOriginal = items.indexOf(item);
+
       const li = document.createElement('li');
-      li.dataset.index = indexOriginal;
       li.innerHTML = `
         <span class="item-nom">${item.nom}</span>
-        ${item.hasSubmenu ? `<button class="toggle-submenu">▼</button>` : ''}
         <div class="right-fixed">
           <span class="item-statut">${item.statut}</span>
           <span class="item-type">${item.type}</span>
@@ -120,73 +112,14 @@ function afficherListe(filtreNom = '') {
             <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
           </div>
         </div>
-        ${item.hasSubmenu ? `
-          <div class="submenu">
-            <ul class="sub-liste">
-              ${item.subItems.map((sub, subIndex) => {
-                if (sub.isSeparator) {
-                  return `<li class="sub-separator"><hr></li>`;
-                } else {
-                  return `
-                    <li class="sub-item">
-                      <span class="sub-nom">${sub.nom}</span>
-                      <span class="sub-statut">${sub.statut}</span>
-                      <span class="sub-type">${sub.subType}</span>
-                      <div class="sub-actions">
-                        <button onclick="editerSubItem(${indexOriginal}, ${subIndex})">Modifier</button>
-                        <button onclick="supprimerSubItem(${indexOriginal}, ${subIndex})">Supprimer</button>
-                      </div>
-                    </li>
-                  `;
-                }
-              }).join('')}
-            </ul>
-            <div class="sub-form">
-              <input type="text" id="sub-nom-${indexOriginal}" placeholder="Nom">
-              <select id="sub-type-${indexOriginal}">
-                <option value="">Choisir Type</option>
-                <option value="anime">Anime</option>
-                <option value="film">Film</option>
-              </select>
-              <select id="sub-statut-${indexOriginal}">
-                <option value="">Choisir Statut</option>
-                <option value="fini">Fini</option>
-                <option value="en cours">En cours</option>
-                <option value="en pause">En pause</option>
-                <option value="a regarder">À regarder</option>
-                <option value="abandon">Abandon</option>
-                <option value="plus jamais">Plus jamais</option>
-              </select>
-              <button id="sub-ajouter-${indexOriginal}" onclick="ajouterSubEntry(${indexOriginal})">Ajouter</button>
-              <button onclick="ajouterSeparator(${indexOriginal})">Ajouter Séparateur</button>
-            </div>
-          </div>
-        ` : ''}
       `;
 
-      if (expandedItems.has(indexOriginal)) {
-        li.classList.add('expanded');
-      }
-
       ul.appendChild(li);
-    });
-
-    // Ajouter les listeners pour les toggles
-    document.querySelectorAll('.toggle-submenu').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const li = btn.parentElement;
-        const idx = parseInt(li.dataset.index);
-        if (li.classList.toggle('expanded')) {
-          expandedItems.add(idx);
-        } else {
-          expandedItems.delete(idx);
-        }
-      });
     });
   }
 }
 
-// Ajout / Modification principal
+// Ajout / Modification
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -194,7 +127,6 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   const type   = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
   const noteStr = document.getElementById('note').value.trim();
-  const hasSubmenu = document.getElementById('hasSubmenu').checked;
 
   if (!nom || !type || !statut || !noteStr) return;
 
@@ -204,10 +136,9 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  const editIndex = this.dataset.editIndex;
-  const subItems = editIndex !== undefined ? items[parseInt(editIndex)].subItems : [];
+  const nouvelItem = { nom, type, statut, note };
 
-  const nouvelItem = { nom, type, statut, note, hasSubmenu, subItems };
+  const editIndex = this.dataset.editIndex;
 
   if (editIndex !== undefined) {
     items[parseInt(editIndex)] = nouvelItem;
@@ -221,17 +152,15 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
   this.reset();
-  document.getElementById('hasSubmenu').checked = false;
 });
 
-// Edition principal
+// Edition
 function editerItem(index) {
   const item = items[index];
   document.getElementById('nom').value    = item.nom;
   document.getElementById('type').value   = item.type;
   document.getElementById('statut').value = item.statut;
   document.getElementById('note').value   = item.note;
-  document.getElementById('hasSubmenu').checked = item.hasSubmenu;
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
@@ -239,49 +168,79 @@ function editerItem(index) {
 
 document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
   document.getElementById('formAjout').reset();
-  document.getElementById('hasSubmenu').checked = false;
   delete document.getElementById('formAjout').dataset.editIndex;
   this.style.display = 'none';
 });
 
-// Suppression principal
+// Suppression
 function supprimerItem(index) {
   if (!confirm('Supprimer cet élément ?')) return;
   items.splice(index, 1);
-  expandedItems.delete(index);
   sauvegarder();
   afficherListe(document.getElementById('recherche').value);
   mettreAJourCompteurs();
 }
 
-// Fonctions pour sous-items
-function ajouterSubEntry(index) {
-  const nom = document.getElementById(`sub-nom-${index}`).value.trim();
-  const subType = document.getElementById(`sub-type-${index}`).value;
-  const statut = document.getElementById(`sub-statut-${index}`).value;
+// Événements
+document.getElementById('recherche').addEventListener('input', function() {
+  afficherListe(this.value);
+});
 
-  if (!nom || !subType || !statut) {
-    alert('Veuillez remplir tous les champs pour le sous-élément.');
-    return;
-  }
-
-  const btn = document.getElementById(`sub-ajouter-${index}`);
-  const editSubindex = btn.dataset.editSubindex;
-
-  if (editSubindex !== undefined) {
-    const sidx = parseInt(editSubindex);
-    items[index].subItems[sidx] = { nom, subType, statut, isSeparator: false };
-    delete btn.dataset.editSubindex;
-    btn.textContent = 'Ajouter';
-  } else {
-    items[index].subItems.push({ nom, subType, statut, isSeparator: false });
-  }
-
-  sauvegarder();
+document.getElementById('filtre-statut').addEventListener('change', function() {
   afficherListe(document.getElementById('recherche').value);
-}
+});
 
-function ajouterSeparator(index) {
-  items[index].subItems.push({ isSeparator: true });
-  sauvegarder();
-  afficherListe
+document.getElementById('filtre-type').addEventListener('change', function() {
+  afficherListe(document.getElementById('recherche').value);
+});
+
+document.getElementById('tri-nom').addEventListener('change', function() {
+  document.getElementById('tri-note').value = '';
+  afficherListe(document.getElementById('recherche').value);
+});
+
+document.getElementById('tri-note').addEventListener('change', function() {
+  document.getElementById('tri-nom').value = '';
+  afficherListe(document.getElementById('recherche').value);
+});
+
+// Export
+document.getElementById('exporter').addEventListener('click', function() {
+  const data = localStorage.getItem(CLE_STORAGE);
+  if (!data) return alert('Aucune donnée à exporter');
+
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mon-tracker-animes.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Import
+document.getElementById('importer').addEventListener('click', function() {
+  const fileInput = document.getElementById('importeur');
+  const file = fileInput.files[0];
+  if (!file) return alert('Sélectionne un fichier JSON');
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('Pas un tableau valide');
+      items = data;
+      sauvegarder();
+      afficherListe();
+      mettreAJourCompteurs();
+      alert('Import réussi !');
+      fileInput.value = '';
+    } catch (err) {
+      alert('Erreur : fichier invalide ou corrompu\n' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+// Démarrage
+chargerDonnees();
