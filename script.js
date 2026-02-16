@@ -290,5 +290,46 @@ document.getElementById('importer').addEventListener('click', function() {
   reader.readAsText(file);
 });
 
+function supprimerItem(index) {
+  if (!confirm('Supprimer cet élément ?')) return;
+  items.splice(index, 1);
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+  mettreAJourCompteurs();
+}
+
+
+// ======== NOUVELLES FONCTIONS SOUS MENU ========
+
+function toggleSousMenu(index) {
+  items[index].ouvert = !items[index].ouvert;
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+function ajouterSousElement(index) {
+  const nom = prompt("Nom du sous élément ?");
+  if (!nom) return;
+
+  const statut = prompt("Statut ?");
+  const type = prompt("Type ?");
+
+  items[index].sousMenu.push({
+    nom,
+    statut,
+    type
+  });
+
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+function ajouterSeparateur(index) {
+  items[index].sousMenu.push({ type: "separateur" });
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+
 // Démarrage
 chargerDonnees();
