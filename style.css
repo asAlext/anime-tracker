@@ -314,26 +314,19 @@ body {
   font-size: 0.9rem;
 }
 
-.separator {
-  height: 1px;
-  background: #444;
-  margin: 12px 0;
-}
-
-/* Sous-entrées ajoutées – EXACTEMENT comme demandé */
+/* Sous-entrées – EXACTEMENT comme tu as demandé */
 .sub-item {
   display: flex;
   align-items: center;
+  gap: 50px;           /* grand espace entre nom et le groupe statut+type */
   font-size: 1.1rem;
   margin-left: 20px;
-  margin-bottom: 6px;
-  gap: 60px; /* espace entre nom / statut / type */
-  justify-content: flex-start;
+  margin-bottom: 8px;
 }
 
 .sub-item .prefix {
-  width: 20px;
   color: #888;
+  width: 20px;
   text-align: left;
 }
 
@@ -341,26 +334,33 @@ body {
   flex: 1;
   font-weight: bold;
   min-width: 180px;
-  text-align: left;
+}
+
+.sub-item .middle {
+  display: flex;
+  align-items: center;
+  gap: 15px;           /* très proche entre statut et type */
+  min-width: 220px;
+  justify-content: center;   /* au centre de la ligne */
 }
 
 .sub-item .sub-statut {
   color: #a8d5ba;
   font-weight: 600;
-  width: 140px; /* fixe pour rester au centre */
+  min-width: 110px;
   text-align: center;
 }
 
 .sub-item .sub-type {
   color: #b3c7ff;
   font-weight: 500;
-  width: 100px; /* proche du statut */
+  min-width: 80px;
   text-align: left;
 }
 
 .sub-item button {
+  margin-left: auto;
   font-size: 0.9rem;
-  margin-left: 10px;
   color: #ff6b6b;
 }
 
@@ -371,5 +371,4 @@ body {
   .zone-filtres-tris { flex-direction: column; align-items: stretch; }
   .compteurs-container { flex-direction: column; }
   .compteurs-ligne { flex-direction: column; gap: 20px; }
-  .sub-item { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
