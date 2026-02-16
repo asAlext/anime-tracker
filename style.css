@@ -64,7 +64,7 @@ body {
   box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
 }
 
-/* Boutons formulaire – exact comme ton initial */
+/* Boutons formulaire */
 .boutons-form {
   margin: 12px 0 20px 0;
 }
@@ -275,7 +275,7 @@ body {
 
 .actions button:hover { background: #b74c6a; }
 
-/* Sous-menu – placé juste en dessous */
+/* Sous-menu */
 .sub-menu {
   display: none;
   margin-top: 12px;
@@ -290,22 +290,22 @@ body {
   gap: 8px;
   margin-bottom: 12px;
   flex-wrap: wrap;
-  justify-content: flex-end; /* plus à droite */
+  justify-content: flex-end;
 }
 
 .sub-form input,
 .sub-form select {
-  padding: 6px 10px; /* plus petit */
+  padding: 6px 10px;
   background: #2a2a2a;
   border: 1px solid #444;
   color: #fff;
   border-radius: 4px;
-  flex: 0 1 140px; /* plus petit */
+  flex: 0 1 140px;
   min-width: 100px;
 }
 
 .sub-form button {
-  padding: 6px 12px; /* plus petit */
+  padding: 6px 12px;
   background: #03dac6;
   color: #000;
   border: none;
@@ -314,35 +314,46 @@ body {
   font-size: 0.9rem;
 }
 
-.separator {
-  height: 1px;
-  background: #444;
-  margin: 12px 0;
-}
-
-/* Sous-entrées ajoutées – même taille que les noms principaux */
+/* Sous-entrées ajoutées – EXACTEMENT comme demandé */
 .sub-item {
-  font-size: 1.1rem; /* même taille que .item-nom */
-  font-weight: bold;
-  margin-left: 20px;
-  margin-bottom: 6px;
   display: flex;
   align-items: center;
-  gap: 40px;
-  justify-content: flex-end; /* plus à droite */
+  gap: 30px;           /* espace entre nom / statut / type */
+  font-size: 1.1rem;
+  margin-left: 20px;
+  margin-bottom: 6px;
 }
 
-.sub-item .sub-statut,
-.sub-item .sub-type {
-  min-width: 100px;
-  text-align: right;
-  font-size: 1.1rem; /* plus gros et statique */
+.sub-item .prefix {
+  color: #888;
+  width: 20px;
+  text-align: left;
+}
+
+.sub-item .sub-nom {
+  flex: 1;
+  font-weight: bold;
+  min-width: 180px;
+}
+
+.sub-item .sub-statut {
+  color: #a8d5ba;
   font-weight: 600;
+  min-width: 120px;
+  text-align: center;
+}
+
+.sub-item .sub-type {
+  color: #b3c7ff;
+  font-weight: 500;
+  min-width: 90px;
+  text-align: left;
 }
 
 .sub-item button {
   font-size: 0.9rem;
   margin-left: 10px;
+  color: #ff6b6b;
 }
 
 /* Responsive */
@@ -352,5 +363,4 @@ body {
   .zone-filtres-tris { flex-direction: column; align-items: stretch; }
   .compteurs-container { flex-direction: column; }
   .compteurs-ligne { flex-direction: column; gap: 20px; }
-  .sub-item { justify-content: flex-start; flex-direction: column; align-items: flex-start; }
 }
