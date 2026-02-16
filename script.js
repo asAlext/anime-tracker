@@ -44,7 +44,6 @@ function afficherListe(filtreNom = '') {
   const filtreType = document.getElementById('filtre-type')?.value || '';
   if (filtreType) resultat = resultat.filter(item => item.type === filtreType);
 
-  // Tri (inchangé)
   const triNom = document.getElementById('tri-nom')?.value || '';
   const triNote = document.getElementById('tri-note')?.value || '';
 
@@ -103,7 +102,6 @@ function afficherListe(filtreNom = '') {
       `;
       ul.appendChild(li);
 
-      // Afficher les sous-items existants
       if (item.hasSubMenu) {
         renderSubItems(indexOriginal);
       }
@@ -172,7 +170,7 @@ function supprimerSousItem(mainIndex, subIndex) {
   }
 }
 
-// Ajout / Modification (avec hasSubMenu)
+// Ajout / Modification
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -241,9 +239,7 @@ function supprimerItem(index) {
   mettreAJourCompteurs();
 }
 
-// Autres événements (recherche, filtres, tris, export/import) restent identiques à la version précédente
-// (je les ai inclus ci-dessous pour que tu puisses tout copier-coller)
-
+// Événements
 document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
