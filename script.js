@@ -195,6 +195,7 @@ function renderSubItems(mainIndex) {
       div.innerHTML = `<div class="separator"></div>`;
     } else {
       div.innerHTML = `
+        <span class="prefix">-</span>
         <span class="sub-nom">${sub.nom}</span>
         <span class="sub-statut">${sub.statut}</span>
         <span class="sub-type">${sub.type}</span>
