@@ -46,15 +46,14 @@
           <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 9.5" required>
         </div>
 
-        <!-- Case à cocher Sous Menu -->
-        <div class="champ checkbox-sousmenu">
-          <label>
-            <input type="checkbox" id="hasSubMenu">
-            Activer Sous Menu
-          </label>
-        </div>
-        
+        <!-- Case à cocher Sous Menu – alignée avec le bouton Ajouter -->
         <div class="boutons-form">
+          <div class="checkbox-sousmenu">
+            <label>
+              <input type="checkbox" id="hasSubMenu">
+              Activer Sous Menu
+            </label>
+          </div>
           <button type="submit">Ajouter</button>
           <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler</button>
         </div>
@@ -103,6 +102,7 @@
               <option value="desc">Z → A</option>
             </select>
           </div>
+          
           <div class="filtre-statut">
             <label>Filtrer par statut :</label>
             <select id="filtre-statut">
@@ -115,6 +115,7 @@
               <option value="plus jamais">Plus Jamais</option>
             </select>
           </div>
+          
           <div class="filtre-type">
             <label>Filtrer par type :</label>
             <select id="filtre-type">
@@ -123,6 +124,7 @@
               <option value="film">Film</option>
             </select>
           </div>
+          
           <div class="zone-tris">
             <label>Trier par note :</label>
             <select id="tri-note">
