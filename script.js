@@ -104,15 +104,17 @@ function afficherListe(filtreNom = '') {
       li.className = item.hasSubMenu ? 'li' : '';
 
       li.innerHTML = `
-        <span class="item-nom">${item.nom}</span>
-        <div class="right-fixed">
-          <span class="item-statut">${item.statut}</span>
-          <span class="item-type">${item.type}</span>
-          <span class="item-note">Note : ${Number(item.note)}/10</span>
-          <div class="actions">
-            <button onclick="editerItem(${indexOriginal})">Modifier</button>
-            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
-            ${item.hasSubMenu ? `<span class="arrow" onclick="toggleSubMenu(this)">▼</span>` : ''}
+        <div class="main-row">
+          <span class="item-nom">${item.nom}</span>
+          <div class="right-fixed">
+            <span class="item-statut">${item.statut}</span>
+            <span class="item-type">${item.type}</span>
+            <span class="item-note">Note : ${Number(item.note)}/10</span>
+            <div class="actions">
+              <button onclick="editerItem(${indexOriginal})">Modifier</button>
+              <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+              ${item.hasSubMenu ? `<span class="arrow" onclick="toggleSubMenu(this)">▼</span>` : ''}
+            </div>
           </div>
         </div>
 
