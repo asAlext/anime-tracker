@@ -219,9 +219,6 @@ body {
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #2a2a2a;
-}
-
-#liste li .content {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -231,36 +228,3 @@ body {
 .item-nom {
   font-weight: bold;
   font-size: 1.1rem;
-  flex: 1;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.right-fixed {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  min-width: 420px;
-  justify-content: flex-end;
-  flex-shrink: 0;
-}
-
-.item-statut { color: #a8d5ba; font-weight: 600; min-width: 120px; text-align: right; text-transform: capitalize; }
-.item-type { color: #b3c7ff; font-weight: 500; min-width: 80px; text-align: right; text-transform: capitalize; }
-.item-note { color: #f0d9a2; font-weight: bold; min-width: 120px; text-align: right; }
-
-.actions {
-  display: flex;
-  gap: 12px;
-  flex-shrink: 0;
-  min-width: 160px;
-  justify-content: flex-end;
-}
-
-.actions button {
-  padding: 8px 14px;
-  background: #cf6679;
-  border: none;
-  border-radius: 6px
