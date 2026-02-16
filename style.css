@@ -301,19 +301,17 @@ body {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
-  justify-content: center; /* centre les champs Statut + Type */
-  align-items: center;
+  justify-content: flex-end; /* pousse tout vers la droite */
 }
 
-.sub-form input { /* Nom – reste à gauche */
+.sub-form input { /* Nom */
   flex: 1;
   max-width: 220px;
 }
 
-.sub-form select { /* Statut et Type – déplacés vers le milieu, statiques */
-  flex: 0 0 140px; /* largeur fixe */
+.sub-form select { /* Statut et Type – plus à droite et statiques */
+  flex: 0 0 140px;
   min-width: 140px;
-  max-width: 140px;
 }
 
 .sub-form button {
