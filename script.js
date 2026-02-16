@@ -62,8 +62,10 @@ function afficherListe(filtreNom = '') {
 
     resultat.forEach((item) => {
       const indexOriginal = items.indexOf(item);
+
       const li = document.createElement('li');
       li.className = item.hasSubMenu ? 'li' : '';
+
       li.innerHTML = `
         <div class="main-row">
           <span class="item-nom">${item.nom}</span>
@@ -78,6 +80,7 @@ function afficherListe(filtreNom = '') {
             </div>
           </div>
         </div>
+
         ${item.hasSubMenu ? `
         <div class="sub-menu">
           <div class="sub-form">
@@ -100,9 +103,12 @@ function afficherListe(filtreNom = '') {
           <div class="sub-list" id="sub-list-${indexOriginal}"></div>
         </div>` : ''}
       `;
+
       ul.appendChild(li);
 
-      if (item.hasSubMenu) renderSubItems(indexOriginal);
+      if (item.hasSubMenu) {
+        renderSubItems(indexOriginal);
+      }
     });
   }
 }
@@ -131,7 +137,9 @@ function ajouterSousItem(mainIndex, btn) {
 
 function ajouterSeparateur(mainIndex, btn) {
   if (!items[mainIndex].subItems) items[mainIndex].subItems = [];
+
   items[mainIndex].subItems.push({ id: Date.now(), isSeparator: true });
+
   sauvegarder();
   renderSubItems(mainIndex);
 }
@@ -142,6 +150,7 @@ function renderSubItems(mainIndex) {
   container.innerHTML = '';
 
   const subItems = items[mainIndex].subItems || [];
+
   subItems.forEach((sub, i) => {
     const div = document.createElement('div');
     div.style.marginBottom = '8px';
@@ -183,7 +192,11 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  const nouvelItem = { nom, type, statut, note, hasSubMenu, subItems: hasSubMenu ? [] : undefined };
+  const nouvelItem = { 
+    nom, type, statut, note, 
+    hasSubMenu, 
+    subItems: hasSubMenu ? [] : undefined 
+  };
 
   const editIndex = this.dataset.editIndex;
 
@@ -202,6 +215,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   document.getElementById('hasSubMenu').checked = false;
 });
 
+// Edition
 function editerItem(index) {
   const item = items[index];
   document.getElementById('nom').value = item.nom;
@@ -229,7 +243,7 @@ function supprimerItem(index) {
   mettreAJourCompteurs();
 }
 
-// Autres événements
+// Événements
 document.getElementById('recherche').addEventListener('input', function() {
   afficherListe(this.value);
 });
@@ -287,4 +301,5 @@ document.getElementById('importer').addEventListener('click', function() {
   reader.readAsText(file);
 });
 
+// Démarrage
 chargerDonnees();
