@@ -101,20 +101,30 @@ function afficherListe(filtreNom = '') {
       const indexOriginal = items.indexOf(item);
 
       const li = document.createElement('li');
-      li.innerHTML = `
-        <span class="item-nom">${item.nom}</span>
-        <div class="right-fixed">
-          <span class="item-statut">${item.statut}</span>
-          <span class="item-type">${item.type}</span>
-          <span class="item-note">Note : ${Number(item.note)}/10</span>
-          <div class="actions">
-            <button onclick="editerItem(${indexOriginal})">Modifier</button>
-            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
-          </div>
-        </div>
-      `;
+li.classList.add('item-principal');
 
-      ul.appendChild(li);
+let flecheHTML = '';
+if (item.aSousMenu) {
+  flecheHTML = `<span class="fleche" onclick="toggleSousMenu(${indexOriginal})">▼</span>`;
+}
+
+li.innerHTML = `
+  <div class="ligne-principale">
+    ${flecheHTML}
+    <span class="item-nom">${item.nom}</span>
+    <div class="right-fixed">
+      <span class="item-statut">${item.statut}</span>
+      <span class="item-type">${item.type}</span>
+      <span class="item-note">Note : ${Number(item.note)}/10</span>
+      <div class="actions">
+        <button onclick="editerItem(${indexOriginal})">Modifier</button>
+        <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+      </div>
+    </div>
+  </div>
+`;
+
+ul.appendChild(li);;
     });
   }
 }
