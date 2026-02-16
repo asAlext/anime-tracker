@@ -64,7 +64,7 @@ body {
   box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
 }
 
-/* Boutons formulaire – RESTAURÉS EXACTEMENT COMME TON SCRIPT INITIAL */
+/* Boutons formulaire */
 .boutons-form {
   margin: 12px 0 20px 0;
 }
@@ -86,21 +86,7 @@ body {
 
 .boutons-form button[type="submit"]:hover { background: #8fc9a0; }
 
-/* Case à cocher Sous Menu (nouveau) */
-.checkbox-sousmenu {
-  margin: 15px 0 25px 0;
-}
-
-.checkbox-sousmenu label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  color: #d4c3e8;
-  cursor: pointer;
-}
-
-/* Compteurs (inchangé de ton script initial) */
+/* === COMPTEURS === */
 .compteurs-container {
   margin: 20px 0 30px 0;
 }
@@ -157,7 +143,7 @@ body {
   color: #e0e0ff;
 }
 
-/* Export/Import (inchangé) */
+/* Export/Import */
 .zone-export {
   margin-top: auto;
   display: flex;
@@ -216,7 +202,7 @@ body {
   min-width: 140px;
 }
 
-/* Recherche et liste */
+/* Recherche et liste (inchangé) */
 #recherche {
   width: 100%;
   padding: 14px;
@@ -233,10 +219,6 @@ body {
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #2a2a2a;
-  transition: all 0.3s ease;
-}
-
-.main-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -247,59 +229,44 @@ body {
   font-weight: bold;
   font-size: 1.1rem;
   flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.arrow {
-  cursor: pointer;
-  font-size: 1.4rem;
-  transition: transform 0.3s ease;
-}
-
-.arrow:hover { color: #bb86fc; }
-
-.li.expanded .arrow { transform: rotate(180deg); }
-
-.sub-menu {
-  display: none;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #333;
-}
-
-.li.expanded .sub-menu { display: block; }
-
-.sub-form {
+.right-fixed {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+  min-width: 420px;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
-.sub-form input,
-.sub-form select {
-  padding: 8px;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  color: #fff;
-  border-radius: 4px;
-  flex: 1;
-  min-width: 120px;
+.item-statut { color: #a8d5ba; font-weight: 600; min-width: 120px; text-align: right; text-transform: capitalize; }
+.item-type { color: #b3c7ff; font-weight: 500; min-width: 80px; text-align: right; text-transform: capitalize; }
+.item-note { color: #f0d9a2; font-weight: bold; min-width: 120px; text-align: right; }
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 160px;
+  justify-content: flex-end;
 }
 
-.sub-form button {
-  padding: 8px 12px;
-  background: #03dac6;
-  color: #000;
+.actions button {
+  padding: 8px 14px;
+  background: #cf6679;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  color: white;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
-.separator {
-  height: 1px;
-  background: #444;
-  margin: 12px 0;
-}
+.actions button:hover { background: #b74c6a; }
 
 /* Responsive */
 @media (max-width: 850px) {
@@ -308,4 +275,5 @@ body {
   .zone-filtres-tris { flex-direction: column; align-items: stretch; }
   .compteurs-container { flex-direction: column; }
   .compteurs-ligne { flex-direction: column; gap: 20px; }
+  .right-fixed { flex-direction: column; align-items: flex-end; gap: 8px; min-width: auto; }
 }
