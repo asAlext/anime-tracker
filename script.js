@@ -8,6 +8,11 @@ let items = [];
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
+  items = items.map(item => ({
+    ...item,
+    hasSubmenu: item.hasSubmenu || false,
+    subItems: item.subItems || []
+  }));
   afficherListe();
   mettreAJourCompteurs();
 }
@@ -45,7 +50,7 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste (inchangé)
+// Afficher la liste
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
@@ -99,19 +104,91 @@ function afficherListe(filtreNom = '') {
 
     resultat.forEach((item) => {
       const indexOriginal = items.indexOf(item);
-
       const li = document.createElement('li');
+      li.dataset.index = indexOriginal;
+
+      let arrowHtml = '';
+      let submenuHtml = '';
+
+      if (item.hasSubmenu) {
+        arrowHtml = `<span class="arrow" onclick="toggleSubmenu(${indexOriginal})">▼</span>`;
+
+        submenuHtml = `<div class="submenu" style="max-height: 0px;">`;
+        submenuHtml += `<ul class="sub-liste">`;
+
+        item.subItems.forEach((sub, subIndex) => {
+          if (sub.type === 'separator') {
+            submenuHtml += `
+              <li class="separator">
+                <hr>
+                <div class="sub-actions">
+                  <button onclick="supprimerSubItem(${indexOriginal}, ${subIndex})">Supprimer</button>
+                </div>
+              </li>
+            `;
+          } else {
+            submenuHtml += `
+              <li class="sub-item">
+                <span class="sub-nom">${sub.nom}</span>
+                <span class="sub-statut">${sub.statut}</span>
+                <span class="sub-type">${sub.type}</span>
+                <div class="sub-actions">
+                  <button onclick="editerSubItem(${indexOriginal}, ${subIndex})">Modifier</button>
+                  <button onclick="supprimerSubItem(${indexOriginal}, ${subIndex})">Supprimer</button>
+                </div>
+              </li>
+            `;
+          }
+        });
+
+        submenuHtml += `</ul>`;
+
+        submenuHtml += `
+          <form class="form-add-sub" onsubmit="ajouterSubItem(event, ${indexOriginal})">
+            <input type="text" name="subNom" placeholder="Nom" required>
+            <select name="subType" required>
+              <option value="">Type</option>
+              <option value="anime">Anime</option>
+              <option value="film">Film</option>
+            </select>
+            <select name="subStatut" required>
+              <option value="">Statut</option>
+              <option value="fini">Fini</option>
+              <option value="en cours">En cours</option>
+              <option value="en pause">En pause</option>
+              <option value="a regarder">À regarder</option>
+              <option value="abandon">Abandon</option>
+              <option value="plus jamais">Plus jamais</option>
+            </select>
+            <button type="submit">Ajouter</button>
+            <button type="button" class="btn-annuler-sub" style="display:none;" onclick="annulerSubEdit(${indexOriginal})">Annuler</button>
+          </form>
+        `;
+
+        submenuHtml += `
+          <div class="add-sub">
+            <button onclick="ajouterSeparator(${indexOriginal})">Ajouter Séparateur</button>
+          </div>
+        `;
+
+        submenuHtml += `</div>`;
+      }
+
       li.innerHTML = `
-        <span class="item-nom">${item.nom}</span>
-        <div class="right-fixed">
-          <span class="item-statut">${item.statut}</span>
-          <span class="item-type">${item.type}</span>
-          <span class="item-note">Note : ${Number(item.note)}/10</span>
-          <div class="actions">
-            <button onclick="editerItem(${indexOriginal})">Modifier</button>
-            <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+        <div class="content">
+          <span class="item-nom">${item.nom}</span>
+          ${arrowHtml}
+          <div class="right-fixed">
+            <span class="item-statut">${item.statut}</span>
+            <span class="item-type">${item.type}</span>
+            <span class="item-note">Note : ${Number(item.note)}/10</span>
+            <div class="actions">
+              <button onclick="editerItem(${indexOriginal})">Modifier</button>
+              <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
+            </div>
           </div>
         </div>
+        ${submenuHtml}
       `;
 
       ul.appendChild(li);
@@ -119,14 +196,91 @@ function afficherListe(filtreNom = '') {
   }
 }
 
-// Ajout / Modification
+// Toggle submenu
+function toggleSubmenu(index) {
+  const li = document.querySelector(`#liste li[data-index="${index}"]`);
+  li.classList.toggle('open');
+  const submenu = li.querySelector('.submenu');
+  if (li.classList.contains('open')) {
+    submenu.style.maxHeight = submenu.scrollHeight + 'px';
+  } else {
+    submenu.style.maxHeight = '0px';
+  }
+}
+
+// Ajouter separator
+function ajouterSeparator(index) {
+  items[index].subItems.push({ type: 'separator' });
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+// Ajouter / Modifier sub item
+function ajouterSubItem(e, index) {
+  e.preventDefault();
+  const form = e.target;
+  const nom = form.subNom.value.trim();
+  const type = form.subType.value;
+  const statut = form.subStatut.value;
+  if (!nom || !type || !statut) return;
+
+  const editSubIndex = form.dataset.editSubIndex;
+  if (editSubIndex !== undefined) {
+    const subI = parseInt(editSubIndex);
+    items[index].subItems[subI] = { type: 'item', nom, type: type, statut };
+    delete form.dataset.editSubIndex;
+    form.querySelector('button[type="submit"]').textContent = 'Ajouter';
+    form.querySelector('.btn-annuler-sub').style.display = 'none';
+  } else {
+    items[index].subItems.push({ type: 'item', nom, type: type, statut });
+  }
+
+  form.reset();
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+// Editer sub item
+function editerSubItem(mainIndex, subIndex) {
+  const li = document.querySelector(`li[data-index="${mainIndex}"]`);
+  const form = li.querySelector('.form-add-sub');
+  const sub = items[mainIndex].subItems[subIndex];
+
+  form.subNom.value = sub.nom;
+  form.subType.value = sub.type;
+  form.subStatut.value = sub.statut;
+  form.dataset.editSubIndex = subIndex;
+  form.querySelector('button[type="submit"]').textContent = 'Modifier';
+  form.querySelector('.btn-annuler-sub').style.display = 'inline';
+}
+
+// Annuler edit sub
+function annulerSubEdit(mainIndex) {
+  const li = document.querySelector(`li[data-index="${mainIndex}"]`);
+  const form = li.querySelector('.form-add-sub');
+  form.reset();
+  delete form.dataset.editSubIndex;
+  form.querySelector('button[type="submit"]').textContent = 'Ajouter';
+  form.querySelector('.btn-annuler-sub').style.display = 'none';
+}
+
+// Supprimer sub item
+function supprimerSubItem(mainIndex, subIndex) {
+  if (!confirm('Supprimer cet élément ?')) return;
+  items[mainIndex].subItems.splice(subIndex, 1);
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+}
+
+// Ajout / Modification main
 document.getElementById('formAjout').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const nom    = document.getElementById('nom').value.trim();
-  const type   = document.getElementById('type').value;
+  const nom = document.getElementById('nom').value.trim();
+  const type = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
   const noteStr = document.getElementById('note').value.trim();
+  const hasSubmenu = document.getElementById('hasSubmenu').checked;
 
   if (!nom || !type || !statut || !noteStr) return;
 
@@ -136,15 +290,17 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  const nouvelItem = { nom, type, statut, note };
-
   const editIndex = this.dataset.editIndex;
+  let nouvelItem;
 
   if (editIndex !== undefined) {
+    const oldItem = items[parseInt(editIndex)];
+    nouvelItem = { ...oldItem, nom, type, statut, note, hasSubmenu };
     items[parseInt(editIndex)] = nouvelItem;
     delete this.dataset.editIndex;
     document.getElementById('btnAnnulerEdit').style.display = 'none';
   } else {
+    nouvelItem = { nom, type, statut, note, hasSubmenu, subItems: [] };
     items.push(nouvelItem);
   }
 
@@ -154,93 +310,13 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   this.reset();
 });
 
-// Edition
+// Edition main
 function editerItem(index) {
   const item = items[index];
-  document.getElementById('nom').value    = item.nom;
-  document.getElementById('type').value   = item.type;
+  document.getElementById('nom').value = item.nom;
+  document.getElementById('type').value = item.type;
   document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value   = item.note;
+  document.getElementById('note').value = item.note;
+  document.getElementById('hasSubmenu').checked = item.hasSubmenu;
 
-  document.getElementById('formAjout').dataset.editIndex = index;
-  document.getElementById('btnAnnulerEdit').style.display = 'inline';
-}
-
-document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
-  document.getElementById('formAjout').reset();
-  delete document.getElementById('formAjout').dataset.editIndex;
-  this.style.display = 'none';
-});
-
-// Suppression
-function supprimerItem(index) {
-  if (!confirm('Supprimer cet élément ?')) return;
-  items.splice(index, 1);
-  sauvegarder();
-  afficherListe(document.getElementById('recherche').value);
-  mettreAJourCompteurs();
-}
-
-// Événements
-document.getElementById('recherche').addEventListener('input', function() {
-  afficherListe(this.value);
-});
-
-document.getElementById('filtre-statut').addEventListener('change', function() {
-  afficherListe(document.getElementById('recherche').value);
-});
-
-document.getElementById('filtre-type').addEventListener('change', function() {
-  afficherListe(document.getElementById('recherche').value);
-});
-
-document.getElementById('tri-nom').addEventListener('change', function() {
-  document.getElementById('tri-note').value = '';
-  afficherListe(document.getElementById('recherche').value);
-});
-
-document.getElementById('tri-note').addEventListener('change', function() {
-  document.getElementById('tri-nom').value = '';
-  afficherListe(document.getElementById('recherche').value);
-});
-
-// Export
-document.getElementById('exporter').addEventListener('click', function() {
-  const data = localStorage.getItem(CLE_STORAGE);
-  if (!data) return alert('Aucune donnée à exporter');
-
-  const blob = new Blob([data], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'mon-tracker-animes.json';
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-// Import
-document.getElementById('importer').addEventListener('click', function() {
-  const fileInput = document.getElementById('importeur');
-  const file = fileInput.files[0];
-  if (!file) return alert('Sélectionne un fichier JSON');
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (!Array.isArray(data)) throw new Error('Pas un tableau valide');
-      items = data;
-      sauvegarder();
-      afficherListe();
-      mettreAJourCompteurs();
-      alert('Import réussi !');
-      fileInput.value = '';
-    } catch (err) {
-      alert('Erreur : fichier invalide ou corrompu\n' + err.message);
-    }
-  };
-  reader.readAsText(file);
-});
-
-// Démarrage
-chargerDonnees();
+  document.getElementById('formAjout
