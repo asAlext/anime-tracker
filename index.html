@@ -16,7 +16,7 @@
       <form id="formAjout">
         <div class="champ">
           <label for="nom">Nom</label>
-          <input type="text" id="nom" placeholder="Nom de l'anime / film" required>
+          <input type="text" id="nom" placeholder="Nom " required>
         </div>
         
         <div class="champ">
@@ -33,20 +33,20 @@
           <select id="statut" required>
             <option value="">Choisir</option>
             <option value="fini">Fini</option>
-            <option value="abandon">Abandon</option>
-            <option value="en pause">En pause</option>
-            <option value="a regarder">À regarder</option>
             <option value="en cours">En cours</option>
-            <option value="plus jamais">Plus jamais</option>
+            <option value="en pause">En pause</option>
+            <option value="a regarder">A Regarder</option>
+            <option value="abandon">Abandon</option>
+            <option value="plus jamais">Plus Jamais</option>
           </select>
         </div>
         
         <div class="champ">
-          <label for="note">Note (0 à 10, ex: 9.5)</label>
+          <label for="note">Note </label>
           <input type="number" id="note" step="0.5" min="0" max="10" placeholder="ex: 9.5" required>
         </div>
-
-        <!-- Case à cocher + bouton Ajouter alignés -->
+        
+        <!-- Case à cocher Sous Menu + bouton Ajouter (alignés horizontalement) -->
         <div class="boutons-form">
           <div class="checkbox-sousmenu">
             <label>
@@ -70,14 +70,33 @@
 
         <div class="compteurs-ligne">
           <div class="compteurs-colonne gauche">
-            <div class="compteur"><span class="label">Fini</span><span id="count-fini" class="valeur">0</span></div>
-            <div class="compteur"><span class="label">En Cours</span><span id="count-en-cours" class="valeur">0</span></div>
-            <div class="compteur"><span class="label">En Pause</span><span id="count-en-pause" class="valeur">0</span></div>
+            <div class="compteur">
+              <span class="label">Fini</span>
+              <span id="count-fini" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">En Cours</span>
+              <span id="count-en-cours" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">En Pause</span>
+              <span id="count-en-pause" class="valeur">0</span>
+            </div>
           </div>
+
           <div class="compteurs-colonne droite">
-            <div class="compteur"><span class="label">A Regarder</span><span id="count-a-regarder" class="valeur">0</span></div>
-            <div class="compteur"><span class="label">Abandon</span><span id="count-abandon" class="valeur">0</span></div>
-            <div class="compteur"><span class="label">Plus Jamais</span><span id="count-plus-jamais" class="valeur">0</span></div>
+            <div class="compteur">
+              <span class="label">A Regarder</span>
+              <span id="count-a-regarder" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">Abandon</span>
+              <span id="count-abandon" class="valeur">0</span>
+            </div>
+            <div class="compteur">
+              <span class="label">Plus Jamais</span>
+              <span id="count-plus-jamais" class="valeur">0</span>
+            </div>
           </div>
         </div>
       </div>
@@ -98,8 +117,8 @@
             <label>Trier par nom :</label>
             <select id="tri-nom">
               <option value="">Aucun</option>
-              <option value="asc">A → Z</option>
-              <option value="desc">Z → A</option>
+              <option value="asc">A - Z</option>
+              <option value="desc">Z - A</option>
             </select>
           </div>
           
@@ -108,10 +127,10 @@
             <select id="filtre-statut">
               <option value="">Tous</option>
               <option value="fini">Fini</option>
-              <option value="abandon">Abandon</option>
+              <option value="en cours">En Cours</option>
               <option value="en pause">En pause</option>
               <option value="a regarder">A Regarder</option>
-              <option value="en cours">En Cours</option>
+              <option value="abandon">Abandon</option>
               <option value="plus jamais">Plus Jamais</option>
             </select>
           </div>
@@ -129,8 +148,8 @@
             <label>Trier par note :</label>
             <select id="tri-note">
               <option value="">Aucun</option>
-              <option value="asc">0 → 10</option>
-              <option value="desc">10 → 0</option>
+              <option value="asc">0 - 10</option>
+              <option value="desc">10 - 0</option>
             </select>
           </div>
         </div>
