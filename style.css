@@ -88,7 +88,7 @@ body {
 
 .boutons-form button[type="submit"]:hover { background: #8fc9a0; }
 
-/* Case à cocher Sous Menu – alignée avec les boutons */
+/* Case à cocher Sous Menu */
 .checkbox-sousmenu {
   display: flex;
   align-items: center;
@@ -195,7 +195,7 @@ body {
   border-radius: 6px;
 }
 
-/* Liste items */
+/* Liste items – position exacte comme ton initial */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -227,8 +227,8 @@ body {
 .right-fixed {
   display: flex;
   align-items: center;
-  gap: 40px;
-  min-width: 420px;
+  gap: 60px; /* augmenté pour décaler plus à droite */
+  min-width: 480px; /* largeur fixe pour rester statique */
   justify-content: flex-end;
   flex-shrink: 0;
 }
@@ -236,24 +236,27 @@ body {
 .item-statut {
   color: #a8d5ba;
   font-weight: 600;
-  min-width: 120px;
+  min-width: 140px;
   text-align: right;
   text-transform: capitalize;
+  font-size: 1.1rem; /* augmenté pour matcher le nom */
 }
 
 .item-type {
   color: #b3c7ff;
   font-weight: 500;
-  min-width: 80px;
+  min-width: 100px;
   text-align: right;
   text-transform: capitalize;
+  font-size: 1.1rem; /* augmenté */
 }
 
 .item-note {
   color: #f0d9a2;
   font-weight: bold;
-  min-width: 120px;
+  min-width: 140px;
   text-align: right;
+  font-size: 1.1rem; /* augmenté */
 }
 
 .actions {
@@ -276,7 +279,7 @@ body {
 
 .actions button:hover { background: #b74c6a; }
 
-/* Sous-menu – placé juste en dessous */
+/* Sous-menu – placé juste en dessous + décalé à droite */
 .sub-menu {
   display: none;
   margin-top: 12px;
@@ -288,25 +291,25 @@ body {
 
 .sub-form {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 12px;
-  flex-wrap: wrap;
   justify-content: flex-end; /* plus à droite */
+  padding-right: 20px; /* décalage supplémentaire vers la droite */
 }
 
 .sub-form input,
 .sub-form select {
-  padding: 6px 10px; /* plus petit */
+  padding: 8px 12px;
   background: #2a2a2a;
   border: 1px solid #444;
   color: #fff;
   border-radius: 4px;
-  flex: 0 1 140px; /* plus petit */
+  flex: 0 1 140px;
   min-width: 100px;
 }
 
 .sub-form button {
-  padding: 6px 12px; /* plus petit */
+  padding: 8px 14px;
   background: #03dac6;
   color: #000;
   border: none;
@@ -325,8 +328,9 @@ body {
 .sub-item {
   font-size: 1.1rem; /* même taille que .item-nom */
   font-weight: bold;
-  margin-left: 20px;
+  margin-left: 30px; /* indenté pour ressembler à Fate → - Lord El-Melloi */
   margin-bottom: 6px;
+  color: #e0e0ff;
 }
 
 .sub-item button {
