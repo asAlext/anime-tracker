@@ -54,18 +54,24 @@ body {
   border-radius: 6px;
   color: #ffffff;
   font-size: 1rem;
+  transition: border-color 0.2s;
 }
 
-/* Boutons formulaire – EXACTEMENT COMME TON ORIGINAL */
+.champ input:focus,
+.champ select:focus {
+  outline: none;
+  border-color: #d4c3e8;
+  box-shadow: 0 0 0 2px rgba(212, 195, 232, 0.2);
+}
+
+/* Boutons formulaire – EXACTEMENT comme ton script initial */
 .boutons-form {
   margin: 12px 0 20px 0;
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .boutons-form button {
   padding: 12px 20px;
+  margin-right: 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -80,7 +86,13 @@ body {
 
 .boutons-form button[type="submit"]:hover { background: #8fc9a0; }
 
-/* Case à cocher Sous Menu */
+/* Case à cocher Sous Menu – alignée avec les boutons */
+.checkbox-sousmenu {
+  margin: 0 12px 0 0;
+  display: inline-flex;
+  align-items: center;
+}
+
 .checkbox-sousmenu label {
   display: flex;
   align-items: center;
@@ -90,11 +102,40 @@ body {
   cursor: pointer;
 }
 
-/* Compteurs */
-.compteurs-container { margin: 20px 0 30px 0; }
-.compteur-total { margin-bottom: 20px; text-align: center; }
-.compteurs-ligne { display: flex; justify-content: space-between; gap: 20px; }
-.compteurs-colonne { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+/* Compteurs (inchangé) */
+.compteurs-container {
+  margin: 20px 0 30px 0;
+}
+
+.compteur-total {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.compteur-total .compteur {
+  display: inline-flex;
+  background: #1e1e1e;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  min-width: 140px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.compteurs-ligne {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.compteurs-colonne {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .compteur {
   background: #1e1e1e;
   padding: 10px 14px;
@@ -105,8 +146,18 @@ body {
   align-items: center;
   min-width: 130px;
 }
-.compteur .label { font-size: 0.95rem; color: #cccccc; }
-.compteur .valeur { font-size: 1.3rem; font-weight: bold; color: #e0e0ff; }
+
+.compteur .label {
+  font-size: 0.95rem;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.compteur .valeur {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e0e0ff;
+}
 
 /* Export/Import */
 .zone-export {
@@ -178,7 +229,7 @@ body {
   border-radius: 6px;
 }
 
-/* === LISTE – BOUTONS TOUT À DROITE + INFOS SUR UNE SEULE LIGNE === */
+/* Liste items – restauré exactement comme avant */
 #liste li {
   background: #1f1f1f;
   padding: 16px 20px;
@@ -187,6 +238,7 @@ body {
   border: 1px solid #2a2a2a;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
 }
 
@@ -204,6 +256,8 @@ body {
   display: flex;
   align-items: center;
   gap: 40px;
+  min-width: 420px;
+  justify-content: flex-end;
   flex-shrink: 0;
 }
 
@@ -234,7 +288,8 @@ body {
   display: flex;
   gap: 12px;
   flex-shrink: 0;
-  margin-left: auto;   /* pousse les boutons tout à droite */
+  min-width: 160px;
+  justify-content: flex-end;
 }
 
 .actions button {
@@ -249,13 +304,21 @@ body {
 
 .actions button:hover { background: #b74c6a; }
 
-/* Sous-menu (juste en dessous) */
+/* === AJOUTS POUR LE SOUS-MENU – MINIMAUX === */
+.checkbox-sousmenu {
+  margin: 0 12px 0 0;
+  display: inline-flex;
+  align-items: center;
+}
+
 .arrow {
   cursor: pointer;
   font-size: 1.4rem;
-  transition: transform 0.3s;
-  margin-left: 15px;
+  transition: transform 0.3s ease;
+  margin-left: 10px;
 }
+
+.arrow:hover { color: #bb86fc; }
 
 .li.expanded .arrow { transform: rotate(180deg); }
 
