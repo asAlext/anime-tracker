@@ -52,9 +52,38 @@
         </div>
       </form>
 
-      <!-- Compteurs en temps réel -->
+      <!-- Checkbox pour Sous Menu -->
+      <div class="champ checkbox-sous-menu">
+        <label for="sous-menu">Ajout Sous Menu</label>
+        <input type="checkbox" id="sous-menu">
+      </div>
+
+      <!-- Section pour gérer les sous-items (cachée par défaut) -->
+      <div id="sous-items-section" style="display: none;">
+        <h3>Sous-items</h3>
+        <ul id="sous-items-list"></ul>
+        <div class="add-sous-item">
+          <input type="text" id="sub-nom" placeholder="Nom sous-item" required>
+          <select id="sub-statut" required>
+            <option value="">Statut</option>
+            <option value="fini">Fini</option>
+            <option value="a regarder">À regarder</option>
+            <option value="en pause">En pause</option>
+            <option value="abandon">Abandon</option>
+            <option value="en cours">En cours</option>
+            <option value="plus jamais">Plus Jamais</option>
+          </select>
+          <select id="sub-type" required>
+            <option value="">Type</option>
+            <option value="anime">Anime</option>
+            <option value="film">Film</option>
+          </select>
+          <button id="add-sous-item-btn">Ajouter sous-item</button>
+        </div>
+      </div>
+
+      <!-- Compteurs -->
       <div class="compteurs-container">
-        <!-- Ligne du haut : Total seul -->
         <div class="compteur-total">
           <div class="compteur">
             <span class="label">Total</span>
@@ -62,7 +91,6 @@
           </div>
         </div>
 
-        <!-- Ligne du milieu : 4 + 3 -->
         <div class="compteurs-ligne">
           <div class="compteurs-colonne gauche">
             <div class="compteur">
@@ -121,8 +149,8 @@
             <label>Filtrer par Statut :</label>
             <select id="filtre-statut">
               <option value="">Tous</option>
-              <option value="fini">Fini</option>
               <option value="en cours">En Cours</option>
+              <option value="fini">Fini</option>
               <option value="en pause">En pause</option>
               <option value="a regarder">A Regarder</option>
               <option value="abandon">Abandon</option>
