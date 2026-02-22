@@ -11,8 +11,12 @@ const posterCache = {};
 const posterPreview = document.getElementById('poster-preview');
 const posterImg = document.getElementById('poster-img');
 
-// Fonction pour récupérer le poster via Jikan API
-async function getPosterUrl(nom) {
+// Fonction pour récupérer le poster (priorise custom si présent, sinon API)
+async function getPosterUrl(nom, customPoster = null) {
+  if (customPoster) {
+    return customPoster;  // Priorité à l'URL manuelle
+  }
+
   if (posterCache[nom]) return posterCache[nom];
 
   try {
@@ -40,27 +44,24 @@ function showPoster(event) {
   const nom = nomElement.textContent.trim();
   if (!nom) return;
 
+  // Pour l'instant on n'a pas l'item ici → on utilise seulement l'API
+  // (pour utiliser posterUrl custom, il faudrait stocker l'item sur l'élément DOM – voir note plus bas)
   getPosterUrl(nom).then(url => {
     if (!url) return;
     posterImg.src = url;
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
-    async function getPosterUrl(nom, customPoster = null) {
-  if (customPoster) return customPoster;  // prioritaire
-  // ... le reste (API)
-}
-    
 
-    const offsetX = 20;               // à droite de la souris
-    const offsetY = -320;             // AU-DESSUS de la souris (ajuste si ton image est plus petite/grande)
+    const offsetX = 20;
+    const offsetY = -320;
 
     let posX = event.clientX + offsetX;
     let posY = event.clientY + offsetY;
 
-    // Clamp basique : ne pas sortir en bas de l'écran
-    if (posY < 10) posY = 10;                           // trop haut → colle en haut
-    if (posY + 300 > window.innerHeight) {              // trop bas → repositionne au-dessus de la souris
-      posY = event.clientY - 320;                       // ou ajuste - hauteur estimée
+    // Clamp basique
+    if (posY < 10) posY = 10;
+    if (posY + 300 > window.innerHeight) {
+      posY = event.clientY - 320;
     }
 
     posterPreview.style.left = posX + 'px';
@@ -223,7 +224,6 @@ function afficherListe(filtreNom = '') {
     });
   }
 
-  // Ajout des events hover sur tous les noms (principaux + sous-menus)
   document.querySelectorAll('.item-nom, .sub-nom').forEach(el => {
     el.addEventListener('mouseenter', showPoster);
     el.addEventListener('mouseleave', hidePoster);
@@ -285,7 +285,6 @@ function renderSubItems(mainIndex) {
     container.appendChild(div);
   });
 
-  // Re-ajout des listeners hover sur les nouveaux sous-noms
   container.querySelectorAll('.sub-nom').forEach(el => {
     el.addEventListener('mouseenter', showPoster);
     el.addEventListener('mouseleave', hidePoster);
@@ -313,14 +312,24 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   if (!nom || !type || !statut || !noteStr) return;
 
   const note = parseFloat(noteStr);
-  const posterUrl = document.getElementById('posterUrl').value.trim();
   if (isNaN(note) || note < 0 || note > 10) {
     alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
     return;
   }
 
-  const nouvelItem = { nom, type, statut, note, hasSubMenu, subItems: hasSubMenu ? [] : undefined };
-  document.getElementById('posterUrl').value = item.posterUrl || '';
+  // Récupération posterUrl (si le champ existe dans le HTML)
+  const posterUrlInput = document.getElementById('posterUrl');
+  const posterUrl = posterUrlInput ? posterUrlInput.value.trim() : '';
+
+  const nouvelItem = { 
+    nom, 
+    type, 
+    statut, 
+    note, 
+    hasSubMenu, 
+    posterUrl: posterUrl || undefined, 
+    subItems: hasSubMenu ? [] : undefined 
+  };
 
   const editIndex = this.dataset.editIndex;
 
@@ -337,6 +346,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   mettreAJourCompteurs();
   this.reset();
   document.getElementById('hasSubMenu').checked = false;
+  if (posterUrlInput) posterUrlInput.value = '';
 });
 
 // Edition
@@ -347,7 +357,11 @@ function editerItem(index) {
   document.getElementById('statut').value = item.statut;
   document.getElementById('note').value = item.note;
   document.getElementById('hasSubMenu').checked = !!item.hasSubMenu;
-  document.getElementById('posterUrl').value = item.posterUrl || '';
+
+  const posterUrlInput = document.getElementById('posterUrl');
+  if (posterUrlInput) {
+    posterUrlInput.value = item.posterUrl || '';
+  }
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
