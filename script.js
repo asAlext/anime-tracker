@@ -46,10 +46,20 @@ function showPoster(event) {
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
 
-    const offsetX = 20;
-    const offsetY = 20;
-    posterPreview.style.left = (event.clientX + offsetX) + 'px';
-    posterPreview.style.top = (event.clientY + offsetY) + 'px';
+    const offsetX = 20;               // à droite de la souris
+    const offsetY = -320;             // AU-DESSUS de la souris (ajuste si ton image est plus petite/grande)
+
+    let posX = event.clientX + offsetX;
+    let posY = event.clientY + offsetY;
+
+    // Clamp basique : ne pas sortir en bas de l'écran
+    if (posY < 10) posY = 10;                           // trop haut → colle en haut
+    if (posY + 300 > window.innerHeight) {              // trop bas → repositionne au-dessus de la souris
+      posY = event.clientY - 320;                       // ou ajuste - hauteur estimée
+    }
+
+    posterPreview.style.left = posX + 'px';
+    posterPreview.style.top = posY + 'px';
   });
 }
 
