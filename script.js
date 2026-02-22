@@ -46,7 +46,6 @@ function showPoster(event) {
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
 
-    // Position près de la souris (décalage pour ne pas cacher le texte)
     const offsetX = 20;
     const offsetY = 20;
     posterPreview.style.left = (event.clientX + offsetX) + 'px';
@@ -59,9 +58,9 @@ function hidePoster() {
   setTimeout(() => {
     if (posterPreview.style.opacity === '0') {
       posterPreview.style.display = 'none';
-      posterImg.src = ''; // nettoie
+      posterImg.src = '';
     }
-  }, 250); // après transition
+  }, 250);
 }
 
 // Charger les données au démarrage
@@ -77,7 +76,7 @@ function sauvegarder() {
   localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
 }
 
-// Mise à jour des compteurs (inchangé)
+// Mise à jour des compteurs
 function mettreAJourCompteurs() {
   const total = items.length;
   const counts = {
@@ -105,7 +104,7 @@ function mettreAJourCompteurs() {
   document.getElementById('count-plus-jamais').textContent = counts['plus jamais'];
 }
 
-// Afficher la liste (inchangé sauf events hover à la fin)
+// Afficher la liste
 function afficherListe(filtreNom = '') {
   const ul = document.getElementById('liste');
   ul.innerHTML = '';
@@ -209,17 +208,208 @@ function afficherListe(filtreNom = '') {
     });
   }
 
-  // Ajout des events hover UNE FOIS la liste affichée
+  // Ajout des events hover sur tous les noms (principaux + sous-menus)
   document.querySelectorAll('.item-nom, .sub-nom').forEach(el => {
     el.addEventListener('mouseenter', showPoster);
     el.addEventListener('mouseleave', hidePoster);
-    // Option : mousemove si tu veux que l'image suive parfaitement
-    // el.addEventListener('mousemove', showPoster);
   });
 }
 
-// Les autres fonctions restent identiques (toggleSubMenu, ajouterSousItem, etc.)
-// ... (copie-colle le reste de ton script.js original ici : toggleSubMenu, ajouterSousItem, ajouterSeparateur, renderSubItems, supprimerSousItem, form submit, editerItem, btnAnnulerEdit, supprimerItem, events filtres/tris/recherche, export, import)
+function toggleSubMenu(arrow) {
+  const li = arrow.closest('li');
+  li.classList.toggle('expanded');
+}
+
+function ajouterSousItem(mainIndex, btn) {
+  const subForm = btn.parentElement;
+  const nom = subForm.querySelector('.sub-nom').value.trim();
+  const statut = subForm.querySelector('.sub-statut').value;
+  const type = subForm.querySelector('.sub-type').value;
+
+  if (!nom) return alert("Le nom est obligatoire");
+
+  if (!items[mainIndex].subItems) items[mainIndex].subItems = [];
+
+  items[mainIndex].subItems.push({ id: Date.now(), nom, statut, type, isSeparator: false });
+
+  sauvegarder();
+  renderSubItems(mainIndex);
+  subForm.querySelector('.sub-nom').value = '';
+}
+
+function ajouterSeparateur(mainIndex, btn) {
+  if (!items[mainIndex].subItems) items[mainIndex].subItems = [];
+
+  items[mainIndex].subItems.push({ id: Date.now(), isSeparator: true });
+
+  sauvegarder();
+  renderSubItems(mainIndex);
+}
+
+function renderSubItems(mainIndex) {
+  const container = document.getElementById(`sub-list-${mainIndex}`);
+  if (!container) return;
+  container.innerHTML = '';
+
+  const subItems = items[mainIndex].subItems || [];
+
+  subItems.forEach((sub, i) => {
+    const div = document.createElement('div');
+    div.className = 'sub-item';
+    if (sub.isSeparator) {
+      div.innerHTML = `<div class="separator"></div>`;
+    } else {
+      div.innerHTML = `
+        <span class="prefix">-</span>
+        <span class="sub-nom">${sub.nom}</span>
+        <span class="sub-statut">${sub.statut}</span>
+        <span class="sub-type">${sub.type}</span>
+        <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:10px;color:#ff6b6b;">×</button>
+      `;
+    }
+    container.appendChild(div);
+  });
+
+  // Re-ajout des listeners hover sur les nouveaux sous-noms
+  container.querySelectorAll('.sub-nom').forEach(el => {
+    el.addEventListener('mouseenter', showPoster);
+    el.addEventListener('mouseleave', hidePoster);
+  });
+}
+
+function supprimerSousItem(mainIndex, subIndex) {
+  if (confirm("Supprimer cette entrée du sous-menu ?")) {
+    items[mainIndex].subItems.splice(subIndex, 1);
+    sauvegarder();
+    renderSubItems(mainIndex);
+  }
+}
+
+// Ajout / Modification
+document.getElementById('formAjout').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const nom    = document.getElementById('nom').value.trim();
+  const type   = document.getElementById('type').value;
+  const statut = document.getElementById('statut').value;
+  const noteStr = document.getElementById('note').value.trim();
+  const hasSubMenu = document.getElementById('hasSubMenu').checked;
+
+  if (!nom || !type || !statut || !noteStr) return;
+
+  const note = parseFloat(noteStr);
+  if (isNaN(note) || note < 0 || note > 10) {
+    alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
+    return;
+  }
+
+  const nouvelItem = { nom, type, statut, note, hasSubMenu, subItems: hasSubMenu ? [] : undefined };
+
+  const editIndex = this.dataset.editIndex;
+
+  if (editIndex !== undefined) {
+    items[parseInt(editIndex)] = nouvelItem;
+    delete this.dataset.editIndex;
+    document.getElementById('btnAnnulerEdit').style.display = 'none';
+  } else {
+    items.push(nouvelItem);
+  }
+
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+  mettreAJourCompteurs();
+  this.reset();
+  document.getElementById('hasSubMenu').checked = false;
+});
+
+// Edition
+function editerItem(index) {
+  const item = items[index];
+  document.getElementById('nom').value = item.nom;
+  document.getElementById('type').value = item.type;
+  document.getElementById('statut').value = item.statut;
+  document.getElementById('note').value = item.note;
+  document.getElementById('hasSubMenu').checked = !!item.hasSubMenu;
+
+  document.getElementById('formAjout').dataset.editIndex = index;
+  document.getElementById('btnAnnulerEdit').style.display = 'inline';
+}
+
+document.getElementById('btnAnnulerEdit').addEventListener('click', function() {
+  document.getElementById('formAjout').reset();
+  delete document.getElementById('formAjout').dataset.editIndex;
+  this.style.display = 'none';
+  document.getElementById('hasSubMenu').checked = false;
+});
+
+function supprimerItem(index) {
+  if (!confirm('Supprimer cet élément ?')) return;
+  items.splice(index, 1);
+  sauvegarder();
+  afficherListe(document.getElementById('recherche').value);
+  mettreAJourCompteurs();
+}
+
+// Événements
+document.getElementById('recherche').addEventListener('input', function() {
+  afficherListe(this.value);
+});
+
+document.getElementById('filtre-statut').addEventListener('change', function() {
+  afficherListe(document.getElementById('recherche').value);
+});
+
+document.getElementById('filtre-type').addEventListener('change', function() {
+  afficherListe(document.getElementById('recherche').value);
+});
+
+document.getElementById('tri-nom').addEventListener('change', function() {
+  document.getElementById('tri-note').value = '';
+  afficherListe(document.getElementById('recherche').value);
+});
+
+document.getElementById('tri-note').addEventListener('change', function() {
+  document.getElementById('tri-nom').value = '';
+  afficherListe(document.getElementById('recherche').value);
+});
+
+// Export
+document.getElementById('exporter').addEventListener('click', function() {
+  const data = localStorage.getItem(CLE_STORAGE);
+  if (!data) return alert('Aucune donnée à exporter');
+
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mon-tracker-animes.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Import
+document.getElementById('importer').addEventListener('click', function() {
+  const fileInput = document.getElementById('importeur');
+  const file = fileInput.files[0];
+  if (!file) return alert('Sélectionne un fichier JSON');
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('Pas un tableau valide');
+      items = data;
+      sauvegarder();
+      afficherListe();
+      mettreAJourCompteurs();
+      alert('Import réussi !');
+      fileInput.value = '';
+    } catch (err) {
+      alert('Erreur : fichier invalide ou corrompu\n' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
 
 // Démarrage
 chargerDonnees();
