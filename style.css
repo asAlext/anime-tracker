@@ -314,11 +314,11 @@ body {
   font-size: 0.9rem;
 }
 
-/* Sous-entrées ajoutées – EXACTEMENT comme demandé */
+/* Sous-entrées ajoutées */
 .sub-item {
   display: flex;
   align-items: center;
-  gap: 30px;           /* espace entre nom / statut / type */
+  gap: 30px;
   font-size: 1.1rem;
   margin-left: 20px;
   margin-bottom: 6px;
