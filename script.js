@@ -13,8 +13,8 @@ const posterImg = document.getElementById('poster-img');
 
 // Fonction pour récupérer le poster (priorise custom si présent, sinon API)
 async function getPosterUrl(nom, customPoster = null) {
-  if (customPoster) {
-    return customPoster;  // Priorité à l'URL manuelle
+  if (customPoster && customPoster.trim() !== '') {
+    return customPoster;  // Priorité absolue à l'URL manuelle si non vide
   }
 
   if (posterCache[nom]) return posterCache[nom];
@@ -44,21 +44,22 @@ function showPoster(event) {
   const nom = nomElement.textContent.trim();
   if (!nom) return;
 
-  // Pour l'instant on n'a pas l'item ici → on utilise seulement l'API
-  // (pour utiliser posterUrl custom, il faudrait stocker l'item sur l'élément DOM – voir note plus bas)
-  getPosterUrl(nom).then(url => {
+  // Récupère l'URL custom depuis l'attribut data-poster-url
+  const customPoster = nomElement.dataset.posterUrl || null;
+
+  getPosterUrl(nom, customPoster).then(url => {
     if (!url) return;
     posterImg.src = url;
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
 
-    const offsetX = 20;
-    const offsetY = -320;
+    const offsetX = 20;               // à droite de la souris
+    const offsetY = -320;             // au-dessus (ajuste si besoin)
 
     let posX = event.clientX + offsetX;
     let posY = event.clientY + offsetY;
 
-    // Clamp basique
+    // Clamp : évite que l'image sorte de l'écran
     if (posY < 10) posY = 10;
     if (posY + 300 > window.innerHeight) {
       posY = event.clientY - 320;
@@ -180,7 +181,7 @@ function afficherListe(filtreNom = '') {
 
       li.innerHTML = `
         <div class="main-row">
-          <span class="item-nom">${item.nom}</span>
+          <span class="item-nom" data-poster-url="${item.posterUrl || ''}">${item.nom}</span>
           <div class="right-fixed">
             <span class="item-statut">${item.statut}</span>
             <span class="item-type">${item.type}</span>
@@ -276,7 +277,7 @@ function renderSubItems(mainIndex) {
     } else {
       div.innerHTML = `
         <span class="prefix">-</span>
-        <span class="sub-nom">${sub.nom}</span>
+        <span class="sub-nom" data-poster-url="${items[mainIndex].posterUrl || ''}">${sub.nom}</span>
         <span class="sub-statut">${sub.statut}</span>
         <span class="sub-type">${sub.type}</span>
         <button onclick="supprimerSousItem(${mainIndex}, ${i})" style="margin-left:10px;color:#ff6b6b;">×</button>
@@ -317,7 +318,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     return;
   }
 
-  // Récupération posterUrl (si le champ existe dans le HTML)
+  // Récupération posterUrl
   const posterUrlInput = document.getElementById('posterUrl');
   const posterUrl = posterUrlInput ? posterUrlInput.value.trim() : '';
 
