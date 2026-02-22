@@ -4,17 +4,17 @@ const CLE_STORAGE = 'mesAnimesTracker';
 // Tableau global
 let items = [];
 
-// Cache pour les posters (évite de spammer l'API)
+// Cache pour les posters
 const posterCache = {};
 
 // Élément preview
 const posterPreview = document.getElementById('poster-preview');
 const posterImg = document.getElementById('poster-img');
 
-// Fonction pour récupérer le poster (priorise custom si présent, sinon API)
+// Fonction pour récupérer le poster
 async function getPosterUrl(nom, customPoster = null) {
   if (customPoster && customPoster.trim() !== '') {
-    return customPoster;  // Priorité absolue à l'URL manuelle si non vide
+    return customPoster;
   }
 
   if (posterCache[nom]) return posterCache[nom];
@@ -44,7 +44,6 @@ function showPoster(event) {
   const nom = nomElement.textContent.trim();
   if (!nom) return;
 
-  // Récupère l'URL custom depuis l'attribut data-poster-url
   const customPoster = nomElement.dataset.posterUrl || null;
 
   getPosterUrl(nom, customPoster).then(url => {
@@ -53,13 +52,12 @@ function showPoster(event) {
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
 
-    const offsetX = 20;               // à droite de la souris
-    const offsetY = -320;             // au-dessus (ajuste si besoin)
+    const offsetX = 20;
+    const offsetY = -320;
 
     let posX = event.clientX + offsetX;
     let posY = event.clientY + offsetY;
 
-    // Clamp : évite que l'image sorte de l'écran
     if (posY < 10) posY = 10;
     if (posY + 300 > window.innerHeight) {
       posY = event.clientY - 320;
@@ -80,7 +78,7 @@ function hidePoster() {
   }, 250);
 }
 
-// Charger les données au démarrage
+// Charger les données
 function chargerDonnees() {
   const data = localStorage.getItem(CLE_STORAGE);
   items = data ? JSON.parse(data) : [];
@@ -164,7 +162,10 @@ function afficherListe(filtreNom = '') {
     });
   } else if (typeTri === 'note') {
     resultat.sort((a, b) => {
-      return ordre === 'asc' ? a.note - b.note : b.note - a.note;
+      // Gestion NA pour le tri par note (NA = -1 pour les mettre en bas)
+      const noteA = a.note === "NA" ? -1 : a.note;
+      const noteB = b.note === "NA" ? -1 : b.note;
+      return ordre === 'asc' ? noteA - noteB : noteB - noteA;
     });
   }
 
@@ -185,7 +186,7 @@ function afficherListe(filtreNom = '') {
           <div class="right-fixed">
             <span class="item-statut">${item.statut}</span>
             <span class="item-type">${item.type}</span>
-            <span class="item-note">Note : ${Number(item.note)}/10</span>
+            <span class="item-note">Note : ${item.note === "NA" ? "NA" : Number(item.note) + "/10"}</span>
             <div class="actions">
               <button onclick="editerItem(${indexOriginal})">Modifier</button>
               <button onclick="supprimerItem(${indexOriginal})">Supprimer</button>
@@ -231,6 +232,7 @@ function afficherListe(filtreNom = '') {
   });
 }
 
+// Les autres fonctions restent identiques (toggleSubMenu, ajouterSousItem, etc.)
 function toggleSubMenu(arrow) {
   const li = arrow.closest('li');
   li.classList.toggle('expanded');
@@ -307,18 +309,22 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   const nom    = document.getElementById('nom').value.trim();
   const type   = document.getElementById('type').value;
   const statut = document.getElementById('statut').value;
-  const noteStr = document.getElementById('note').value.trim();
+  const noteValue = document.getElementById('note').value;
   const hasSubMenu = document.getElementById('hasSubMenu').checked;
 
-  if (!nom || !type || !statut || !noteStr) return;
+  if (!nom || !type || !statut || !noteValue) return;
 
-  const note = parseFloat(noteStr);
-  if (isNaN(note) || note < 0 || note > 10) {
-    alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
-    return;
+  let note;
+  if (noteValue === "NA") {
+    note = "NA";
+  } else {
+    note = parseFloat(noteValue);
+    if (isNaN(note) || note < 0 || note > 10) {
+      alert("La note doit être NA ou un nombre entre 0 et 10 (ex: 9.5)");
+      return;
+    }
   }
 
-  // Récupération posterUrl
   const posterUrlInput = document.getElementById('posterUrl');
   const posterUrl = posterUrlInput ? posterUrlInput.value.trim() : '';
 
@@ -326,7 +332,7 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
     nom, 
     type, 
     statut, 
-    note, 
+    note: note,
     hasSubMenu, 
     posterUrl: posterUrl || undefined, 
     subItems: hasSubMenu ? [] : undefined 
@@ -356,7 +362,10 @@ function editerItem(index) {
   document.getElementById('nom').value = item.nom;
   document.getElementById('type').value = item.type;
   document.getElementById('statut').value = item.statut;
-  document.getElementById('note').value = item.note;
+
+  // Gestion note dans le select
+  document.getElementById('note').value = item.note === "NA" ? "NA" : item.note;
+
   document.getElementById('hasSubMenu').checked = !!item.hasSubMenu;
 
   const posterUrlInput = document.getElementById('posterUrl');
