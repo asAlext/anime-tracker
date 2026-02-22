@@ -45,6 +45,11 @@ function showPoster(event) {
     posterImg.src = url;
     posterPreview.style.display = 'block';
     posterPreview.style.opacity = '1';
+    async function getPosterUrl(nom, customPoster = null) {
+  if (customPoster) return customPoster;  // prioritaire
+  // ... le reste (API)
+}
+    
 
     const offsetX = 20;               // à droite de la souris
     const offsetY = -320;             // AU-DESSUS de la souris (ajuste si ton image est plus petite/grande)
@@ -308,12 +313,14 @@ document.getElementById('formAjout').addEventListener('submit', function(e) {
   if (!nom || !type || !statut || !noteStr) return;
 
   const note = parseFloat(noteStr);
+  const posterUrl = document.getElementById('posterUrl').value.trim();
   if (isNaN(note) || note < 0 || note > 10) {
     alert("La note doit être un nombre entre 0 et 10 (ex: 9.5)");
     return;
   }
 
   const nouvelItem = { nom, type, statut, note, hasSubMenu, subItems: hasSubMenu ? [] : undefined };
+  document.getElementById('posterUrl').value = item.posterUrl || '';
 
   const editIndex = this.dataset.editIndex;
 
@@ -340,6 +347,7 @@ function editerItem(index) {
   document.getElementById('statut').value = item.statut;
   document.getElementById('note').value = item.note;
   document.getElementById('hasSubMenu').checked = !!item.hasSubMenu;
+  document.getElementById('posterUrl').value = item.posterUrl || '';
 
   document.getElementById('formAjout').dataset.editIndex = index;
   document.getElementById('btnAnnulerEdit').style.display = 'inline';
