@@ -356,6 +356,12 @@ body {
   color: #ff6b6b;
 }
 
+/* Preview poster hover */
+#poster-preview {
+  border: 2px solid #444;
+  background: #111;
+}
+
 /* Responsive */
 @media (max-width: 850px) {
   .sidebar-ajout { position: static; width: 100%; height: auto; }
