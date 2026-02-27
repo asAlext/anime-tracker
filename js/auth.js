@@ -11,7 +11,13 @@ async function inscription() {
     return;
   }
 
-  const { data, error } = await supabase.auth.signUp({
+  if (!supabaseClient) {
+    message.textContent = 'Erreur : Supabase non chargé. Recharge la page.';
+    message.style.color = '#ff6b6b';
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
     email: `${pseudo}@tracker.local`,
     password: mdp,
     options: { data: { pseudo } }
@@ -37,7 +43,13 @@ async function connexion() {
     return;
   }
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  if (!supabaseClient) {
+    message.textContent = 'Erreur : Supabase non chargé. Recharge la page.';
+    message.style.color = '#ff6b6b';
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email: `${pseudo}@tracker.local`,
     password: mdp
   });
