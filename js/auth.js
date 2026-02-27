@@ -1,10 +1,10 @@
 // auth.js – Connexion et inscription
 
 async function inscription() {
-  if (!window.supabaseClient) {
-    document.getElementById('message-login').textContent = 'Erreur : Supabase non chargé. Recharge la page.';
+  // Sécurité : on vérifie que supabase existe
+  if (!window.supabase) {
+    document.getElementById('message-login').textContent = 'Erreur : Supabase n’est pas chargé. Recharge la page.';
     document.getElementById('message-login').style.color = '#ff6b6b';
-    console.error("window.supabaseClient undefined dans inscription()");
     return;
   }
 
@@ -18,8 +18,11 @@ async function inscription() {
     return;
   }
 
-  const { data, error } = await window.supabaseClient.auth.signUp({
-    email: `${pseudo}@example.com`,
+  // On utilise un domaine temporaire réel (change si tu veux)
+  const email = `${pseudo}@mailinator.com`;
+
+  const { data, error } = await window.supabase.auth.signUp({
+    email: email,
     password: mdp,
     options: { data: { pseudo } }
   });
@@ -28,16 +31,15 @@ async function inscription() {
     message.textContent = error.message;
     message.style.color = '#ff6b6b';
   } else {
-    message.textContent = 'Compte créé ! Connecte-toi maintenant.';
+    message.textContent = 'Compte créé ! Va vérifier ton email sur mailinator.com pour confirmer.';
     message.style.color = '#a8d5ba';
   }
 }
 
 async function connexion() {
-  if (!window.supabaseClient) {
-    document.getElementById('message-login').textContent = 'Erreur : Supabase non chargé. Recharge la page.';
+  if (!window.supabase) {
+    document.getElementById('message-login').textContent = 'Erreur : Supabase n’est pas chargé. Recharge la page.';
     document.getElementById('message-login').style.color = '#ff6b6b';
-    console.error("window.supabaseClient undefined dans connexion()");
     return;
   }
 
@@ -51,8 +53,10 @@ async function connexion() {
     return;
   }
 
-  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-    email: `${pseudo}@tempmail.com`,
+  const email = `${pseudo}@mailinator.com`;
+
+  const { data, error } = await window.supabase.auth.signInWithPassword({
+    email: email,
     password: mdp
   });
 
@@ -64,7 +68,6 @@ async function connexion() {
     message.style.color = '#a8d5ba';
     setTimeout(() => {
       document.getElementById('page-accueil').style.display = 'none';
-      // Plus tard : bascule vers ListeAnimes
     }, 1500);
   }
 }
