@@ -20,7 +20,6 @@
 
   <!-- Contenu principal -->
   <div id="main-content">
-
     <!-- Page Accueil : Formulaire login centré -->
     <div id="page-accueil" class="page active">
       <div class="login-container">
@@ -39,21 +38,20 @@
       </div>
     </div>
 
-    <!-- Placeholder pour les autres pages (remplies par JS plus tard) -->
-    <div id="page-anime" class="page" style="display:none;">
-      <!-- Contenu ListeAnimes chargé ici par JS -->
+    <!-- Placeholder pour les autres pages (à remplir via JS plus tard) -->
+    <div id="page-anime" class="page" style="display: none;">
+      <!-- ListeAnimes sera injectée ici -->
     </div>
 
-    <div id="page-waifu" class="page" style="display:none;">
-      <!-- Contenu ListeWaifus chargé ici par JS -->
+    <div id="page-waifu" class="page" style="display: none;">
+      <!-- ListeWaifus sera injectée ici -->
     </div>
-
   </div>
 
-  <!-- Scripts -->
+  <!-- Scripts – Ordre crucial : config.js avant auth.js et main.js -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>    <!-- Tes clés Supabase -->
-  <script src="js/auth.js"></script>      <!-- Connexion / Inscription -->
-  <script src="js/main.js"></script>      <!-- Gestion des modes / navigation -->
+  <script src="js/config.js"></script>    <!-- Déclare supabase ICI UNIQUEMENT -->
+  <script src="js/auth.js"></script>      <!-- Utilise supabase sans le redéclarer -->
+  <script src="js/main.js"></script>      <!-- Gestion de la navigation -->
 </body>
 </html>
