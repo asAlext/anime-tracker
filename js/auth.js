@@ -8,11 +8,11 @@ async function inscription() {
     message.style.color = '#ff6b6b';
     return;
   }
-  const { data, error } = await supabase.auth.signUp({
-    email: `${pseudo}@tracker.local`,
-    password: mdp,
-    options: { data: { pseudo } }
-  });
+  const { data, error } = await supabaseClient.auth.signUp({
+  email: `${pseudo}@tracker.local`,
+  password: mdp,
+  options: { data: { pseudo } }
+});
   if (error) {
     message.textContent = error.message;
     message.style.color = '#ff6b6b';
