@@ -8,6 +8,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="login-form" style="padding: 20px; background: #222; margin: 20px;">
+  <h3>Connexion</h3>
+  <input type="text" id="pseudo" placeholder="Pseudo" style="padding: 10px; margin: 5px;">
+  <input type="password" id="mdp" placeholder="Mot de passe" style="padding: 10px; margin: 5px;">
+  <button onclick="connexion()">Se connecter</button>
+  <button onclick="inscription()">Créer un compte</button>
+  <p id="message-login" style="color: #ff6b6b;"></p>
+</div>
   <div class="global-container">
     <!-- Colonne gauche fixe -->
     <div class="sidebar-ajout">
@@ -197,6 +205,7 @@
     <img id="poster-img" src="" alt="Poster" style="width:100%; height:auto; display:block;">
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
