@@ -31,10 +31,10 @@ async function connexion() {
     message.style.color = '#ff6b6b';
     return;
   }
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: `${pseudo}@tracker.local`,
-    password: mdp
-  });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+  email: `${pseudo}@tracker.local`,
+  password: mdp
+});
   if (error) {
     message.textContent = 'Erreur : ' + error.message;
     message.style.color = '#ff6b6b';
