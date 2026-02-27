@@ -77,6 +77,58 @@ function hidePoster() {
     }
   }, 250);
 }
+// Remplace par tes vraies valeurs (tu les auras dans ton dashboard Supabase)
+const SUPABASE_URL = 'https://ton-projet-id.supabase.co';
+const SUPABASE_KEY = 'ta-cle-anon-publique';
+
+const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function inscription() {
+  const pseudo = document.getElementById('pseudo').value.trim();
+  const mdp = document.getElementById('mdp').value.trim();
+
+  if (!pseudo || !mdp) {
+    document.getElementById('message-login').textContent = 'Remplis pseudo et mot de passe';
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email: `${pseudo}@fake.local`,  // Astuce : on utilise pseudo@fake.local comme email
+    password: mdp,
+    options: {
+      data: { pseudo: pseudo }  // On stocke le pseudo réel ici
+    }
+  });
+
+  if (error) {
+    document.getElementById('message-login').textContent = error.message;
+  } else {
+    document.getElementById('message-login').textContent = 'Compte créé ! Connecte-toi maintenant.';
+  }
+}
+
+async function connexion() {
+  const pseudo = document.getElementById('pseudo').value.trim();
+  const mdp = document.getElementById('mdp').value.trim();
+
+  if (!pseudo || !mdp) {
+    document.getElementById('message-login').textContent = 'Remplis pseudo et mot de passe';
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: `${pseudo}@fake.local`,
+    password: mdp
+  });
+
+  if (error) {
+    document.getElementById('message-login').textContent = 'Erreur : ' + error.message;
+  } else {
+    document.getElementById('message-login').textContent = 'Connecté ! Chargement...';
+    // Ici tu pourras cacher le formulaire et charger les données
+    chargerDonneesSupabase();
+  }
+}
 
 // Charger les données
 function chargerDonnees() {
