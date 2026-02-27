@@ -13,33 +13,47 @@
 
   <!-- Barre de navigation fixe en haut à droite -->
   <nav class="top-nav">
-    <button class="nav-btn active">Accueil</button>
-    <button class="nav-btn">ListeAnimes</button>
-    <button class="nav-btn">ListeWaifus</button>
+    <button class="nav-btn active" data-mode="accueil">Accueil</button>
+    <button class="nav-btn" data-mode="anime">ListeAnimes</button>
+    <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
 
-  <!-- Formulaire login centré au milieu -->
-  <div class="login-container">
-    <div class="login-box">
-      <h2>Connexion</h2>
-      <input type="text" id="pseudo" placeholder="Pseudo" required>
-      <input type="password" id="mdp" placeholder="Mot de passe" required>
-      
-      <div class="buttons">
-        <button onclick="connexion()">Se connecter</button>
-        <button onclick="inscription()">Créer un compte</button>
+  <!-- Contenu principal -->
+  <div id="main-content">
+
+    <!-- Page Accueil : Formulaire login centré -->
+    <div id="page-accueil" class="page active">
+      <div class="login-container">
+        <div class="login-box">
+          <h2>Connexion</h2>
+          <input type="text" id="pseudo" placeholder="Pseudo" required autocomplete="username">
+          <input type="password" id="mdp" placeholder="Mot de passe" required autocomplete="current-password">
+          
+          <div class="buttons">
+            <button onclick="connexion()">Se connecter</button>
+            <button onclick="inscription()">Créer un compte</button>
+          </div>
+          
+          <p id="message-login" class="message"></p>
+        </div>
       </div>
-      
-      <p id="message-login" class="message"></p>
     </div>
+
+    <!-- Placeholder pour les autres pages (remplies par JS plus tard) -->
+    <div id="page-anime" class="page" style="display:none;">
+      <!-- Contenu ListeAnimes chargé ici par JS -->
+    </div>
+
+    <div id="page-waifu" class="page" style="display:none;">
+      <!-- Contenu ListeWaifus chargé ici par JS -->
+    </div>
+
   </div>
 
-  <!-- Les autres pages seront ajoutées ici plus tard -->
-  <div id="content-anime" style="display:none;"></div>
-  <div id="content-waifu" style="display:none;"></div>
-
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/main.js"></script>
-  <script src="js/auth.js"></script>
+  <script src="js/config.js"></script>    <!-- Tes clés Supabase -->
+  <script src="js/auth.js"></script>      <!-- Connexion / Inscription -->
+  <script src="js/main.js"></script>      <!-- Gestion des modes / navigation -->
 </body>
 </html>
