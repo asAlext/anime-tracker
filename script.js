@@ -139,8 +139,20 @@ function chargerDonnees() {
 }
 
 // Sauvegarder
-function sauvegarder() {
-  localStorage.setItem(CLE_STORAGE, JSON.stringify(items));
+async function sauvegarderSupabase() {
+  const { data: session } = await supabase.auth.getSession();
+  if (!session?.session?.user) return;
+
+  const userId = session.session.user.id;
+
+  const { error } = await supabase
+    .from('anime_lists')
+    .upsert({
+      user_id: userId,
+      data: items
+    });
+
+  if (error) console.error('Erreur sauvegarde :', error);
 }
 
 // Mise à jour des compteurs
