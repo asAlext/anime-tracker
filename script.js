@@ -1,13 +1,3 @@
-// Test immédiat (à laisser pour vérifier)
-console.log("Tentative de connexion Supabase...");
-supabase.auth.getSession().then(({ data, error }) => {
-  if (error) {
-    console.error("Erreur Supabase :", error.message);
-  } else {
-    console.log("Supabase OK ! Session :", data.session ? "connectée" : "non connectée");
-  }
-});
-
 // Fonction inscription
 async function inscription() {
   const pseudo = document.getElementById('pseudo').value.trim();
