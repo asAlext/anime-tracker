@@ -10,3 +10,6 @@ console.log("Supabase chargé depuis config.js :", client ? "OK" : "Erreur");
 
 // Exporte le client pour les autres fichiers (auth.js, etc.)
 window.supabaseClient = client;  // ← on l'appelle supabaseClient pour éviter les conflits
+
+console.log("config.js exécuté");
+console.log("supabase défini ?", !!supabase);
