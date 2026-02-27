@@ -78,8 +78,8 @@ function hidePoster() {
   }, 250);
 }
 // Remplace par tes vraies valeurs (tu les auras dans ton dashboard Supabase)
-const SUPABASE_URL = 'https://ton-projet-id.supabase.co';
-const SUPABASE_KEY = 'ta-cle-anon-publique';
+const SUPABASE_URL = 'https://supabase.com/dashboard/project/adbahafsimtjcclvuqxa';
+const SUPABASE_KEY = 'sb_publishable_IT5wpAP_5Y3PdPXf42a-nQ_Y6unxNFP';
 
 const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
