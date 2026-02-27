@@ -1,9 +1,9 @@
 // auth.js – Connexion et inscription
 
 async function inscription() {
-  // Sécurité : on vérifie que supabase existe
-  if (!window.supabase) {
-    document.getElementById('message-login').textContent = 'Erreur : Supabase n’est pas chargé. Recharge la page.';
+  // Sécurité : on attend que supabase soit chargé
+  if (!window.supabaseClient) {
+    document.getElementById('message-login').textContent = 'Supabase n’est pas prêt. Recharge la page (Ctrl + Shift + R).';
     document.getElementById('message-login').style.color = '#ff6b6b';
     return;
   }
@@ -18,10 +18,9 @@ async function inscription() {
     return;
   }
 
-  // On utilise un domaine temporaire réel (change si tu veux)
-  const email = `${pseudo}@mailinator.com`;
+  const email = `${pseudo}@mailinator.com`; // domaine temporaire valide
 
-  const { data, error } = await window.supabase.auth.signUp({
+  const { data, error } = await window.supabaseClient.auth.signUp({
     email: email,
     password: mdp,
     options: { data: { pseudo } }
@@ -31,14 +30,14 @@ async function inscription() {
     message.textContent = error.message;
     message.style.color = '#ff6b6b';
   } else {
-    message.textContent = 'Compte créé ! Va vérifier ton email sur mailinator.com pour confirmer.';
+    message.textContent = 'Compte créé ! Va sur mailinator.com, tape "' + pseudo + '" et confirme le lien.';
     message.style.color = '#a8d5ba';
   }
 }
 
 async function connexion() {
-  if (!window.supabase) {
-    document.getElementById('message-login').textContent = 'Erreur : Supabase n’est pas chargé. Recharge la page.';
+  if (!window.supabaseClient) {
+    document.getElementById('message-login').textContent = 'Supabase n’est pas prêt. Recharge la page (Ctrl + Shift + R).';
     document.getElementById('message-login').style.color = '#ff6b6b';
     return;
   }
@@ -55,7 +54,7 @@ async function connexion() {
 
   const email = `${pseudo}@mailinator.com`;
 
-  const { data, error } = await window.supabase.auth.signInWithPassword({
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
     email: email,
     password: mdp
   });
