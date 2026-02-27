@@ -1,3 +1,4 @@
+// auth.js - SANS AUCUNE DÉCLARATION DE SUPABASE
 async function inscription() {
   const pseudo = document.getElementById('pseudo').value.trim();
   const mdp = document.getElementById('mdp').value.trim();
