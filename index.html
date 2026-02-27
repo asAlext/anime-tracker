@@ -3,209 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex">
-  <title>Tracker Anime / Film</title>
+  <title>Mon Tracker Anime & Waifu</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="login-form" style="padding: 20px; background: #222; margin: 20px;">
-  <h3>Connexion</h3>
-  <input type="text" id="pseudo" placeholder="Pseudo" style="padding: 10px; margin: 5px;">
-  <input type="password" id="mdp" placeholder="Mot de passe" style="padding: 10px; margin: 5px;">
-  <button onclick="connexion()">Se connecter</button>
-  <button onclick="inscription()">Créer un compte</button>
-  <p id="message-login" style="color: #ff6b6b;"></p>
-</div>
-  <div class="global-container">
-    <!-- Colonne gauche fixe -->
-    <div class="sidebar-ajout">
-      <h2>Ajouter / Modifier</h2>
+
+  <!-- Fond d'écran fixe -->
+  <div class="background"></div>
+
+  <!-- Barre de navigation fixe en haut à droite -->
+  <nav class="top-nav">
+    <button class="nav-btn active">Accueil</button>
+    <button class="nav-btn">ListeAnimes</button>
+    <button class="nav-btn">ListeWaifus</button>
+  </nav>
+
+  <!-- Formulaire login centré au milieu -->
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Connexion</h2>
+      <input type="text" id="pseudo" placeholder="Pseudo" required>
+      <input type="password" id="mdp" placeholder="Mot de passe" required>
       
-      <form id="formAjout">
-        <div class="champ">
-          <label for="nom">Nom</label>
-          <input type="text" id="nom" placeholder="Nom" required>
-        </div>
-
-        <div class="champ">
-          <label for="posterUrl">URL Cover </label>
-          <input type="url" id="posterUrl" placeholder="https://exemple.com/poster.jpg">
-        </div>
-        
-        <div class="champ">
-          <label for="type">Type</label>
-          <select id="type" required>
-            <option value="">Choisir</option>
-            <option value="anime">Anime</option>
-            <option value="film">Film</option>
-          </select>
-        </div>
-        
-        <div class="champ">
-          <label for="statut">Statut</label>
-          <select id="statut" required>
-            <option value="">Choisir</option>
-            <option value="fini">Fini</option>
-            <option value="en cours">En cours</option>
-            <option value="en pause">En pause</option>
-            <option value="a regarder">A Regarder</option>
-            <option value="abandon">Abandon</option>
-            <option value="plus jamais">Plus Jamais</option>
-          </select>
-        </div>
-        
-        <div class="champ">
-  <label for="note">Note</label>
-  <select id="note" required>
-    <option value="">Choisir</option>
-    <option value="NA">NA (Pas encore vu)</option>
-    <option value="0">0</option>
-    <option value="0.5">0.5</option>
-    <option value="1">1</option>
-    <option value="1.5">1.5</option>
-    <option value="2">2</option>
-    <option value="2.5">2.5</option>
-    <option value="3">3</option>
-    <option value="3.5">3.5</option>
-    <option value="4">4</option>
-    <option value="4.5">4.5</option>
-    <option value="5">5</option>
-    <option value="5.5">5.5</option>
-    <option value="6">6</option>
-    <option value="6.5">6.5</option>
-    <option value="7">7</option>
-    <option value="7.5">7.5</option>
-    <option value="8">8</option>
-    <option value="8.5">8.5</option>
-    <option value="9">9</option>
-    <option value="9.5">9.5</option>
-    <option value="10">10</option>
-  </select>
-</div>
-        
-        <div class="boutons-form">
-          <div class="checkbox-sousmenu">
-            <label>
-              <input type="checkbox" id="hasSubMenu">
-              Activer Sous Menu
-            </label>
-          </div>
-          <button type="submit">Ajouter</button>
-          <button type="button" id="btnAnnulerEdit" style="display:none;">Annuler</button>
-        </div>
-      </form>
-
-      <!-- Compteurs -->
-      <div class="compteurs-container">
-        <div class="compteur-total">
-          <div class="compteur">
-            <span class="label">Total</span>
-            <span id="count-total" class="valeur">0</span>
-          </div>
-        </div>
-
-        <div class="compteurs-ligne">
-          <div class="compteurs-colonne gauche">
-            <div class="compteur">
-              <span class="label">Fini</span>
-              <span id="count-fini" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">En Cours</span>
-              <span id="count-en-cours" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">En Pause</span>
-              <span id="count-en-pause" class="valeur">0</span>
-            </div>
-          </div>
-
-          <div class="compteurs-colonne droite">
-            <div class="compteur">
-              <span class="label">A Regarder</span>
-              <span id="count-a-regarder" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">Abandon</span>
-              <span id="count-abandon" class="valeur">0</span>
-            </div>
-            <div class="compteur">
-              <span class="label">Plus Jamais</span>
-              <span id="count-plus-jamais" class="valeur">0</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Export / Import -->
-      <div class="zone-export">
-        <button id="exporter">Exporter la liste (JSON)</button>
-        <input type="file" id="importeur" accept=".json">
-        <button id="importer">Importer</button>
-      </div>
-    </div>
-
-    <!-- Colonne droite -->
-    <div class="contenu-droit">
-      <div class="header-droit">
-        <div class="zone-filtres-tris">
-          <div class="zone-tris">
-            <label>Trier par Nom :</label>
-            <select id="tri-nom">
-              <option value="">Aucun</option>
-              <option value="asc">A - Z</option>
-              <option value="desc">Z - A</option>
-            </select>
-          </div>
-          
-          <div class="filtre-statut">
-            <label>Filtrer par Statut :</label>
-            <select id="filtre-statut">
-              <option value="">Tous</option>
-              <option value="fini">Fini</option>
-              <option value="en cours">En Cours</option>
-              <option value="en pause">En pause</option>
-              <option value="a regarder">A Regarder</option>
-              <option value="abandon">Abandon</option>
-              <option value="plus jamais">Plus Jamais</option>
-            </select>
-          </div>
-          
-          <div class="filtre-type">
-            <label>Filtrer par Type :</label>
-            <select id="filtre-type">
-              <option value="">Tous</option>
-              <option value="anime">Anime</option>
-              <option value="film">Film</option>
-            </select>
-          </div>
-          
-          <div class="zone-tris">
-            <label>Trier par Note :</label>
-            <select id="tri-note">
-              <option value="">Aucun</option>
-              <option value="asc">0 - 10</option>
-              <option value="desc">10 - 0</option>
-            </select>
-          </div>
-        </div>
+      <div class="buttons">
+        <button onclick="connexion()">Se connecter</button>
+        <button onclick="inscription()">Créer un compte</button>
       </div>
       
-      <input type="text" id="recherche" placeholder="Rechercher par nom...">
-      
-      <ul id="liste"></ul>
-      
-      <p id="message-vide" style="display:none; text-align:center; color:#888;">
-        Aucune entrée pour le moment
-      </p>
+      <p id="message-login" class="message"></p>
     </div>
   </div>
 
-  <div id="poster-preview" style="display:none; position:fixed; pointer-events:none; z-index:9999; max-width:240px; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.8); overflow:hidden; opacity:0; transition:opacity 0.2s;">
-    <img id="poster-img" src="" alt="Poster" style="width:100%; height:auto; display:block;">
-  </div>
+  <!-- Les autres pages seront ajoutées ici plus tard -->
+  <div id="content-anime" style="display:none;"></div>
+  <div id="content-waifu" style="display:none;"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>
