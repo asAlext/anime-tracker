@@ -11,14 +11,8 @@ async function inscription() {
     return;
   }
 
-  if (!supabaseClient) {
-    message.textContent = 'Erreur : Supabase non chargé. Recharge la page.';
-    message.style.color = '#ff6b6b';
-    return;
-  }
-
-  const { data, error } = await supabaseClient.auth.signUp({
-    email: `${pseudo}@tracker.local`,
+  const { data, error } = await supabase.auth.signUp({
+    email: `${pseudo}@example.com`,  // Changé pour un domaine valide réservé aux tests
     password: mdp,
     options: { data: { pseudo } }
   });
@@ -43,14 +37,8 @@ async function connexion() {
     return;
   }
 
-  if (!supabaseClient) {
-    message.textContent = 'Erreur : Supabase non chargé. Recharge la page.';
-    message.style.color = '#ff6b6b';
-    return;
-  }
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: `${pseudo}@tracker.local`,
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: `${pseudo}@example.com`,  // Changé pour un domaine valide réservé aux tests
     password: mdp
   });
 
@@ -60,8 +48,10 @@ async function connexion() {
   } else {
     message.textContent = 'Connecté ! Chargement...';
     message.style.color = '#a8d5ba';
+
     setTimeout(() => {
       document.getElementById('page-accueil').style.display = 'none';
+      // Plus tard : on basculera vers la page ListeAnimes ou Accueil plus tard
     }, 1500);
   }
 }
