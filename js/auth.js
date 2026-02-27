@@ -46,3 +46,12 @@ async function connexion() {
     }, 1500);
   }
 }
+
+// Test session au chargement (supprime plus tard)
+supabase.auth.getSession().then(({ data }) => {
+  if (data.session) {
+    console.log("Tu es déjà connecté ! User ID :", data.session.user.id);
+  } else {
+    console.log("Pas de session active (normal si pas connecté)");
+  }
+});
