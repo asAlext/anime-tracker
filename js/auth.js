@@ -52,7 +52,7 @@ async function connexion() {
   }
 
   const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-    email: `${pseudo}@example.com`,
+    email: `${pseudo}@tempmail.com`,
     password: mdp
   });
 
