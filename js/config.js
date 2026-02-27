@@ -5,11 +5,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // Utilise la variable globale 'supabase' déjà définie par le CDN
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Test de chargement
+// Exporte le client globalement pour les autres fichiers
+window.supabaseClient = client;
+
+// Tests de chargement (tu peux supprimer ces lignes plus tard)
 console.log("Supabase chargé depuis config.js :", client ? "OK" : "Erreur");
-
-// Exporte le client pour les autres fichiers (auth.js, etc.)
-window.supabaseClient = client;  // ← on l'appelle supabaseClient pour éviter les conflits
-
 console.log("config.js exécuté");
 console.log("supabase défini ?", !!supabase);
