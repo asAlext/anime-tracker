@@ -1,8 +1,3 @@
-// À remplacer par tes vraies valeurs Supabase (tu les auras après avoir créé le projet)
-const SUPABASE_URL = 'https://ton-projet-id.supabase.co';
-const SUPABASE_KEY = 'ta-cle-anon-publique';
-
-const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function inscription() {
   const pseudo = document.getElementById('pseudo').value.trim();
