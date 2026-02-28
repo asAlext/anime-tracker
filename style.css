@@ -328,3 +328,130 @@
   gap: 20px;
   min-height: 600px;
 }
+
+/* Page Accueil – boutons centrés, ordre demandé */
+.login-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 380px;
+  max-width: 90%;
+  text-align: center;
+  background: rgba(30, 30, 30, 0.92);
+  padding: 50px 40px;
+  border-radius: 0;  /* pas d'angle arrondi */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+}
+
+.login-wrapper label {
+  display: block;
+  text-align: left;
+  margin: 15px 0 5px;
+  font-size: 15px;
+  color: #ccc;
+}
+
+.login-wrapper input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 0;
+  border: 1px solid #444;
+  background: #1e1e1e;
+  color: white;
+  font-size: 16px;
+}
+
+.login-wrapper .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.login-wrapper .buttons button {
+  padding: 14px 35px;
+  font-size: 16px;
+  border-radius: 0;
+}
+
+/* Ligne 0 – barre complète en haut */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #1a1a1a;  /* couleur sombre pour la ligne 0 */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 1000;
+  border-bottom: 1px solid #333;
+}
+
+/* Ligne 1 – Informations (compteurs) */
+.stats-line {
+  background: #f7f1e7;  /* couleur demandée */
+  padding: 15px 30px;
+  margin: 60px 0 0 0;  /* remonte juste sous la ligne 0 */
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  border-radius: 0;
+}
+
+.stat-box {
+  text-align: center;
+  min-width: 140px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.stat-count {
+  font-size: 32px;
+  font-weight: bold;
+  color: #000;
+}
+
+/* Ligne 2 – Recherche & tris */
+.search-line {
+  background: #f7f1e7;  /* même couleur que ligne 1 */
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  border-radius: 0;
+}
+
+/* Section Ajout – tout à gauche, raccord avec lignes 1 et 2 */
+.anime-sidebar {
+  width: 340px;
+  background: #f7f1e7;  /* même couleur */
+  padding: 30px;
+  border-radius: 0;
+  margin-top: 30px;  /* aligné sous les lignes 1 et 2 */
+  height: calc(100vh - 200px);  /* prend la hauteur restante */
+  overflow-y: auto;
+}
+
+/* Grille centrale */
+.anime-content {
+  background: #fefaf4;  /* couleur demandée */
+  margin-left: 340px;  /* décale pour laisser la sidebar à gauche */
+  padding: 30px;
+  min-height: calc(100vh - 200px);
+  border-radius: 0;
+}
+
+/* Pas d'angle arrondi partout */
+* {
+  border-radius: 0 !important;
+}
