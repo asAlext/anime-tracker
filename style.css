@@ -105,11 +105,11 @@ body {
   flex-wrap: wrap;
 }
 
-/* Ligne 2 – Recherche centrée au milieu */
+/* Ligne 2 – Recherche – centrée, fond #f7f1e7, sans marge inférieure */
 .search-line {
   background: #f7f1e7;
   padding: 10px 20px;
-  margin: 0;                  /* ← supprime toute marge */
+  margin: 0;                    /* zéro marge */
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -128,29 +128,28 @@ body {
   width: 260px;
 }
 
-/* Contenu principal – sidebar collée à gauche */
+/* Contenu principal – zéro marge supérieure, pas d'espace entre ligne 2 et sidebar */
 .anime-content {
   background: #fefaf4;
   margin-left: 320px;
-  padding: 0;                 /* ← supprime le padding qui crée l'espace */
-  margin-top: 0;              /* ← supprime la marge supérieure */
+  margin-top: 0;                /* colle à la ligne 2 */
+  padding: 0;                   /* supprime tout padding qui crée de l'espace */
   min-height: calc(100vh - 140px);
 }
 
-/* Section Ajout – collée au bord gauche, fond #f7f1e7 touche la ligne 2 */
+/* Section Ajout – collée au bord gauche ET à la ligne 2 */
 .anime-sidebar {
   width: 320px;
   background: #f7f1e7;
   padding: 25px;
+  margin: 0;                    /* zéro marge partout */
   position: sticky;
   top: 70px;
   height: calc(100vh - 140px);
   overflow-y: auto;
-  margin-top: 0;              /* ← colle au haut (pas de marge) */
-  margin-left: 0;
 }
 
-/* Grille centrale – #fefaf4, commence juste après la sidebar */
+/* Grille – commence juste à côté de la sidebar */
 .anime-grid {
   flex: 1;
   display: grid;
@@ -161,7 +160,8 @@ body {
   min-height: 600px;
 }
 
-.anime-sidebar,
-.search-line {
-  background: #f7f1e7 !important;  /* force la même couleur */
+/* Force la continuité de couleur #f7f1e7 */
+.search-line,
+.anime-sidebar {
+  background: #f7f1e7 !important;
 }
