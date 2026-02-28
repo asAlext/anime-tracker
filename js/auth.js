@@ -68,8 +68,10 @@ async function connexion() {
 
     // On bascule vers ListeAnimes après 1,5 seconde
     setTimeout(() => {
-      switchPage('anime');
-    }, 1500);
+  document.getElementById('page-accueil').style.display = 'none';
+  document.getElementById('page-anime').style.display = 'block';
+  document.getElementById('main-content').dataset.connected = 'true';  // ← ajoute cette ligne
+}, 1500);
   }
 }
 
