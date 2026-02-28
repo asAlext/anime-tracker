@@ -139,7 +139,7 @@ body {
 
 /* Section Ajout – collée au bord gauche, fond #f7f1e7 touche la ligne 2 */
 .anime-sidebar {
-  width: 320px;
+  width: 340px;
   background: #f7f1e7;
   padding: 25px 25px 25px 25px; /* padding uniforme, mais collé au bord */
   margin: 0;
