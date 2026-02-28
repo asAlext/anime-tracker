@@ -195,3 +195,136 @@
   color: #d4c3e8;
   font-weight: 600;
 }
+
+/* Ligne 0 : Navigation */
+.top-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(20, 20, 30, 0.9);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(126, 87, 194, 0.2);
+}
+
+.nav-btn {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.nav-btn.active {
+  background: #7e57c2;
+}
+
+/* Ligne 1 : Compteurs */
+.stats-line {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  background: rgba(40, 40, 60, 0.7);
+  padding: 15px 25px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 140px;
+  border: 1px solid rgba(126, 87, 194, 0.2);
+}
+
+.stat-label {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.stat-count {
+  font-size: 28px;
+  font-weight: bold;
+  color: #d4c3e8;
+}
+
+/* Ligne 2 : Recherche & tris */
+.search-line {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.search-line input, .search-line select {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(40, 40, 60, 0.7);
+  border: 1px solid rgba(100, 80, 200, 0.3);
+  color: white;
+  font-size: 15px;
+}
+
+.search-line input {
+  width: 300px;
+}
+
+/* Contenu principal */
+.anime-content {
+  display: flex;
+  gap: 30px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Sidebar */
+.anime-sidebar {
+  width: 340px;
+  background: rgba(35, 35, 50, 0.95);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.anime-sidebar h3 {
+  margin-bottom: 25px;
+  color: #d4c3e8;
+}
+
+.anime-sidebar input, .anime-sidebar select {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border-radius: 10px;
+  background: rgba(40, 40, 60, 0.7);
+  border: 1px solid rgba(100, 80, 200, 0.3);
+  color: white;
+}
+
+.anime-sidebar button {
+  width: 100%;
+  padding: 14px;
+  background: #7e57c2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Grille */
+.anime-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  min-height: 600px;
+}
