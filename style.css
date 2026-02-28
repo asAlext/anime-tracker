@@ -109,3 +109,14 @@
 .waifu-menu-options button:hover {
   background: rgba(126,87,194,0.3);
 }
+
+/* Quand connecté, le login ne reste plus fixe */
+#main-content[data-connected="true"] .login-container {
+  position: static;
+  transform: none;
+  width: auto;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
