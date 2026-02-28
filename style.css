@@ -36,7 +36,7 @@ body {
   z-index: 1000;
 }
 
-/* Boutons nav plus petits */
+/* Boutons nav petits */
 .nav-btn {
   padding: 6px 16px;
   font-size: 14px;
@@ -48,10 +48,10 @@ body {
 
 .nav-btn:hover, .nav-btn.active {
   color: white;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
 }
 
-/* Page Accueil – centrée, ordre demandé */
+/* Page Accueil – centrée */
 #page-accueil .login-wrapper {
   position: absolute;
   top: 50%;
@@ -94,40 +94,23 @@ body {
   font-size: 14px;
 }
 
-/* Ligne 1 – Compteurs (plus haut, plus petits) */
+/* Ligne 1 – Compteurs */
 .stats-line {
   background: #f7f1e7;
   padding: 10px 20px;
   margin: 50px 0 0 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
   flex-wrap: wrap;
 }
 
-.stat-box {
-  text-align: center;
-  min-width: 110px;
-  padding: 8px 12px;
-}
-
-.stat-label {
-  font-size: 13px;
-  color: #555;
-}
-
-.stat-count {
-  font-size: 22px;
-  font-weight: bold;
-  color: #000;
-}
-
-/* Ligne 2 – Recherche (juste en dessous) */
+/* Ligne 2 – Recherche */
 .search-line {
   background: #f7f1e7;
   padding: 10px 20px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -144,28 +127,32 @@ body {
   width: 260px;
 }
 
-/* Section Ajout – tout à gauche, fond #f7f1e7 */
-.anime-sidebar {
-  width: 320px;
-  background: #f7f1e7;
+/* Contenu principal – sidebar tout à gauche */
+.anime-content {
+  display: flex;
+  gap: 30px;
   padding: 20px;
+  margin-top: 20px;
+}
+
+/* Sidebar Ajout – tout à gauche */
+.anime-sidebar {
+  width: 340px;
+  background: #f7f1e7;
+  padding: 25px;
   position: sticky;
   top: 70px;
   height: calc(100vh - 140px);
   overflow-y: auto;
 }
 
-/* Grille centrale – #fefaf4 */
-.anime-content {
-  background: #fefaf4;
-  margin-left: 320px;
-  padding: 25px;
-  min-height: calc(100vh - 140px);
-}
-
-/* Grille */
+/* Grille centrale */
 .anime-grid {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
+  background: #fefaf4;
+  padding: 20px;
+  min-height: 600px;
 }
