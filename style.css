@@ -1,140 +1,5 @@
-/* Reset de base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  color: white;
-  overflow-x: hidden;
-}
-
-/* Fond d'écran fixe */
-.background {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: url('https://images.alphacoders.com/135/1353319.jpg') center/cover no-repeat fixed;
-  z-index: -2;
-  filter: brightness(0.5) contrast(1.1); /* rend le texte lisible */
-}
-
-/* Navigation fixe en haut à droite */
-.top-nav {
-  position: fixed;
-  top: 15px;
-  right: 20px;
-  z-index: 1000;
-  display: flex;
-  gap: 15px;
-}
-
-.nav-btn {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background 0.3s;
-}
-
-.nav-btn:hover {
-  background: rgba(126, 87, 194, 0.8);
-}
-
-.nav-btn.active {
-  background: #7e57c2;
-}
-
-/* Conteneur login centré */
-.login-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
-  width: 380px;
-  max-width: 90%;
-}
-
-.login-box {
-  background: rgba(30, 30, 30, 0.92);
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-  text-align: center;
-  backdrop-filter: blur(8px);
-}
-
-.login-box h2 {
-  margin-bottom: 30px;
-  color: #d4c3e8;
-  font-size: 28px;
-}
-
-.login-box input {
-  width: 100%;
-  padding: 14px;
-  margin: 12px 0;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #1e1e1e;
-  color: white;
-  font-size: 16px;
-}
-
-.buttons {
-  margin: 25px 0;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-
-.buttons button {
-  padding: 14px 30px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: transform 0.2s;
-}
-
-.buttons button:first-child {
-  background: #7e57c2;
-  color: white;
-}
-
-.buttons button:last-child {
-  background: #4caf50;
-  color: white;
-}
-
-.buttons button:hover {
-  transform: scale(1.05);
-}
-
-.message {
-  margin-top: 20px;
-  min-height: 24px;
-  font-size: 15px;
-}
-
-/* Classes pour les pages (utilisées plus tard) */
-.page {
-  min-height: 100vh;
-  padding: 80px 20px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Page ListeAnime */
-.anime-container {
+/* Page ListeWaifus */
+.waifu-container {
   display: flex;
   gap: 20px;
   max-width: 1400px;
@@ -142,7 +7,7 @@ body {
   padding: 20px;
 }
 
-.anime-sidebar {
+.waifu-sidebar {
   width: 300px;
   background: rgba(30, 30, 30, 0.9);
   padding: 20px;
@@ -150,12 +15,12 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
-.anime-sidebar h3 {
+.waifu-sidebar h3 {
   margin-bottom: 20px;
   color: #d4c3e8;
 }
 
-.anime-sidebar input, .anime-sidebar select {
+.waifu-sidebar input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -165,7 +30,7 @@ body {
   color: white;
 }
 
-.anime-sidebar button {
+.waifu-sidebar button {
   width: 100%;
   padding: 12px;
   background: #7e57c2;
@@ -176,43 +41,71 @@ body {
   font-weight: bold;
 }
 
-.anime-grid {
+.waifu-grid {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 15px;
 }
 
-.anime-card {
+.waifu-card {
   background: rgba(40, 40, 40, 0.9);
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.5);
   transition: transform 0.3s;
+  position: relative;
 }
 
-.anime-card:hover {
+.waifu-card:hover {
   transform: scale(1.05);
 }
 
-.anime-card img {
+.waifu-card img {
   width: 100%;
-  height: 250px;
+  height: 300px;
   object-fit: cover;
 }
 
-.anime-info {
+.waifu-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+  z-index: 5;
+}
+
+.waifu-menu-options {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: rgba(30,30,30,0.95);
+  border-radius: 8px;
   padding: 10px;
-  text-align: center;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
 }
 
-.anime-info h4 {
-  font-size: 14px;
-  margin: 5px 0;
-  color: #d4c3e8;
+.waifu-menu-options button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.anime-info p {
-  font-size: 12px;
-  color: #aaa;
+.waifu-menu-options button:hover {
+  background: rgba(126,87,194,0.3);
 }
