@@ -58,10 +58,13 @@ async function connexion() {
     password: mdp
   });
 
-  if (error) {
-    message.textContent = 'Erreur : ' + error.message;
-    message.style.color = '#ff6b6b';
-  } else {
+  if (!error) {
+  message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' !';
+  message.style.color = '#a8d5ba';
+
+  // On ne masque rien ici, on reste sur accueil ou on bascule via nav
+  // Le basculement se fait via les boutons nav (voir main.js ci-dessous)
+} else {
     // Succès connexion
     message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' ! Chargement de la liste...';
     message.style.color = '#a8d5ba';
