@@ -58,26 +58,17 @@ async function connexion() {
     password: mdp
   });
 
-  if (!error) {
-  message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' !';
-  message.style.color = '#a8d5ba';
-
-  // On ne masque rien ici, on reste sur accueil ou on bascule via nav
-  // Le basculement se fait via les boutons nav (voir main.js ci-dessous)
-} else {
+  if (error) {
+    message.textContent = 'Erreur : ' + error.message;
+    message.style.color = '#ff6b6b';
+  } else {
     // Succès connexion
-    message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' ! Chargement de la liste...';
+    message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' ! Chargement...';
     message.style.color = '#a8d5ba';
 
-    // On cache la page accueil et on montre la page ListeAnimes
+    // On bascule vers ListeAnimes après 1,5 seconde
     setTimeout(() => {
-      document.getElementById('page-accueil').style.display = 'none';
-      document.getElementById('page-anime').style.display = 'block';
-      document.getElementById('page-anime').classList.add('active');
-
-      // Optionnel : mettre à jour le bouton nav actif
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector('.nav-btn[data-mode="anime"]').classList.add('active');
+      switchPage('anime');
     }, 1500);
   }
 }
@@ -93,12 +84,7 @@ window.addEventListener('load', async () => {
     document.getElementById('message-login').style.color = '#a8d5ba';
 
     setTimeout(() => {
-      document.getElementById('page-accueil').style.display = 'none';
-      document.getElementById('page-anime').style.display = 'block';
-      document.getElementById('page-anime').classList.add('active');
-
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector('.nav-btn[data-mode="anime"]').classList.add('active');
+      switchPage('anime');
     }, 1000);
   }
 });
