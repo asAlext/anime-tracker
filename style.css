@@ -100,16 +100,16 @@ body {
   padding: 12px 20px;
   margin: 50px 0 0 0;
   display: flex;
-  justify-content: center; /* centré au milieu de la ligne */
+  justify-content: center;
   gap: 25px;
   flex-wrap: wrap;
 }
 
-/* Ligne 2 – Recherche – centrée, fond #f7f1e7, sans marge inférieure */
+/* Ligne 2 – Recherche centrée au milieu, sans marge */
 .search-line {
   background: #f7f1e7;
   padding: 10px 20px;
-  margin: 0;                    /* zéro marge */
+  margin: 0;
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -128,20 +128,20 @@ body {
   width: 260px;
 }
 
-/* Contenu principal – zéro marge supérieure, pas d'espace entre ligne 2 et sidebar */
+/* Contenu principal – zéro décalage */
 .anime-content {
   background: #fefaf4;
-  margin-left: 320px;
-  margin-top: 0;                /* colle à la ligne 2 */
-  padding: 0;                   /* supprime tout padding qui crée de l'espace */
+  margin: 0;
+  padding: 0;
   min-height: calc(100vh - 140px);
+  display: flex;
 }
 
-/* Section Ajout – collée au bord gauche ET à la ligne 2 */
+/* Section Ajout – collée au bord gauche, fond #f7f1e7 touche la ligne 2 */
 .anime-sidebar {
   width: 320px;
   background: #f7f1e7;
-  padding: 25px 25px 25px 10px; /* petite marge interne à gauche pour ne pas coller le texte */
+  padding: 25px 25px 25px 25px; /* padding uniforme, mais collé au bord */
   margin: 0;
   position: sticky;
   top: 70px;
@@ -149,7 +149,7 @@ body {
   overflow-y: auto;
 }
 
-/* Grille – commence juste à côté de la sidebar */
+/* Grille centrale – #fefaf4, commence juste après la sidebar */
 .anime-grid {
   flex: 1;
   display: grid;
@@ -160,48 +160,8 @@ body {
   min-height: 600px;
 }
 
-/* Force la continuité de couleur #f7f1e7 */
+/* Force continuité couleur #f7f1e7 entre ligne 2 et sidebar */
 .search-line,
 .anime-sidebar {
   background: #f7f1e7 !important;
-}
-
-.anime-content {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  margin-top: 0 !important;
-}
-
-.anime-sidebar {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  margin-top: 0 !important;
-}
-
-.anime-sidebar label {
-  display: block;
-  margin: 18px 0 6px 0;
-  font-size: 14px;
-  color: #555;
-}
-
-.anime-sidebar input,
-.anime-sidebar select {
-  width: 100%;
-  padding: 10px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  background: white;
-  color: black;
-}
-
-.anime-sidebar button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  background: #7e57c2;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
 }
