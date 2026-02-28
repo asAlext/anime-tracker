@@ -36,10 +36,10 @@ body {
   z-index: 1000;
 }
 
-/* Boutons nav petits */
+/* Boutons nav très petits */
 .nav-btn {
-  padding: 6px 16px;
-  font-size: 14px;
+  padding: 6px 14px;
+  font-size: 13px;
   background: transparent;
   color: #ccc;
   border: none;
@@ -94,24 +94,24 @@ body {
   font-size: 14px;
 }
 
-/* Ligne 1 – Compteurs */
+/* Ligne 1 – Compteurs centrés, plus hauts */
 .stats-line {
   background: #f7f1e7;
-  padding: 10px 20px;
+  padding: 12px 20px;
   margin: 50px 0 0 0;
   display: flex;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: center; /* centré au milieu de la ligne */
+  gap: 25px;
   flex-wrap: wrap;
 }
 
-/* Ligne 2 – Recherche */
+/* Ligne 2 – Recherche centrée au milieu */
 .search-line {
   background: #f7f1e7;
-  padding: 10px 20px;
+  padding: 12px 20px;
   display: flex;
-  justify-content: flex-start;
-  gap: 12px;
+  justify-content: center; /* centré au milieu de la ligne */
+  gap: 15px;
   flex-wrap: wrap;
 }
 
@@ -127,15 +127,14 @@ body {
   width: 260px;
 }
 
-/* Contenu principal – sidebar tout à gauche */
+/* Contenu principal – sidebar collée à gauche */
 .anime-content {
   display: flex;
-  gap: 30px;
-  padding: 20px;
+  gap: 0; /* pas d'espace entre sidebar et grille */
   margin-top: 20px;
 }
 
-/* Sidebar Ajout – tout à gauche */
+/* Section Ajout – collée au bord gauche, fond #f7f1e7 touche la ligne 2 */
 .anime-sidebar {
   width: 340px;
   background: #f7f1e7;
@@ -144,9 +143,10 @@ body {
   top: 70px;
   height: calc(100vh - 140px);
   overflow-y: auto;
+  margin-left: 0; /* collé au bord */
 }
 
-/* Grille centrale */
+/* Grille centrale – #fefaf4, commence juste après la sidebar */
 .anime-grid {
   flex: 1;
   display: grid;
