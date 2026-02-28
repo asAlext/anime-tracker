@@ -137,7 +137,7 @@ body {
   display: flex;
 }
 
-/* Section Ajout – collée au bord gauche, fond #f7f1e7 touche la ligne 2 */
+/* Section Ajout – collée au bord gauche */
 .anime-sidebar {
   width: 340px;
   background: #f7f1e7;
@@ -200,4 +200,38 @@ body {
   border: none;
   cursor: pointer;
   font-weight: bold;
+}
+
+/* Alignement vertical strict + espacement régulier */
+.anime-sidebar form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* espace vertical entre chaque champ */
+}
+
+.anime-sidebar label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #555;
+}
+
+.anime-sidebar input,
+.anime-sidebar select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  background: white;
+  color: black;
+}
+
+.anime-sidebar button {
+  padding: 12px;
+  background: #7e57c2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
 }
