@@ -1,7 +1,6 @@
 // auth.js – Connexion et inscription
 
 async function inscription() {
-  // Sécurité : on attend que supabase soit chargé
   if (!window.supabaseClient) {
     document.getElementById('message-login').textContent = 'Supabase n’est pas prêt. Recharge la page (Ctrl + Shift + R).';
     document.getElementById('message-login').style.color = '#ff6b6b';
@@ -18,7 +17,7 @@ async function inscription() {
     return;
   }
 
-  const email = `${pseudo}@mailinator.com`; // domaine temporaire valide
+  const email = `${pseudo}@mailinator.com`;
 
   const { data, error } = await window.supabaseClient.auth.signUp({
     email: email,
@@ -63,10 +62,40 @@ async function connexion() {
     message.textContent = 'Erreur : ' + error.message;
     message.style.color = '#ff6b6b';
   } else {
-    message.textContent = 'Connecté ! Chargement...';
+    // Succès connexion
+    message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' ! Chargement de la liste...';
     message.style.color = '#a8d5ba';
+
+    // On cache la page accueil et on montre la page ListeAnimes
     setTimeout(() => {
       document.getElementById('page-accueil').style.display = 'none';
+      document.getElementById('page-anime').style.display = 'block';
+      document.getElementById('page-anime').classList.add('active');
+
+      // Optionnel : mettre à jour le bouton nav actif
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('.nav-btn[data-mode="anime"]').classList.add('active');
     }, 1500);
   }
 }
+
+// Test au chargement : si déjà connecté, on affiche directement ListeAnimes
+window.addEventListener('load', async () => {
+  if (!window.supabaseClient) return;
+
+  const { data } = await window.supabaseClient.auth.getSession();
+  if (data.session) {
+    const pseudo = data.session.user.user_metadata?.pseudo || 'Utilisateur';
+    document.getElementById('message-login').textContent = 'Bienvenue ' + pseudo + ' ! (déjà connecté)';
+    document.getElementById('message-login').style.color = '#a8d5ba';
+
+    setTimeout(() => {
+      document.getElementById('page-accueil').style.display = 'none';
+      document.getElementById('page-anime').style.display = 'block';
+      document.getElementById('page-anime').classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('.nav-btn[data-mode="anime"]').classList.add('active');
+    }, 1000);
+  }
+});
