@@ -149,43 +149,7 @@ body {
   overflow-y: auto;
 }
 
-/* Force alignement vertical strict pour tous les éléments du formulaire */
-.anime-sidebar form {
-  display: block;
-}
-
-.anime-sidebar label {
-  display: block;
-  margin: 18px 0 6px 0;
-  font-size: 14px;
-  color: #555;
-  text-align: left;
-}
-
-.anime-sidebar input,
-.anime-sidebar select,
-.anime-sidebar button {
-  display: block;
-  width: 100%;
-  margin: 0 0 15px 0;
-  padding: 10px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  background: white;
-  color: black;
-}
-
-.anime-sidebar button {
-  margin-top: 25px;
-  padding: 12px;
-  background: #7e57c2;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* Grille centrale – #fefaf4 */
+/* Grille centrale – #fefaf4, commence juste après la sidebar */
 .anime-grid {
   flex: 1;
   display: grid;
@@ -200,4 +164,40 @@ body {
 .search-line,
 .anime-sidebar {
   background: #f7f1e7 !important;
+}
+.anime-content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  margin-top: 0 !important;
+}
+.anime-sidebar {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  margin-top: 0 !important;
+}
+.anime-sidebar label {
+  display: block;
+  margin: 18px 0 6px 0;
+  font-size: 14px;
+  color: #555;
+  text-align: left;
+}
+.anime-sidebar input,
+.anime-sidebar select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  background: white;
+  color: black;
+}
+.anime-sidebar button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: #7e57c2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
 }
