@@ -8,14 +8,16 @@
 </head>
 <body>
   <div class="background"></div>
+
+  <!-- Ligne 0 : Navigation -->
   <nav class="top-nav">
-    <button class="nav-btn active" data-mode="accueil">Accueil</button>
-    <button class="nav-btn" data-mode="anime">ListeAnimes</button>
+    <button class="nav-btn" data-mode="accueil">Accueil</button>
+    <button class="nav-btn active" data-mode="anime">ListeAnimes</button>
     <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
 
-  <div id="main-content" data-connected="false">
-    <!-- Page Accueil : login (visible avant connexion) -->
+  <div id="main-content">
+    <!-- Page Accueil -->
     <div id="page-accueil" class="page active">
       <div class="login-container">
         <div class="login-box">
@@ -33,63 +35,106 @@
 
     <!-- Page ListeAnimes -->
     <div id="page-anime" class="page" style="display: none;">
-      <div class="anime-container">
+      <!-- Ligne 1 : Compteurs statuts -->
+      <div class="stats-line">
+        <div class="stat-box">
+          <span class="stat-label">Terminé</span>
+          <span class="stat-count" id="count-termine">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">En Cours</span>
+          <span class="stat-count" id="count-en-cours">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">En Pause</span>
+          <span class="stat-count" id="count-en-pause">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">A Regarder</span>
+          <span class="stat-count" id="count-a-regarder">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Abandon</span>
+          <span class="stat-count" id="count-abandon">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Plus Jamais</span>
+          <span class="stat-count" id="count-plus-jamais">0</span>
+        </div>
+      </div>
+
+      <!-- Ligne 2 : Recherche & tris -->
+      <div class="search-line">
+        <input type="text" id="recherche" placeholder="Rechercher...">
+        <select id="trie-nom">
+          <option value="">Trier par nom</option>
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
+        <select id="trie-type">
+          <option value="">Trier par type</option>
+          <option value="anime">Anime</option>
+          <option value="film">Film</option>
+        </select>
+        <select id="trie-statut">
+          <option value="">Trier par statut</option>
+          <option value="termine">Terminé</option>
+          <option value="en-cours">En Cours</option>
+          <option value="en-pause">En Pause</option>
+          <option value="a-regarder">A Regarder</option>
+          <option value="abandon">Abandon</option>
+          <option value="plus-jamais">Plus Jamais</option>
+        </select>
+        <select id="trie-note">
+          <option value="">Trier par note</option>
+          <option value="asc">1 → 10</option>
+          <option value="desc">10 → 1</option>
+        </select>
+      </div>
+
+      <!-- Contenu principal : sidebar + grille -->
+      <div class="anime-content">
+        <!-- Sidebar ajout -->
         <div class="anime-sidebar">
-          <h3>Ajouter un anime</h3>
+          <h3>Ajout</h3>
           <form id="form-ajout-anime">
-            <input type="text" id="nom-anime" placeholder="Nom de l'anime" required>
-            <input type="text" id="poster-anime" placeholder="URL de la cover (optionnel)">
+            <input type="text" id="nom-anime" placeholder="Nom" required>
             <select id="type-anime" required>
               <option value="">Type</option>
-              <option value="TV">TV</option>
-              <option value="Film">Film</option>
-              <option value="OVA">OVA</option>
-              <option value="ONA">ONA</option>
-              <option value="Spécial">Spécial</option>
+              <option value="anime">Anime</option>
+              <option value="film">Film</option>
             </select>
             <select id="statut-anime" required>
               <option value="">Statut</option>
-              <option value="fini">Fini</option>
-              <option value="en cours">En cours</option>
-              <option value="en pause">En pause</option>
-              <option value="a regarder">À regarder</option>
+              <option value="termine">Terminé</option>
+              <option value="en-cours">En Cours</option>
+              <option value="en-pause">En Pause</option>
+              <option value="a-regarder">A Regarder</option>
               <option value="abandon">Abandon</option>
+              <option value="plus-jamais">Plus Jamais</option>
             </select>
-            <input type="text" id="note-anime" placeholder="Note (0-10 ou NA)">
+            <input type="text" id="note-anime" placeholder="Note (ex: 9.5 ou NA)">
+            <input type="text" id="poster-anime" placeholder="URL Cover">
             <label>
-              <input type="checkbox" id="sous-menu-anime"> Activer sous-menu
+              <input type="checkbox" id="sous-menu-anime"> Sous-menu
             </label>
             <button type="submit">Ajouter</button>
           </form>
         </div>
+
+        <!-- Grille -->
         <div class="anime-grid" id="anime-grid">
-          <!-- Les cartes animes seront ajoutées ici -->
+          <!-- Les cartes seront ajoutées ici -->
         </div>
       </div>
     </div>
 
-    <!-- Page ListeWaifus -->
+    <!-- Page ListeWaifus (placeholder pour plus tard) -->
     <div id="page-waifu" class="page" style="display: none;">
-      <div class="waifu-container">
-        <!-- Sidebar ajout -->
-        <div class="waifu-sidebar">
-          <h3>Ajouter une waifu</h3>
-          <form id="form-ajout-waifu">
-            <input type="text" id="nom-waifu" placeholder="Nom (facultatif)">
-            <input type="text" id="poster-waifu" placeholder="URL de la photo" required>
-            <button type="submit">Ajouter</button>
-          </form>
-        </div>
-
-        <!-- Grille waifus -->
-        <div class="waifu-grid" id="waifu-grid">
-          <!-- Les cartes waifus seront ajoutées ici -->
-        </div>
-      </div>
+      <h2>Liste Waifus (à venir)</h2>
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="js/config.js"></script>
   <script defer src="js/auth.js"></script>
