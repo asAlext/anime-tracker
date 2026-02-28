@@ -142,7 +142,7 @@ body {
   position: sticky;
   top: 70px;
   height: calc(100vh - 140px);
-  overflow-y: auto;
+  overflow-y: 0;
   margin-left: 0; /* collé au bord */
 }
 
