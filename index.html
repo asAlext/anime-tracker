@@ -9,7 +9,7 @@
 <body>
   <div class="background"></div>
 
-  <!-- Ligne 0 : Navigation -->
+  <!-- Ligne 0 : barre complète en haut -->
   <nav class="top-nav">
     <button class="nav-btn" data-mode="accueil">Accueil</button>
     <button class="nav-btn active" data-mode="anime">ListeAnimes</button>
@@ -18,26 +18,26 @@
 
   <div id="main-content">
     <!-- Page Accueil -->
-   <div id="page-accueil" class="page active">
-  <div class="login-wrapper">
-    <label for="pseudo">Pseudo</label>
-    <input type="text" id="pseudo" placeholder="Pseudo ou email" required>
+    <div id="page-accueil" class="page active">
+      <div class="login-wrapper">
+        <label for="pseudo">Pseudo</label>
+        <input type="text" id="pseudo" placeholder="Pseudo ou email" required>
 
-    <label for="mdp">MDP</label>
-    <input type="password" id="mdp" placeholder="Mot de passe" required>
+        <label for="mdp">MDP</label>
+        <input type="password" id="mdp" placeholder="Mot de passe" required>
 
-    <div class="buttons">
-      <button onclick="connexion()">Se connecter</button>
-      <button onclick="inscription()">Créer un compte</button>
+        <div class="buttons">
+          <button onclick="connexion()">Se connecter</button>
+          <button onclick="inscription()">Créer un compte</button>
+        </div>
+
+        <p id="message-login" class="message"></p>
+      </div>
     </div>
-
-    <p id="message-login" class="message"></p>
-  </div>
-</div>
 
     <!-- Page ListeAnimes -->
     <div id="page-anime" class="page" style="display: none;">
-      <!-- Ligne 1 : Compteurs statuts -->
+      <!-- Ligne 1 : Compteurs -->
       <div class="stats-line">
         <div class="stat-box">
           <span class="stat-label">Terminé</span>
@@ -94,20 +94,25 @@
         </select>
       </div>
 
-      <!-- Contenu principal : sidebar + grille -->
+      <!-- Contenu principal -->
       <div class="anime-content">
-        <!-- Sidebar ajout -->
+        <!-- Section Ajout – tout à gauche -->
         <div class="anime-sidebar">
           <h3>Ajout</h3>
           <form id="form-ajout-anime">
-            <input type="text" id="nom-anime" placeholder="Nom" required>
+            <label>Nom</label>
+            <input type="text" id="nom-anime" required>
+
+            <label>Type</label>
             <select id="type-anime" required>
-              <option value="">Type</option>
+              <option value="">Choisir</option>
               <option value="anime">Anime</option>
               <option value="film">Film</option>
             </select>
+
+            <label>Statut</label>
             <select id="statut-anime" required>
-              <option value="">Statut</option>
+              <option value="">Choisir</option>
               <option value="termine">Terminé</option>
               <option value="en-cours">En Cours</option>
               <option value="en-pause">En Pause</option>
@@ -115,23 +120,29 @@
               <option value="abandon">Abandon</option>
               <option value="plus-jamais">Plus Jamais</option>
             </select>
-            <input type="text" id="note-anime" placeholder="Note (ex: 9.5 ou NA)">
-            <input type="text" id="poster-anime" placeholder="URL Cover">
+
+            <label>Note (ex: 9.5 ou NA)</label>
+            <input type="text" id="note-anime">
+
+            <label>URL Cover</label>
+            <input type="text" id="poster-anime">
+
             <label>
               <input type="checkbox" id="sous-menu-anime"> Sous-menu
             </label>
+
             <button type="submit">Ajouter</button>
           </form>
         </div>
 
-        <!-- Grille -->
+        <!-- Grille centrale -->
         <div class="anime-grid" id="anime-grid">
           <!-- Les cartes seront ajoutées ici -->
         </div>
       </div>
     </div>
 
-    <!-- Page ListeWaifus (placeholder pour plus tard) -->
+    <!-- Page ListeWaifus (placeholder) -->
     <div id="page-waifu" class="page" style="display: none;">
       <h2>Liste Waifus (à venir)</h2>
     </div>
