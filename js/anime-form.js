@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('anime-grid').appendChild(card);
 
       // Mise à jour compteur
-      const countId = 'count-' + statut.replace(/ /g, '-').toLowerCase();
+      const countId = 'count-' + statut.toLowerCase().replace(/\s+/g, '-');
       const countElement = document.getElementById(countId);
       if (countElement) {
-        countElement.textContent = parseInt(countElement.textContent) + 1;
+        countElement.textContent = parseInt(countElement.textContent || 0) + 1;
       }
 
       // Sauvegarde dans localStorage
