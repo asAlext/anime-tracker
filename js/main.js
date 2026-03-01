@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.id = 'form-error';
   messageError.style.color = 'red';
   messageError.style.marginTop = '10px';
+  messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
 
   if (formAjout) {
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Si pas d'URL Cover, placeholder
       if (!urlCover) {
-        urlCover = `https://via.placeholder.com/220x310?text=${encodeURIComponent(nom)}`;
+        urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
       }
 
       // Création de la carte
@@ -79,11 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.getElementById('anime-grid').appendChild(card);
 
-      // Mise à jour compteur
-      const countId = 'count-' + statut.replace(/ /g, '-').toLowerCase();
+      // Mise à jour compteur (corrigé)
+      const countId = 'count-' + statut.toLowerCase().replace(/\s+/g, '-');
       const countElement = document.getElementById(countId);
       if (countElement) {
-        countElement.textContent = parseInt(countElement.textContent) + 1;
+        countElement.textContent = parseInt(countElement.textContent || 0) + 1;
       }
 
       // Sauvegarde dans localStorage
@@ -112,5 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
     document.getElementById('anime-grid').appendChild(card);
+
+    // Mise à jour compteurs au chargement
+    const countId = 'count-' + anime.statut.toLowerCase().replace(/\s+/g, '-');
+    const countElement = document.getElementById(countId);
+    if (countElement) {
+      countElement.textContent = parseInt(countElement.textContent || 0) + 1;
+    }
   });
 });
