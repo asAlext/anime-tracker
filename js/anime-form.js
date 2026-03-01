@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.data && data.data.Media && data.data.Media.coverImage.large) {
             urlCover = data.data.Media.coverImage.large;
           } else {
-            urlCover = `https://via.placeholder.com/220x330?text=${encodeURIComponent(nom)}`;
+            urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
           }
         } catch (error) {
-          urlCover = `https://via.placeholder.com/220x330?text=${encodeURIComponent(nom)}`;
+          urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
 
