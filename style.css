@@ -97,26 +97,26 @@ body {
 /* Ligne 1 – Compteurs encore plus petits */
 .stats-line {
   background: #f7f1e7;
-  padding: 6px 12px;
+  padding: 5px 10px;
   margin: 45px 0 0 0;
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .stats-line .stat-box {
   text-align: center;
-  min-width: 90px;
+  min-width: 85px;
 }
 
 .stats-line .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   color: #555;
 }
 
 .stats-line .stat-count {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
   color: #000;
 }
@@ -124,7 +124,7 @@ body {
 /* Ligne 2 – Recherche encore plus compacte */
 .search-line {
   background: #f7f1e7;
-  padding: 6px 12px;
+  padding: 5px 10px;
   margin: 0;
   display: flex;
   justify-content: center;
@@ -133,25 +133,25 @@ body {
 }
 
 .search-line input, .search-line select {
-  padding: 7px;
-  font-size: 12px;
+  padding: 6px;
+  font-size: 11px;
   background: white;
   border: 1px solid #ccc;
   color: black;
 }
 
 .search-line input {
-  width: 200px;
+  width: 180px;
 }
 
-/* Contenu principal – zéro décalage, pas de scroll inutile */
+/* Contenu principal – zéro décalage, pas de scroll */
 .anime-content {
   background: #fefaf4;
   margin: 0;
   padding: 0;
   min-height: calc(100vh - 140px);
   display: flex;
-  overflow-y: visible; /* désactive scroll */
+  overflow-y: visible;
 }
 
 /* Section Ajout – largeur réduite */
@@ -163,7 +163,7 @@ body {
   position: sticky;
   top: 70px;
   height: calc(100vh - 140px);
-  overflow-y: auto;
+  overflow-y: hidden; /* barre de scroll supprimée */
 }
 
 /* Alignement vertical strict + "Sous-menu" aligné horizontalement */
@@ -225,7 +225,7 @@ body {
   background: #fefaf4;
   padding: 15px;
   min-height: 600px;
-  overflow-y: visible; /* désactive scroll */
+  overflow-y: visible;
 }
 
 /* Cards anime – taille allongée, nom sous cover, espace réduit */
@@ -254,13 +254,13 @@ body {
 
 .anime-card .anime-name {
   text-align: center;
-  padding: 6px 4px;
+  padding: 4px 4px; /* espace réduit */
   font-size: 13px;
   font-weight: bold;
   color: #333;
-  background: #f8f8f8;
-  border-top: 1px solid #ddd;
-  margin: 0; /* supprime espace en trop */
+  background: none; /* suppression fond gris */
+  border-top: none; /* suppression barre grise */
+  margin: 0;
 }
 
 .note {
