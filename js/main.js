@@ -1,5 +1,6 @@
 // main.js – Navigation + gestion ajout anime
 
+// Fonction switchPage
 function switchPage(mode) {
   document.querySelectorAll('.page').forEach(page => {
     page.style.display = 'none';
@@ -34,6 +35,12 @@ switchPage('accueil');
 // Gestion du formulaire ajout anime
 document.addEventListener('DOMContentLoaded', () => {
   const formAjout = document.getElementById('form-ajout-anime');
+  const messageError = document.createElement('p');
+  messageError.id = 'form-error';
+  messageError.style.color = 'red';
+  messageError.style.marginTop = '10px';
+  formAjout.appendChild(messageError);
+
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -44,12 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
 
+      messageError.textContent = '';
+
       if (!nom || !type || !statut) {
-        alert('Nom, Type et Statut sont obligatoires');
+        messageError.textContent = 'Nom, Type et Statut sont obligatoires';
         return;
       }
 
-      // Si pas d'URL Cover, placeholder avec nom
+      // Si pas d'URL Cover, placeholder
       if (!urlCover) {
         urlCover = `https://via.placeholder.com/220x310?text=${encodeURIComponent(nom)}`;
       }
@@ -77,8 +86,31 @@ document.addEventListener('DOMContentLoaded', () => {
         countElement.textContent = parseInt(countElement.textContent) + 1;
       }
 
+      // Sauvegarde dans localStorage
+      const anime = { nom, type, statut, note, urlCover };
+      let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+      animes.push(anime);
+      localStorage.setItem('animes', JSON.stringify(animes));
+
       // Reset formulaire
       formAjout.reset();
     });
   }
+
+  // Chargement des animes sauvegardés au démarrage
+  const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
+  savedAnimes.forEach(anime => {
+    const card = document.createElement('div');
+    card.className = 'anime-card';
+    card.innerHTML = `
+      <div class="img-wrapper">
+        <img src="${anime.urlCover}" alt="${anime.nom}">
+        <div class="note">★ ${anime.note}</div>
+        <div class="type">${anime.type.toUpperCase()}</div>
+      </div>
+      <div class="anime-name">${anime.nom}</div>
+    `;
+    card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+    document.getElementById('anime-grid').appendChild(card);
+  });
 });
