@@ -196,27 +196,28 @@ body {
   min-height: 600px;
 }
 
-/* Cards anime – taille allongée, nom sous cover */
+/* Cards anime – taille allongée vers le bas, nom sous cover */
 .anime-card {
   position: relative;
   width: 100%;
-  height: 350px; /* allongée vers le bas */
+  height: 350px; /* allongée vers le bas pour ratio rectangle */
   cursor: pointer;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  aspect-ratio: 2 / 3; /* force le ratio rectangle même en zoom */
 }
 
 .anime-card .img-wrapper {
   position: relative;
   width: 100%;
-  height: 280px; /* image prend 80% de la hauteur */
+  height: 280px; /* image prend la majorité de la hauteur */
 }
 
 .anime-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* s'adapte sans déformer */
 }
 
 .anime-card .anime-name {
@@ -260,6 +261,7 @@ body {
   padding: 4px 8px;
   font-size: 14px;
   border-radius: 4px;
+  text-transform: uppercase;
 }
 
 /* Force continuité couleur #f7f1e7 entre ligne 2 et sidebar */
