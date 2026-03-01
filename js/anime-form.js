@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `
         <div class="img-wrapper">
           <img src="${urlCover}" alt="${nom}">
+          <div class="statut">${statut.toUpperCase()}</div>
           <div class="note">★ ${note}</div>
           <div class="type">${type.toUpperCase()}</div>
         </div>
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.innerHTML = `
       <div class="img-wrapper">
         <img src="${anime.urlCover}" alt="${anime.nom}">
+        <div class="statut">${anime.statut.toUpperCase()}</div>
         <div class="note">★ ${anime.note}</div>
         <div class="type">${anime.type.toUpperCase()}</div>
       </div>
