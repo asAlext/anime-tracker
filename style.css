@@ -137,11 +137,11 @@ body {
   display: flex;
 }
 
-/* Section Ajout – collée au bord gauche, mais champs décalés légèrement à droite */
+/* Section Ajout – collée au bord gauche, champs décalés légèrement à droite */
 .anime-sidebar {
   width: 340px;
   background: #f7f1e7;
-  padding: 25px 25px 25px 40px; /* 40px à gauche pour décoller les champs du bord */
+  padding: 25px 25px 25px 40px; /* 40px à gauche pour décoller les champs */
   margin: 0;
   position: sticky;
   top: 70px;
@@ -149,7 +149,7 @@ body {
   overflow-y: auto;
 }
 
-/* Force alignement vertical strict + espacement régulier */
+/* Alignement vertical strict + espacement régulier */
 .anime-sidebar form {
   display: flex;
   flex-direction: column;
@@ -196,11 +196,11 @@ body {
   min-height: 600px;
 }
 
-/* Cards anime – taille fixe, nom sous la cover */
+/* Cards anime – taille allongée, nom sous cover */
 .anime-card {
   position: relative;
   width: 100%;
-  height: 310px; /* taille fixe, allongée vers le bas */
+  height: 350px; /* allongée vers le bas */
   cursor: pointer;
   overflow: hidden;
   background: #fff;
@@ -210,7 +210,7 @@ body {
 .anime-card .img-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 280px; /* image prend 80% de la hauteur */
 }
 
 .anime-card img {
@@ -244,6 +244,17 @@ body {
   position: absolute;
   bottom: 10px;
   right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.statut {
+  position: absolute;
+  top: 10px;
+  left: 10px;
   background: rgba(0,0,0,0.7);
   color: white;
   padding: 4px 8px;
