@@ -2,9 +2,16 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const formAjout = document.getElementById('form-ajout-anime');
+  const messageError = document.createElement('p');
+  messageError.id = 'form-error';
+  messageError.style.color = 'red';
+  messageError.style.marginTop = '10px';
+  messageError.style.textAlign = 'center';
+  formAjout.appendChild(messageError);
+
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
-      e.preventDefault(); // Bloque le refresh
+      e.preventDefault();
 
       const nom = document.getElementById('nom-anime').value.trim();
       const type = document.getElementById('type-anime').value;
@@ -12,67 +19,90 @@ document.addEventListener('DOMContentLoaded', () => {
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
 
+      messageError.textContent = '';
+
       if (!nom || !type || !statut) {
-        alert('Nom, Type et Statut sont obligatoires');
+        messageError.textContent = 'Nom, Type et Statut sont obligatoires';
         return;
       }
 
-      // Si pas d'URL Cover, fetch depuis Jikan API
+      // Si pas d'URL Cover, fetch depuis AniList
       if (!urlCover) {
         try {
-          const response = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(nom)}&limit=1`);
+          const query = `
+            query ($search: String) {
+              Media(search: $search, type: ANIME) {
+                coverImage {
+                  large
+                }
+              }
+            }
+          `;
+          const variables = { search: nom };
+          const response = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, variables })
+          });
           const data = await response.json();
-          if (data.data && data.data[0] && data.data[0].images.jpg.image_url) {
-            urlCover = data.data[0].images.jpg.image_url;
+          if (data.data && data.data.Media && data.data.Media.coverImage.large) {
+            urlCover = data.data.Media.coverImage.large;
           } else {
-            urlCover = 'https://via.placeholder.com/220x310?text=' + encodeURIComponent(nom);
+            urlCover = `https://via.placeholder.com/220x330?text=${encodeURIComponent(nom)}`;
           }
         } catch (error) {
-          urlCover = 'https://via.placeholder.com/220x310?text=' + encodeURIComponent(nom);
+          urlCover = `https://via.placeholder.com/220x330?text=${encodeURIComponent(nom)}`;
         }
       }
 
-      // Création de la carte (comme la photo)
+      // Création de la carte
       const card = document.createElement('div');
       card.className = 'anime-card';
-      card.onclick = () => {
-        alert('Page détail à venir pour : ' + nom);
-        // Plus tard : bascule vers page détail
-      };
+      card.innerHTML = `
+        <div class="img-wrapper">
+          <img src="${urlCover}" alt="${nom}">
+          <div class="note">★ ${note}</div>
+          <div class="type">${type.toUpperCase()}</div>
+        </div>
+        <div class="anime-name">${nom}</div>
+      `;
 
-      const imgWrapper = document.createElement('div');
-      imgWrapper.className = 'img-wrapper';
-      const img = document.createElement('img');
-      img.src = urlCover;
-      img.alt = nom;
-      imgWrapper.appendChild(img);
+      card.onclick = () => alert('Page détail à venir pour : ' + nom);
 
-      // Note bottom left
-      const noteDiv = document.createElement('div');
-      noteDiv.className = 'note';
-      noteDiv.innerHTML = '&#9733; ' + note;
-      imgWrapper.appendChild(noteDiv);
-
-      // Type bottom right
-      const typeDiv = document.createElement('div');
-      typeDiv.className = 'type';
-      typeDiv.textContent = type.toUpperCase();
-      imgWrapper.appendChild(typeDiv);
-
-      card.appendChild(imgWrapper);
-
-      // Ajout à la grille
       document.getElementById('anime-grid').appendChild(card);
 
-      // Mise à jour compteur statut
+      // Mise à jour compteur
       const countId = 'count-' + statut.replace(/ /g, '-').toLowerCase();
       const countElement = document.getElementById(countId);
       if (countElement) {
         countElement.textContent = parseInt(countElement.textContent) + 1;
       }
 
+      // Sauvegarde dans localStorage
+      const anime = { nom, type, statut, note, urlCover };
+      let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+      animes.push(anime);
+      localStorage.setItem('animes', JSON.stringify(animes));
+
       // Reset formulaire
       formAjout.reset();
     });
   }
+
+  // Chargement des animes sauvegardés
+  const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
+  savedAnimes.forEach(anime => {
+    const card = document.createElement('div');
+    card.className = 'anime-card';
+    card.innerHTML = `
+      <div class="img-wrapper">
+        <img src="${anime.urlCover}" alt="${anime.nom}">
+        <div class="note">★ ${anime.note}</div>
+        <div class="type">${anime.type.toUpperCase()}</div>
+      </div>
+      <div class="anime-name">${anime.nom}</div>
+    `;
+    card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+    document.getElementById('anime-grid').appendChild(card);
+  });
 });
