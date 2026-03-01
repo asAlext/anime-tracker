@@ -27,7 +27,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 45px; /* Légèrement plus fine */
+  height: 45px;
   background: #1a1a1a;
   display: flex;
   justify-content: flex-end;
@@ -94,70 +94,71 @@ body {
   font-size: 14px;
 }
 
-/* Ligne 1 – Compteurs plus petits et compacts */
+/* Ligne 1 – Compteurs encore plus petits */
 .stats-line {
   background: #f7f1e7;
-  padding: 8px 15px;
+  padding: 6px 12px;
   margin: 45px 0 0 0;
   display: flex;
   justify-content: center;
-  gap: 18px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .stats-line .stat-box {
   text-align: center;
-  min-width: 100px;
+  min-width: 90px;
 }
 
 .stats-line .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: #555;
 }
 
 .stats-line .stat-count {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: #000;
 }
 
-/* Ligne 2 – Recherche plus compacte */
+/* Ligne 2 – Recherche encore plus compacte */
 .search-line {
   background: #f7f1e7;
-  padding: 8px 15px;
+  padding: 6px 12px;
   margin: 0;
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .search-line input, .search-line select {
-  padding: 8px;
-  font-size: 13px;
+  padding: 7px;
+  font-size: 12px;
   background: white;
   border: 1px solid #ccc;
   color: black;
 }
 
 .search-line input {
-  width: 220px;
+  width: 200px;
 }
 
-/* Contenu principal – zéro décalage */
+/* Contenu principal – zéro décalage, pas de scroll inutile */
 .anime-content {
   background: #fefaf4;
   margin: 0;
   padding: 0;
   min-height: calc(100vh - 140px);
   display: flex;
+  overflow-y: visible; /* désactive scroll inutile */
 }
 
-/* Section Ajout – plus compacte */
+/* Section Ajout – largeur réduite, champs décollés */
 .anime-sidebar {
-  width: 300px; /* largeur réduite */
+  width: 300px;
   background: #f7f1e7;
-  padding: 20px 20px 20px 35px; /* padding gauche réduit à 35px */
+  padding: 20px 20px 20px 35px;
   margin: 0;
   position: sticky;
   top: 70px;
@@ -180,6 +181,21 @@ body {
   text-align: left;
 }
 
+/* Alignement horizontal pour "Sous-menu" */
+.anime-sidebar .sous-menu-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.anime-sidebar input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Inputs et bouton plus petits */
 .anime-sidebar input,
 .anime-sidebar select,
 .anime-sidebar button {
@@ -201,22 +217,23 @@ body {
   margin-top: 8px;
 }
 
-/* Grille 6 colonnes max, taille fixe */
+/* Grille 6 colonnes max, pas de scroll */
 .anime-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* 6 colonnes au maximum */
+  grid-template-columns: repeat(6, 1fr);
   gap: 15px;
   background: #fefaf4;
   padding: 15px;
   min-height: 600px;
+  overflow-y: visible; /* désactive scroll */
 }
 
 /* Cards anime – taille allongée, nom sous cover */
 .anime-card {
   position: relative;
   width: 100%;
-  height: 350px; /* allongée vers le bas */
+  height: 350px;
   cursor: pointer;
   overflow: hidden;
   background: #fff;
@@ -238,12 +255,13 @@ body {
 
 .anime-card .anime-name {
   text-align: center;
-  padding: 8px;
+  padding: 6px 4px;
   font-size: 13px;
   font-weight: bold;
   color: #333;
   background: #f8f8f8;
   border-top: 1px solid #ddd;
+  margin: 0; /* supprime espace en trop */
 }
 
 .note {
@@ -280,7 +298,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Force continuité couleur #f7f1e7 entre ligne 2 et sidebar */
+/* Force continuité couleur #f7f1e7 */
 .search-line,
 .anime-sidebar {
   background: #f7f1e7 !important;
