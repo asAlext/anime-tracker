@@ -42,10 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.data && data.data.Media && data.data.Media.coverImage.large) {
             urlCover = data.data.Media.coverImage.large;
           } else {
-            urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
+            urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`; // Remplacement par placehold.co
           }
         } catch (error) {
-          urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
+          urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`; // Remplacement par placehold.co
         }
       }
       // Création de la carte – nom directement sous l’image, sans div supplémentaire
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="note">★ ${note}</div>
           <div class="type">${type.toUpperCase()}</div>
         </div>
-        <p class="anime-name-direct">${nom}</p> 
+        <p class="anime-name-direct">${nom}</p>
       `;
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
       document.getElementById('anime-grid').appendChild(card);
@@ -68,30 +68,46 @@ document.addEventListener('DOMContentLoaded', () => {
       if (countElement) {
         countElement.textContent = parseInt(countElement.textContent || 0) + 1;
       }
-      // Sauvegarde dans localStorage
-      const anime = { nom, type, statut, note, urlCover };
-      let animes = JSON.parse(localStorage.getItem('animes') || '[]');
-      animes.push(anime);
-      localStorage.setItem('animes', JSON.stringify(animes));
+      // Sauvegarde dans Supabase au lieu de localStorage
+      const { data: userData } = await window.supabaseClient.auth.getSession();
+      if (userData.session) {
+        const user_id = userData.session.user.id;
+        const anime = { user_id, nom, type, statut, note, urlCover };
+        const { error } = await window.supabaseClient
+          .from('animes')
+          .insert([anime]);
+        if (error) {
+          console.error('Erreur sauvegarde Supabase:', error);
+        }
+      }
       // Reset formulaire
       formAjout.reset();
     });
   }
-  // Chargement des animes sauvegardés
-  const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
-  savedAnimes.forEach(anime => {
-    const card = document.createElement('div');
-    card.className = 'anime-card';
-    card.innerHTML = `
-      <div class="img-wrapper">
-        <img src="${anime.urlCover}" alt="${anime.nom}">
-        <div class="statut">${anime.statut.toUpperCase()}</div>
-        <div class="note">★ ${anime.note}</div>
-        <div class="type">${anime.type.toUpperCase()}</div>
-      </div>
-      <p class="anime-name-direct">${anime.nom}</p>
-    `;
-    card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
-    document.getElementById('anime-grid').appendChild(card);
-  });
+  // Chargement des animes sauvegardés depuis Supabase
+  const { data: userData } = await window.supabaseClient.auth.getSession();
+  if (userData.session) {
+    const user_id = userData.session.user.id;
+    const { data: savedAnimes } = await window.supabaseClient
+      .from('animes')
+      .select('*')
+      .eq('user_id', user_id);
+    savedAnimes.forEach(anime => {
+      const card = document.createElement('div');
+      card.className = 'anime-card';
+      card.innerHTML = `
+        <div class="img-wrapper">
+          <img src="${anime.urlCover}" alt="${anime.nom}">
+          <div class="statut">${anime.statut.toUpperCase()}</div>
+          <div class="note">★ ${anime.note}</div>
+          <div class="type">${anime.type.toUpperCase()}</div>
+        </div>
+        <p class="anime-name-direct">${anime.nom}</p>
+      `;
+      card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+      document.getElementById('anime-grid').appendChild(card);
+    });
+  } else {
+    console.error('Utilisateur non connecté, pas de chargement animes');
+  }
 });
