@@ -1,5 +1,4 @@
 // anime-form.js – Gestion du formulaire ajout anime et grille
-
 document.addEventListener('DOMContentLoaded', () => {
   const formAjout = document.getElementById('form-ajout-anime');
   const messageError = document.createElement('p');
@@ -8,24 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.style.marginTop = '10px';
   messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
-
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const nom = document.getElementById('nom-anime').value.trim();
       const type = document.getElementById('type-anime').value;
       const statut = document.getElementById('statut-anime').value;
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
-
       messageError.textContent = '';
-
       if (!nom || !type || !statut) {
         messageError.textContent = 'Nom, Type et Statut sont obligatoires';
         return;
       }
-
       // Si pas d'URL Cover, fetch depuis AniList
       if (!urlCover) {
         try {
@@ -54,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
           urlCover = `https://via.placeholder.com/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
-
       // Création de la carte – nom directement sous l’image, sans div supplémentaire
       const card = document.createElement('div');
       card.className = 'anime-card';
@@ -65,31 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="note">★ ${note}</div>
           <div class="type">${type.toUpperCase()}</div>
         </div>
-        <p class="anime-name-direct">${nom}</p>
+        <p class="anime-name-direct">${nom}</p> 
       `;
-
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
-
       document.getElementById('anime-grid').appendChild(card);
-
       // Mise à jour compteur
       const countId = 'count-' + statut.toLowerCase().replace(/\s+/g, '-');
       const countElement = document.getElementById(countId);
       if (countElement) {
         countElement.textContent = parseInt(countElement.textContent || 0) + 1;
       }
-
       // Sauvegarde dans localStorage
       const anime = { nom, type, statut, note, urlCover };
       let animes = JSON.parse(localStorage.getItem('animes') || '[]');
       animes.push(anime);
       localStorage.setItem('animes', JSON.stringify(animes));
-
       // Reset formulaire
       formAjout.reset();
     });
   }
-
   // Chargement des animes sauvegardés
   const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
   savedAnimes.forEach(anime => {
