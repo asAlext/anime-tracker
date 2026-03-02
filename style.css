@@ -161,7 +161,7 @@ body {
   padding: 20px 20px 0 35px; /* padding bottom à 0 pour coller le fond au bas */
   margin: 0;
   position: sticky;
-  top: 70px;
+  top: 100px;
   bottom: 0; /* colle au bas */
   height: calc(100vh - 70px); /* hauteur pleine jusqu'au bas */
   overflow-y: hidden; /* pas de scroll */
