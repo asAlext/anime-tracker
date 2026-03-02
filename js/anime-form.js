@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Création de la carte
+      // Création de la carte – nom directement sous l’image, sans div supplémentaire
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="note">★ ${note}</div>
           <div class="type">${type.toUpperCase()}</div>
         </div>
-        <div class="anime-name">${nom}</div>
+        <p class="anime-name-direct">${nom}</p>
       `;
 
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="note">★ ${anime.note}</div>
         <div class="type">${anime.type.toUpperCase()}</div>
       </div>
-      <div class="anime-name">${anime.nom}</div>
+      <p class="anime-name-direct">${anime.nom}</p>
     `;
     card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
     document.getElementById('anime-grid').appendChild(card);
