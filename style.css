@@ -255,13 +255,14 @@ body {
 
 .anime-card .anime-name {
   text-align: center;
-  padding: 1.5px 4px; /* espace réduit de moitié (de 3px à 1.5px) */
+  padding: 1px 4px; /* espace réduit à 1px (divisé par 2 par rapport à 3px) */
   font-size: 13px;
   font-weight: bold;
   color: #333;
   background: none;
   border-top: none;
   margin: 0;
+  line-height: 1.1; /* réduit l'espace vertical interne */
 }
 
 .note {
