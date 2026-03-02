@@ -154,16 +154,16 @@ body {
   overflow-y: visible;
 }
 
-/* Section Ajout – fond touche le bas de la page */
+/* Section Ajout – largeur réduite, fond touche le bas de la page */
 .anime-sidebar {
   width: 300px;
   background: #f7f1e7;
-  padding: 20px 20px 0 35px; /* padding bottom à 0 */
+  padding: 20px 20px 0 35px;
   margin: 0;
   position: sticky;
   top: 70px;
-  bottom: 0;
-  height: calc(100vh - 70px); /* hauteur pleine jusqu'au bas */
+  bottom: 0; /* colle au bas */
+  height: 100vh; /* hauteur pleine jusqu'au bas */
   overflow-y: hidden; /* pas de scroll */
 }
 
@@ -229,7 +229,7 @@ body {
   overflow-y: visible;
 }
 
-/* Cards anime – espace sous nom réduit */
+/* Cards anime – espace sous nom réduit de moitié */
 .anime-card {
   position: relative;
   width: 100%;
@@ -255,7 +255,7 @@ body {
 
 .anime-card .anime-name {
   text-align: center;
-  padding: 2px 4px; /* espace réduit de moitié (avant 4px, maintenant 2px) */
+  padding: 1.5px 4px; /* espace divisé par 2 (de 3px à 1.5px) */
   font-size: 13px;
   font-weight: bold;
   color: #333;
