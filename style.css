@@ -264,7 +264,6 @@ body {
   margin: 0;
   line-height: 1.1; /* réduit l'espace vertical interne */
 }
-
 .note {
   position: absolute;
   bottom: 8px;
@@ -275,7 +274,6 @@ body {
   font-size: 13px;
   border-radius: 4px;
 }
-
 .type {
   position: absolute;
   bottom: 8px;
@@ -286,7 +284,6 @@ body {
   font-size: 13px;
   border-radius: 4px;
 }
-
 .statut {
   position: absolute;
   top: 8px;
@@ -298,7 +295,6 @@ body {
   border-radius: 4px;
   text-transform: uppercase;
 }
-
 /* Force continuité couleur #f7f1e7 */
 .search-line,
 .anime-sidebar {
