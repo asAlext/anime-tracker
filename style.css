@@ -162,9 +162,9 @@ body {
   margin: 0;
   position: sticky;
   top: 70px;
-  bottom: 0; /* colle au bas */
-  height: 100vh; /* hauteur pleine jusqu'au bas */
-  overflow-y: hidden; /* pas de scroll */
+  bottom: 0;
+  height: 100vh;
+  overflow-y: hidden;
 }
 
 /* Alignement vertical strict + "Sous-menu" aligné horizontalement */
@@ -229,7 +229,7 @@ body {
   overflow-y: visible;
 }
 
-/* Cards anime – espace sous nom réduit de moitié */
+/* Cards anime – espace sous nom fortement réduit */
 .anime-card {
   position: relative;
   width: 100%;
@@ -255,7 +255,7 @@ body {
 
 .anime-card .anime-name {
   text-align: center;
-  padding: 1.5px 4px; /* espace divisé par 2 (de 3px à 1.5px) */
+  padding: 1.5px 4px; /* espace réduit de moitié (de 3px à 1.5px) */
   font-size: 13px;
   font-weight: bold;
   color: #333;
