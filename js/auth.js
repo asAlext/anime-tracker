@@ -52,10 +52,8 @@ async function connexion() {
     message.textContent = 'Erreur : ' + error.message;
     message.style.color = '#ff6b6b';
   } else {
-    // Succès connexion – reste sur Accueil
     message.textContent = 'Connecté ! Bienvenue ' + pseudo + ' !';
     message.style.color = '#a8d5ba';
-    // Pas de setTimeout ni de switch automatique
   }
 }
 
@@ -67,6 +65,5 @@ window.addEventListener('load', async () => {
     const pseudo = data.session.user.user_metadata?.pseudo || 'Utilisateur';
     document.getElementById('message-login').textContent = 'Bienvenue ' + pseudo + ' ! (déjà connecté)';
     document.getElementById('message-login').style.color = '#a8d5ba';
-    // Pas de setTimeout ni de switchPage
   }
 });
