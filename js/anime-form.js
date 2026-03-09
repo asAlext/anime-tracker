@@ -100,39 +100,45 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Fonction pour charger les animes du user connecté
   async function loadUserAnimes() {
-    const { data: userData } = await window.supabaseClient.auth.getSession();
-    if (userData.session) {
-      const user_id = userData.session.user.id;
-      const { data: savedAnimes, error } = await window.supabaseClient
-        .from('anime_lists')
-        .select('*')
-        .eq('user_id', user_id);
-
-      if (error) {
-        console.error('Erreur chargement Supabase:', error);
-        return;
-      }
-
-      // Ajout au DOM (sans dupliquer)
-      const grid = document.getElementById('anime-grid');
-      grid.innerHTML = ''; // Nettoyage pour éviter doublons
-      savedAnimes.forEach(anime => {
-        const card = document.createElement('div');
-        card.className = 'anime-card';
-        card.innerHTML = `
-          <div class="img-wrapper">
-            <img src="${anime.urlCover}" alt="${anime.nom}">
-            <div class="statut">${anime.statut.toUpperCase()}</div>
-            <div class="note">★ ${anime.note}</div>
-            <div class="type">${anime.type.toUpperCase()}</div>
-          </div>
-          ${anime.nom}
-        `;
-        card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
-        grid.appendChild(card);
-      });
-    }
+  const grid = document.getElementById('anime-grid');
+  if (!grid) {
+    // La grille n'est pas encore dans le DOM → on réessaie dans 500ms
+    setTimeout(loadUserAnimes, 500);
+    return;
   }
+
+  const { data: userData } = await window.supabaseClient.auth.getSession();
+  if (userData.session) {
+    const user_id = userData.session.user.id;
+    const { data: savedAnimes, error } = await window.supabaseClient
+      .from('anime_lists')
+      .select('*')
+      .eq('user_id', user_id);
+
+    if (error) {
+      console.error('Erreur chargement Supabase:', error);
+      return;
+    }
+
+    // Nettoyage + ajout
+    grid.innerHTML = '';
+    savedAnimes.forEach(anime => {
+      const card = document.createElement('div');
+      card.className = 'anime-card';
+      card.innerHTML = `
+        <div class="img-wrapper">
+          <img src="${anime.urlCover}" alt="${anime.nom}">
+          <div class="statut">${anime.statut.toUpperCase()}</div>
+          <div class="note">★ ${anime.note}</div>
+          <div class="type">${anime.type.toUpperCase()}</div>
+        </div>
+        ${anime.nom}
+      `;
+      card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+      grid.appendChild(card);
+    });
+  }
+}
 
   // Re-chargement après reconnexion (écoute le changement de session)
   window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
