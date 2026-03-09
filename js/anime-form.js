@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (userData.session) {
         const user_id = userData.session.user.id;
         const anime = { user_id, nom, type, statut, note, urlCover };
-        const { error } = await window.supabaseClient.from('animes').insert([anime]);
+        const { error } = await window.supabaseClient.from('anime_lists').insert([anime]);
         if (error) {
           console.error('Erreur sauvegarde Supabase:', error);
           messageError.textContent = 'Erreur lors de la sauvegarde';
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (userData.session) {
       const user_id = userData.session.user.id;
       const { data: savedAnimes, error } = await window.supabaseClient
-        .from('animes')
+        .from('anime_lists')
         .select('*')
         .eq('user_id', user_id);
 
