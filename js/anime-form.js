@@ -1,5 +1,6 @@
 // anime-form.js – Gestion du formulaire ajout anime et grille
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', async () => {
   const formAjout = document.getElementById('form-ajout-anime');
   const messageError = document.createElement('p');
   messageError.id = 'form-error';
@@ -7,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.style.marginTop = '10px';
   messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
+
+  // Chargement initial des animes (se fait une seule fois au démarrage)
+  await loadUserAnimes();
 
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
@@ -25,15 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Si pas d'URL Cover, fetch depuis AniList
+      // Fetch cover depuis AniList si pas fournie
       if (!urlCover) {
         try {
           const query = `
             query ($search: String) {
               Media(search: $search, type: ANIME) {
-                coverImage {
-                  large
-                }
+                coverImage { large }
               }
             }
           `;
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({ query, variables })
           });
           const data = await response.json();
-          if (data.data && data.data.Media && data.data.Media.coverImage.large) {
+          if (data.data?.Media?.coverImage?.large) {
             urlCover = data.data.Media.coverImage.large;
           } else {
             urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
@@ -54,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Création de la carte – nom directement sous l’image, SANS aucun conteneur
+      // Création de la carte – nom directement sous l’image (sans conteneur)
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -68,28 +70,27 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
-
       document.getElementById('anime-grid').appendChild(card);
 
-      // Mise à jour compteur
+      // Mise à jour compteur local
       const countId = 'count-' + statut.toLowerCase().replace(/\s+/g, '-');
       const countElement = document.getElementById(countId);
       if (countElement) {
         countElement.textContent = parseInt(countElement.textContent || 0) + 1;
       }
 
-      // Sauvegarde dans Supabase
+      // Sauvegarde dans Supabase (lié au compte)
       const { data: userData } = await window.supabaseClient.auth.getSession();
       if (userData.session) {
         const user_id = userData.session.user.id;
         const anime = { user_id, nom, type, statut, note, urlCover };
-        const { error } = await window.supabaseClient
-          .from('animes')
-          .insert([anime]);
+        const { error } = await window.supabaseClient.from('animes').insert([anime]);
         if (error) {
           console.error('Erreur sauvegarde Supabase:', error);
           messageError.textContent = 'Erreur lors de la sauvegarde';
         }
+      } else {
+        messageError.textContent = 'Vous devez être connecté pour sauvegarder';
       }
 
       // Reset formulaire
@@ -97,18 +98,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Chargement des animes sauvegardés depuis Supabase
-  const { data: userData } = await window.supabaseClient.auth.getSession();
-  if (userData.session) {
-    const user_id = userData.session.user.id;
-    const { data: savedAnimes, error } = await window.supabaseClient
-      .from('animes')
-      .select('*')
-      .eq('user_id', user_id);
+  // Fonction pour charger les animes du user connecté
+  async function loadUserAnimes() {
+    const { data: userData } = await window.supabaseClient.auth.getSession();
+    if (userData.session) {
+      const user_id = userData.session.user.id;
+      const { data: savedAnimes, error } = await window.supabaseClient
+        .from('animes')
+        .select('*')
+        .eq('user_id', user_id);
 
-    if (error) {
-      console.error('Erreur chargement Supabase:', error);
-    } else {
+      if (error) {
+        console.error('Erreur chargement Supabase:', error);
+        return;
+      }
+
+      // Ajout au DOM (sans dupliquer)
+      const grid = document.getElementById('anime-grid');
+      grid.innerHTML = ''; // Nettoyage pour éviter doublons
       savedAnimes.forEach(anime => {
         const card = document.createElement('div');
         card.className = 'anime-card';
@@ -122,10 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
           ${anime.nom}
         `;
         card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
-        document.getElementById('anime-grid').appendChild(card);
+        grid.appendChild(card);
       });
     }
-  } else {
-    console.error('Utilisateur non connecté, pas de chargement animes');
   }
+
+  // Re-chargement après reconnexion (écoute le changement de session)
+  window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      await loadUserAnimes();
+    }
+  });
 });
