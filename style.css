@@ -51,13 +51,12 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* Page Accueil – JSON parfaitement au milieu vertical/horizontal */
+/* Page Accueil – JSON parfaitement au milieu vertical ET horizontal */
 #page-accueil {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 60px; /* léger espace en haut pour ne pas coller à la nav */
 }
 
 .json-section {
@@ -67,6 +66,7 @@ body {
   gap: 60px;
   flex-wrap: wrap;
   max-width: 90%;
+  width: 100%;
 }
 
 .json-group {
@@ -227,7 +227,7 @@ body {
   margin-top: 8px;
 }
 
-/* Grille 6 colonnes max, forcée */
+/* Grille 6 colonnes max, forcée partout */
 .anime-grid {
   flex: 1;
   display: grid;
