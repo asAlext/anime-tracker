@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
 
+  const grid = document.getElementById('waifu-grid');
+  const rechercheInput = document.getElementById('recherche-waifu');
+  const trieNomSelect = document.getElementById('trie-nom-waifu');
+  const trieNoteSelect = document.getElementById('trie-note-waifu');
+
+  // Chargement initial
+  loadWaifus();
+
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -16,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const nom = document.getElementById('nom-waifu').value.trim();
       const note = document.getElementById('note-waifu').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-waifu').value.trim();
+      const animeAssocie = document.getElementById('anime-associe-waifu').value.trim();
 
       messageError.textContent = '';
 
@@ -31,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Création de la carte – nom directement sous l’image, sans conteneur
       const card = document.createElement('div');
-      card.className = 'anime-card'; // réutilise le style anime-card
+      card.className = 'anime-card';
       card.innerHTML = `
         <div class="img-wrapper">
           <img src="${urlCover}" alt="${nom}">
@@ -41,10 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
-      document.getElementById('waifu-grid').appendChild(card);
+      grid.appendChild(card);
 
-      // Sauvegarde dans localStorage (clé 'waifus')
-      const waifu = { nom, note, urlCover };
+      // Sauvegarde dans localStorage
+      const waifu = { nom, note, urlCover, animeAssocie };
       let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
       waifus.push(waifu);
       localStorage.setItem('waifus', JSON.stringify(waifus));
@@ -54,12 +63,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Chargement des waifus sauvegardés
-  const savedWaifus = JSON.parse(localStorage.getItem('waifus') || '[]');
-  const grid = document.getElementById('waifu-grid');
-  if (grid) {
-    grid.innerHTML = ''; // Nettoyage pour éviter doublons
-    savedWaifus.forEach(waifu => {
+  // Fonction de chargement des waifus (avec recherche/tri)
+  function loadWaifus(filter = '', trieNom = '', trieNote = '') {
+    let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
+
+    // Filtre par nom
+    if (filter) {
+      waifus = waifus.filter(waifu => waifu.nom.toLowerCase().includes(filter.toLowerCase()));
+    }
+
+    // Tri par nom
+    if (trieNom === 'az') {
+      waifus.sort((a, b) => a.nom.localeCompare(b.nom));
+    } else if (trieNom === 'za') {
+      waifus.sort((a, b) => b.nom.localeCompare(a.nom));
+    }
+
+    // Tri par note
+    if (trieNote === 'asc') {
+      waifus.sort((a, b) => parseFloat(a.note) - parseFloat(b.note));
+    } else if (trieNote === 'desc') {
+      waifus.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
+    }
+
+    // Affichage
+    grid.innerHTML = ''; // Nettoyage
+    waifus.forEach(waifu => {
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -71,6 +100,25 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       card.onclick = () => alert('Page détail à venir pour : ' + waifu.nom);
       grid.appendChild(card);
+    });
+  }
+
+  // Écouteurs pour recherche et tri
+  if (rechercheInput) {
+    rechercheInput.addEventListener('input', () => {
+      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
+    });
+  }
+
+  if (trieNomSelect) {
+    trieNomSelect.addEventListener('change', () => {
+      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
+    });
+  }
+
+  if (trieNoteSelect) {
+    trieNoteSelect.addEventListener('change', () => {
+      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
     });
   }
 });
