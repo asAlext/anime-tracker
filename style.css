@@ -315,3 +315,29 @@ body {
 .anime-sidebar {
   background: #f7f1e7 !important;
 }
+
+/* Recherche sur ListeWaifus – même style et même hauteur que les compteurs sur ListeAnimes */
+#page-waifu .search-line {
+  background: #f7f1e7;
+  padding: 5px 10px;
+  margin: 45px 0 0 0; /* même marge que .stats-line sur ListeAnimes */
+  display: flex !important;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  visibility: visible !important;
+}
+
+#page-waifu .search-line input,
+#page-waifu .search-line select {
+  padding: 6px;
+  font-size: 11px;
+  background: white;
+  border: 1px solid #ccc;
+  color: black;
+}
+
+#page-waifu .search-line input {
+  width: 180px;
+}
