@@ -51,47 +51,57 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* Page Accueil – centrée */
-#page-accueil .login-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 340px;
-  max-width: 90%;
-  text-align: center;
-  background: rgba(30, 30, 30, 0.92);
-  padding: 35px 25px;
-}
-
-.login-wrapper label {
-  display: block;
-  text-align: left;
-  margin: 10px 0 4px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-.login-wrapper input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border: 1px solid #444;
-  background: #1e1e1e;
-  color: white;
-  font-size: 14px;
-}
-
-.login-wrapper .buttons {
+/* Page Accueil – centrée, JSON plus bas */
+#page-accueil {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 18px;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 100px; /* espace en haut */
 }
 
-.login-wrapper .buttons button {
-  padding: 9px 22px;
-  font-size: 14px;
+.json-section {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 220px; /* descend encore plus bas au milieu */
+  max-width: 900px;
+  flex-wrap: wrap;
+}
+
+.json-group {
+  text-align: center;
+  background: rgba(255,255,255,0.92);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  min-width: 280px;
+}
+
+.json-group h3 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #333;
+}
+
+.json-group button {
+  margin: 12px 8px;
+  padding: 12px 24px;
+  background: #7e57c2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.json-group button:hover {
+  background: #5e3fa2;
+}
+
+.json-group input[type="file"] {
+  margin: 15px 0;
+  display: block;
 }
 
 /* Ligne 1 – Compteurs encore plus petits */
@@ -217,11 +227,11 @@ body {
   margin-top: 8px;
 }
 
-/* Grille 6 colonnes max, pas de scroll */
+/* Grille 6 colonnes max, forcée */
 .anime-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr) !important; /* forcé pour 6 colonnes */
   gap: 15px;
   background: #fefaf4;
   padding: 15px;
@@ -260,6 +270,7 @@ body {
   font-size: 13px;
   font-weight: bold;
   color: #333;
+  line-height: 1; /* supprime tout espace vertical */
 }
 
 .note {
@@ -300,48 +311,4 @@ body {
 .search-line,
 .anime-sidebar {
   background: #f7f1e7 !important;
-}
-
-.json-section {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  margin-top: 180px; /* descend les boutons bien au milieu de la page */
-  max-width: 900px;
-  flex-wrap: wrap;
-}
-
-.json-group {
-  text-align: center;
-  background: rgba(255,255,255,0.92);
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  min-width: 280px;
-}
-
-.json-group h3 {
-  margin-bottom: 20px;
-  font-size: 22px;
-  color: #333;
-}
-
-.json-group button {
-  margin: 12px 8px;
-  padding: 12px 24px;
-  background: #7e57c2;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.json-group button:hover {
-  background: #5e3fa2;
-}
-
-.json-group input[type="file"] {
-  margin: 15px 0;
-  display: block;
 }
