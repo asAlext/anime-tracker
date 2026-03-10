@@ -10,14 +10,14 @@
   <div class="background"></div>
   <!-- Ligne 0 : barre complète en haut -->
   <nav class="top-nav">
-    <button class="nav-btn" data-mode="accueil">Accueil</button>
+    <button class="nav-btn active" data-mode="accueil">Accueil</button>
     <button class="nav-btn" data-mode="anime">ListeAnimes</button>
     <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
+
   <div id="main-content">
-    <!-- Page Accueil -->
+    <!-- Page Accueil – login supprimé, JSON plus bas -->
     <div id="page-accueil" class="page active">
-      <!-- Section JSON au milieu, plus bas -->
       <div class="json-section">
         <div class="json-group">
           <h3>Animes</h3>
@@ -33,6 +33,7 @@
         </div>
       </div>
     </div>
+
     <!-- Page ListeAnimes -->
     <div id="page-anime" class="page" style="display: none;">
       <!-- Ligne 1 : Compteurs -->
@@ -62,6 +63,7 @@
           <span class="stat-count" id="count-plus-jamais">0</span>
         </div>
       </div>
+
       <!-- Ligne 2 : Recherche & tris -->
       <div class="search-line">
         <input type="text" id="recherche" placeholder="Rechercher...">
@@ -90,6 +92,7 @@
           <option value="desc">10 → 1</option>
         </select>
       </div>
+
       <!-- Contenu principal – sidebar tout à gauche -->
       <div class="anime-content">
         <!-- Sidebar Ajout – tout à gauche -->
@@ -130,6 +133,7 @@
         </div>
       </div>
     </div>
+
     <!-- Page ListeWaifus -->
     <div id="page-waifu" class="page" style="display: none;">
       <!-- Ligne 2 : Recherche & tris (simplifiée) -->
@@ -146,6 +150,7 @@
           <option value="desc">10 → 1</option>
         </select>
       </div>
+
       <!-- Contenu principal – sidebar tout à gauche -->
       <div class="anime-content">
         <!-- Sidebar Ajout – tout à gauche -->
@@ -163,6 +168,7 @@
             <button type="submit">Ajouter</button>
           </form>
         </div>
+
         <!-- Grille des waifus -->
         <div class="anime-grid" id="waifu-grid">
           <!-- Les cartes seront ajoutées ici -->
@@ -170,9 +176,8 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
   <script src="js/anime-form.js"></script>
   <script src="js/waifu-form.js"></script>
