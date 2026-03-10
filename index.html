@@ -11,28 +11,13 @@
   <!-- Ligne 0 : barre complète en haut -->
   <nav class="top-nav">
     <button class="nav-btn" data-mode="accueil">Accueil</button>
-    <button class="nav-btn active" data-mode="anime">ListeAnimes</button>
+    <button class="nav-btn" data-mode="anime">ListeAnimes</button>
     <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
   <div id="main-content">
     <!-- Page Accueil -->
     <div id="page-accueil" class="page active">
-  <div class="json-section">
-    <div class="json-group">
-      <h3>Animes</h3>
-      <button onclick="exportJSON('animes')">Exporter Animes JSON</button>
-      <input type="file" id="import-animes" accept=".json">
-      <button onclick="importJSON('animes')">Importer Animes JSON</button>
-    </div>
-    <div class="json-group">
-      <h3>Waifus</h3>
-      <button onclick="exportJSON('waifus')">Exporter Waifus JSON</button>
-      <input type="file" id="import-waifus" accept=".json">
-      <button onclick="importJSON('waifus')">Importer Waifus JSON</button>
-    </div>
-  </div>
-</div>
-      <!-- Section JSON au milieu -->
+      <!-- Section JSON au milieu, plus bas -->
       <div class="json-section">
         <div class="json-group">
           <h3>Animes</h3>
@@ -145,9 +130,9 @@
         </div>
       </div>
     </div>
-    <!-- Page ListeWaifus (placeholder) -->
+    <!-- Page ListeWaifus -->
     <div id="page-waifu" class="page" style="display: none;">
-      <!-- Ligne 2 : Recherche & tris -->
+      <!-- Ligne 2 : Recherche & tris (simplifiée) -->
       <div class="search-line">
         <input type="text" id="recherche-waifu" placeholder="Rechercher...">
         <select id="trie-nom-waifu">
@@ -173,6 +158,8 @@
             <input type="text" id="note-waifu">
             <label>URL Cover</label>
             <input type="text" id="poster-waifu">
+            <label>Anime Associé</label>
+            <input type="text" id="anime-associe-waifu">
             <button type="submit">Ajouter</button>
           </form>
         </div>
@@ -184,10 +171,10 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="js/config.js"></script>
-  <script defer src="js/auth.js"></script>
-  <script defer src="js/main.js"></script>
-  <script defer src="js/anime-form.js"></script> <!-- Nouveau script pour l'ajout -->
-  <script defer src="js/waifu-form.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/anime-form.js"></script>
+  <script src="js/waifu-form.js"></script>
 </body>
 </html>
