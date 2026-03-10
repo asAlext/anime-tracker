@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Chargement + recherche/tri en temps réel
+  // Chargement + recherche/tri
   function loadWaifus(filter = '', trieNom = '', trieNote = '') {
     let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
 
