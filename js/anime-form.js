@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
 
+  const grid = document.getElementById('anime-grid');
+
+  // Chargement initial
+  loadAnimes();
+
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -69,69 +74,112 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
 
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
-      document.getElementById('anime-grid').appendChild(card);
+      grid.appendChild(card);
 
-      // Mise à jour compteur
-      const countId = 'count-' + statut.toLowerCase().replace(/\s+/g, '-');
-      const countElement = document.getElementById(countId);
-      if (countElement) {
-        countElement.textContent = parseInt(countElement.textContent || 0) + 1;
-      }
-
-      // Sauvegarde dans localStorage
-      const anime = { nom, type, statut, note, urlCover };
-      let animes = JSON.parse(localStorage.getItem('animes') || '[]');
-      animes.push(anime);
-      localStorage.setItem('animes', JSON.stringify(animes));
+      // Mise à jour compteur et sauvegarde
+      updateCounter(statut);
+      saveAnime({ nom, type, statut, note, urlCover });
 
       // Reset formulaire
       formAjout.reset();
     });
   }
 
-  // Chargement des animes sauvegardés
-  const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
-  const grid = document.getElementById('anime-grid');
-  grid.innerHTML = ''; // Nettoyage pour éviter doublons
-  savedAnimes.forEach(anime => {
-    const card = document.createElement('div');
-    card.className = 'anime-card';
-    card.innerHTML = `
-      <div class="img-wrapper">
-        <img src="${anime.urlCover}" alt="${anime.nom}">
-        <div class="statut">${anime.statut.toUpperCase()}</div>
-        <div class="note">★ ${anime.note}</div>
-        <div class="type">${anime.type.toUpperCase()}</div>
-      </div>
-      ${anime.nom}
-    `;
-    card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
-    grid.appendChild(card);
-  });
-});
+  // Fonction de chargement des animes (persistants)
+  function loadAnimes() {
+    const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
+    grid.innerHTML = ''; // Nettoyage pour éviter doublons
+    savedAnimes.forEach(anime => {
+      const card = document.createElement('div');
+      card.className = 'anime-card';
+      card.innerHTML = `
+        <div class="img-wrapper">
+          <img src="${anime.urlCover}" alt="${anime.nom}">
+          <div class="statut">${anime.statut.toUpperCase()}</div>
+          <div class="note">★ ${anime.note}</div>
+          <div class="type">${anime.type.toUpperCase()}</div>
+        </div>
+        ${anime.nom}
+      `;
+      card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+      grid.appendChild(card);
+    });
 
-// Fonction export JSON
-function exportJSON(key = 'animes') {
-  const data = JSON.parse(localStorage.getItem(key) || '[]');
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${key}.json`;
-  a.click();
-}
-
-// Fonction import JSON
-function importJSON(key = 'animes') {
-  const fileInput = document.getElementById('import-' + key);
-  const file = fileInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      localStorage.setItem(key, JSON.stringify(data));
-      location.reload(); // Recharge pour appliquer
-    };
-    reader.readAsText(file);
+    // Mise à jour des compteurs au chargement
+    updateAllCounters(savedAnimes);
   }
-}
+
+  // Mise à jour d'un compteur spécifique
+  function updateCounter(statut) {
+    const key = statut.toLowerCase().replace(/\s+/g, '-');
+    const countId = 'count-' + key;
+    const countElement = document.getElementById(countId);
+    if (countElement) {
+      countElement.textContent = parseInt(countElement.textContent || 0) + 1;
+    }
+  }
+
+  // Mise à jour tous les compteurs au chargement
+  function updateAllCounters(animes) {
+    const counts = {
+      termine: 0,
+      'en-cours': 0,
+      'en-pause': 0,
+      'a-regarder': 0,
+      abandon: 0,
+      'plus-jamais': 0
+    };
+
+    animes.forEach(anime => {
+      const key = anime.statut.toLowerCase().replace(/\s+/g, '-');
+      if (counts[key] !== undefined) {
+        counts[key]++;
+      }
+    });
+
+    for (const [key, value] of Object.entries(counts)) {
+      const countElement = document.getElementById(`count-${key}`);
+      if (countElement) {
+        countElement.textContent = value;
+      }
+    }
+  }
+
+  // Sauvegarde un anime dans localStorage
+  function saveAnime(anime) {
+    let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+    animes.push(anime);
+    localStorage.setItem('animes', JSON.stringify(animes));
+  }
+
+  // Fonction export JSON
+  function exportJSON(key = 'animes') {
+    const data = JSON.parse(localStorage.getItem(key) || '[]');
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${key}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Fonction import JSON
+  function importJSON(key = 'animes') {
+    const fileInput = document.getElementById(`import-${key}`);
+    const file = fileInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          localStorage.setItem(key, JSON.stringify(data));
+          location.reload(); // Recharge pour appliquer
+        } catch (err) {
+          alert('Fichier JSON invalide');
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+});
