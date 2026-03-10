@@ -51,22 +51,22 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* Page Accueil – centrée, JSON plus bas */
+/* Page Accueil – centrée, JSON parfaitement au milieu */
 #page-accueil {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   min-height: 100vh;
-  padding-top: 100px; /* espace en haut */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .json-section {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 60px;
-  margin-top: 220px; /* descend encore plus bas au milieu */
-  max-width: 900px;
   flex-wrap: wrap;
+  max-width: 90%;
 }
 
 .json-group {
@@ -231,7 +231,7 @@ body {
 .anime-grid {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(6, 1fr) !important; /* forcé pour 6 colonnes */
+  grid-template-columns: repeat(6, 1fr) !important;
   gap: 15px;
   background: #fefaf4;
   padding: 15px;
@@ -270,7 +270,7 @@ body {
   font-size: 13px;
   font-weight: bold;
   color: #333;
-  line-height: 1; /* supprime tout espace vertical */
+  line-height: 1;
 }
 
 .note {
