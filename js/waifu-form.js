@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const trieNomSelect = document.getElementById('trie-nom-waifu');
   const trieNoteSelect = document.getElementById('trie-note-waifu');
 
-  // Chargement initial
+  // Chargement initial des waifus
   loadWaifus();
 
   if (formAjout) {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fonction de chargement des waifus (avec recherche/tri)
+  // Fonction de chargement des waifus (avec recherche/tri en temps réel)
   function loadWaifus(filter = '', trieNom = '', trieNote = '') {
     let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
 
@@ -79,15 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
       waifus.sort((a, b) => b.nom.localeCompare(a.nom));
     }
 
-    // Tri par note
+    // Tri par note (asc/desc)
     if (trieNote === 'asc') {
-      waifus.sort((a, b) => parseFloat(a.note) - parseFloat(b.note));
+      waifus.sort((a, b) => parseFloat(a.note || 0) - parseFloat(b.note || 0));
     } else if (trieNote === 'desc') {
-      waifus.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
+      waifus.sort((a, b) => parseFloat(b.note || 0) - parseFloat(a.note || 0));
     }
 
     // Affichage
-    grid.innerHTML = ''; // Nettoyage
+    grid.innerHTML = ''; // Nettoyage pour éviter doublons
     waifus.forEach(waifu => {
       const card = document.createElement('div');
       card.className = 'anime-card';
@@ -103,22 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Écouteurs pour recherche et tri
+  // Écouteurs pour recherche et tri (en temps réel)
   if (rechercheInput) {
     rechercheInput.addEventListener('input', () => {
-      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
+      loadWaifus(rechercheInput.value.trim(), trieNomSelect?.value || '', trieNoteSelect?.value || '');
     });
   }
 
   if (trieNomSelect) {
     trieNomSelect.addEventListener('change', () => {
-      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
+      loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect.value, trieNoteSelect?.value || '');
     });
   }
 
   if (trieNoteSelect) {
     trieNoteSelect.addEventListener('change', () => {
-      loadWaifus(rechercheInput.value, trieNomSelect.value, trieNoteSelect.value);
+      loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect?.value || '', trieNoteSelect.value);
     });
   }
 });
