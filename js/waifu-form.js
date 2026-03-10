@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const trieNomSelect = document.getElementById('trie-nom-waifu');
   const trieNoteSelect = document.getElementById('trie-note-waifu');
 
-  // Chargement initial des waifus
+  // Chargement initial
   loadWaifus();
 
   if (formAjout) {
@@ -33,12 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Si pas d'URL Cover, placeholder
       if (!urlCover) {
         urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
       }
 
-      // Création de la carte – nom directement sous l’image, sans conteneur
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -52,42 +50,36 @@ document.addEventListener('DOMContentLoaded', () => {
       card.onclick = () => alert('Page détail à venir pour : ' + nom);
       grid.appendChild(card);
 
-      // Sauvegarde dans localStorage
       const waifu = { nom, note, urlCover, animeAssocie };
       let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
       waifus.push(waifu);
       localStorage.setItem('waifus', JSON.stringify(waifus));
 
-      // Reset formulaire
       formAjout.reset();
     });
   }
 
-  // Fonction de chargement des waifus (avec recherche/tri en temps réel)
+  // Chargement + recherche/tri en temps réel
   function loadWaifus(filter = '', trieNom = '', trieNote = '') {
     let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
 
-    // Filtre par nom
     if (filter) {
       waifus = waifus.filter(waifu => waifu.nom.toLowerCase().includes(filter.toLowerCase()));
     }
 
-    // Tri par nom
     if (trieNom === 'az') {
       waifus.sort((a, b) => a.nom.localeCompare(b.nom));
     } else if (trieNom === 'za') {
       waifus.sort((a, b) => b.nom.localeCompare(a.nom));
     }
 
-    // Tri par note (asc/desc)
     if (trieNote === 'asc') {
       waifus.sort((a, b) => parseFloat(a.note || 0) - parseFloat(b.note || 0));
     } else if (trieNote === 'desc') {
       waifus.sort((a, b) => parseFloat(b.note || 0) - parseFloat(a.note || 0));
     }
 
-    // Affichage
-    grid.innerHTML = ''; // Nettoyage pour éviter doublons
+    grid.innerHTML = '';
     waifus.forEach(waifu => {
       const card = document.createElement('div');
       card.className = 'anime-card';
@@ -103,22 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Écouteurs pour recherche et tri (en temps réel)
-  if (rechercheInput) {
-    rechercheInput.addEventListener('input', () => {
-      loadWaifus(rechercheInput.value.trim(), trieNomSelect?.value || '', trieNoteSelect?.value || '');
-    });
-  }
-
-  if (trieNomSelect) {
-    trieNomSelect.addEventListener('change', () => {
-      loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect.value, trieNoteSelect?.value || '');
-    });
-  }
-
-  if (trieNoteSelect) {
-    trieNoteSelect.addEventListener('change', () => {
-      loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect?.value || '', trieNoteSelect.value);
-    });
-  }
+  // Écouteurs recherche/tri
+  if (rechercheInput) rechercheInput.addEventListener('input', () => loadWaifus(rechercheInput.value.trim(), trieNomSelect?.value || '', trieNoteSelect?.value || ''));
+  if (trieNomSelect) trieNomSelect.addEventListener('change', () => loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect.value, trieNoteSelect?.value || ''));
+  if (trieNoteSelect) trieNoteSelect.addEventListener('change', () => loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect?.value || '', trieNoteSelect.value));
 });
