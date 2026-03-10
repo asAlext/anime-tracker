@@ -16,7 +16,7 @@
   </nav>
 
   <div id="main-content">
-    <!-- Page Accueil – login supprimé, JSON plus bas -->
+    <!-- Page Accueil – JSON parfaitement au milieu -->
     <div id="page-accueil" class="page active">
       <div class="json-section">
         <div class="json-group">
@@ -127,6 +127,7 @@
             <button type="submit">Ajouter</button>
           </form>
         </div>
+
         <!-- Grille des animes -->
         <div class="anime-grid" id="anime-grid">
           <!-- Les cartes seront ajoutées ici -->
@@ -135,21 +136,22 @@
     </div>
 
     <!-- Page ListeWaifus -->
-   <div id="page-waifu" class="page" style="display: none;">
-  <!-- Ligne 1 : Recherche (à la même hauteur que les compteurs sur ListeAnimes) -->
-  <div class="search-line">
-    <input type="text" id="recherche-waifu" placeholder="Rechercher...">
-    <select id="trie-nom-waifu">
-      <option value="">Trier par nom</option>
-      <option value="az">A → Z</option>
-      <option value="za">Z → A</option>
-    </select>
-    <select id="trie-note-waifu">
-      <option value="">Trier par note</option>
-      <option value="asc">1 → 10</option>
-      <option value="desc">10 → 1</option>
-    </select>
-  </div>
+    <div id="page-waifu" class="page" style="display: none;">
+      <!-- Ligne 1 : Recherche (même hauteur que les compteurs sur ListeAnimes) -->
+      <div class="search-line">
+        <input type="text" id="recherche-waifu" placeholder="Rechercher...">
+        <select id="trie-nom-waifu">
+          <option value="">Trier par nom</option>
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
+        <select id="trie-note-waifu">
+          <option value="">Trier par note</option>
+          <option value="asc">1 → 10</option>
+          <option value="desc">10 → 1</option>
+        </select>
+      </div>
+
       <!-- Contenu principal – sidebar tout à gauche -->
       <div class="anime-content">
         <!-- Sidebar Ajout – tout à gauche -->
