@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   formAjout.appendChild(messageError);
 
   const grid = document.getElementById('anime-grid');
+  const rechercheInput = document.getElementById('recherche');
+  const trieNom = document.getElementById('trie-nom');
+  const trieType = document.getElementById('trie-type');
+  const trieStatut = document.getElementById('trie-statut');
+  const trieNote = document.getElementById('trie-note');
 
   // Chargement initial
   loadAnimes();
@@ -85,11 +90,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fonction de chargement des animes (persistants)
-  function loadAnimes() {
-    const savedAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
-    grid.innerHTML = ''; // Nettoyage pour éviter doublons
-    savedAnimes.forEach(anime => {
+  // Fonction de chargement des animes (persistants + recherche/tri)
+  function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
+    let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+
+    // Filtre par nom
+    if (filter) {
+      animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
+    }
+
+    // Tri par nom
+    if (trieNomVal === 'az') {
+      animes.sort((a, b) => a.nom.localeCompare(b.nom));
+    } else if (trieNomVal === 'za') {
+      animes.sort((a, b) => b.nom.localeCompare(a.nom));
+    }
+
+    // Tri par type
+    if (trieTypeVal) {
+      animes = animes.filter(anime => anime.type.toLowerCase() === trieTypeVal.toLowerCase());
+    }
+
+    // Tri par statut
+    if (trieStatutVal) {
+      animes = animes.filter(anime => anime.statut.toLowerCase().replace(/\s+/g, '-') === trieStatutVal);
+    }
+
+    // Tri par note
+    if (trieNoteVal === 'asc') {
+      animes.sort((a, b) => parseFloat(a.note) - parseFloat(b.note));
+    } else if (trieNoteVal === 'desc') {
+      animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
+    }
+
+    // Affichage
+    grid.innerHTML = ''; // Nettoyage
+    animes.forEach(anime => {
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -105,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    // Mise à jour des compteurs au chargement
-    updateAllCounters(savedAnimes);
+    // Mise à jour des compteurs (comptage réel des animes affichés)
+    updateAllCounters(animes);
   }
 
   // Mise à jour d'un compteur spécifique
@@ -115,11 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const countId = 'count-' + key;
     const countElement = document.getElementById(countId);
     if (countElement) {
-      countElement.textContent = parseInt(countElement.textContent || 0) + 1;
+      let current = parseInt(countElement.textContent || 0);
+      countElement.textContent = current + 1;
     }
   }
 
-  // Mise à jour tous les compteurs au chargement
+  // Mise à jour tous les compteurs (comptage réel)
   function updateAllCounters(animes) {
     const counts = {
       termine: 0,
@@ -150,6 +187,37 @@ document.addEventListener('DOMContentLoaded', () => {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animes.push(anime);
     localStorage.setItem('animes', JSON.stringify(animes));
+  }
+
+  // Écouteurs pour recherche et tri
+  if (rechercheInput) {
+    rechercheInput.addEventListener('input', () => {
+      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
+    });
+  }
+
+  if (trieNom) {
+    trieNom.addEventListener('change', () => {
+      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
+    });
+  }
+
+  if (trieType) {
+    trieType.addEventListener('change', () => {
+      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
+    });
+  }
+
+  if (trieStatut) {
+    trieStatut.addEventListener('change', () => {
+      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
+    });
+  }
+
+  if (trieNote) {
+    trieNote.addEventListener('change', () => {
+      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
+    });
   }
 
   // Fonction export JSON
