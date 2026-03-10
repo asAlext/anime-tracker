@@ -17,17 +17,21 @@
   <div id="main-content">
     <!-- Page Accueil -->
     <div id="page-accueil" class="page active">
-      <div class="login-wrapper">
-        <label for="pseudo">Pseudo</label>
-        <input type="text" id="pseudo" placeholder="Pseudo ou email" required>
-        <label for="mdp">MDP</label>
-        <input type="password" id="mdp" placeholder="Mot de passe" required>
-        <div class="buttons">
-          <button onclick="connexion()">Se connecter</button>
-          <button onclick="inscription()">Créer un compte</button>
-        </div>
-        <p id="message-login" class="message"></p>
-      </div>
+  <div class="json-section">
+    <div class="json-group">
+      <h3>Animes</h3>
+      <button onclick="exportJSON('animes')">Exporter Animes JSON</button>
+      <input type="file" id="import-animes" accept=".json">
+      <button onclick="importJSON('animes')">Importer Animes JSON</button>
+    </div>
+    <div class="json-group">
+      <h3>Waifus</h3>
+      <button onclick="exportJSON('waifus')">Exporter Waifus JSON</button>
+      <input type="file" id="import-waifus" accept=".json">
+      <button onclick="importJSON('waifus')">Importer Waifus JSON</button>
+    </div>
+  </div>
+</div>
       <!-- Section JSON au milieu -->
       <div class="json-section">
         <div class="json-group">
