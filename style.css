@@ -319,7 +319,7 @@ body {
   width: 180px;
 }
 
-/* Page détail – corrections précises pour ta demande */
+/* Page détail – corrections pour ta demande */
 #page-detail {
   padding-top: 80px; /* descend la cover anime pour ne pas coller à la nav noire */
 }
@@ -331,7 +331,7 @@ body {
   padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 60px; /* plus d’espace entre anime et waifu */
+  gap: 60px; /* espace entre anime et waifu */
 }
 
 .detail-left {
@@ -341,43 +341,46 @@ body {
 }
 
 .detail-cover-large {
-  width: 380px !important;
+  width: 450px !important; /* plus grande mais raisonnable */
   height: auto !important;
-  max-height: 540px !important;
+  max-height: 630px !important;
   object-fit: contain !important;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  margin-top: 30px; /* descend encore un peu plus */
 }
 
 .detail-anime-info {
   text-align: left;
-  max-width: 400px;
+  max-width: 450px;
 }
 
 .detail-anime-info h2 {
-  font-size: 28px;
+  font-size: 32px;
   margin: 0 0 12px 0;
 }
 
 .detail-anime-info p {
   font-size: 18px;
   margin: 8px 0;
+  line-height: 1.4;
 }
 
+/* Cover waifu = même taille que l’anime actuel */
 .detail-right {
-  margin-left: auto; /* pousse à droite */
-  margin-right: 60px; /* plus d’espace au bord droit */
+  margin-left: auto;
+  margin-right: 60px; /* marge droite */
   text-align: center;
 }
 
 .detail-cover-small {
-  width: 180px !important; /* beaucoup plus petite que l’anime (380px) */
+  width: 450px !important; /* même taille que cover anime */
   height: auto !important;
-  max-height: 260px !important;
+  max-height: 630px !important;
   object-fit: contain !important;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .detail-waifu-info {
@@ -386,32 +389,33 @@ body {
   text-align: center;
 }
 
-/* Force images à rester dans les limites */
+/* Force images */
 .detail-left img, .detail-right img {
   max-width: 100% !important;
   height: auto !important;
 }
 
-/* Boutons petits, sans cadre, juste sous la nav */
+/* Boutons sans cadre, fixés sous la nav (ne bougent pas au scroll) */
 .detail-buttons {
   position: fixed;
-  top: 50px;
+  top: 45px; /* juste sous la nav (hauteur 45px) */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 15px;
+  gap: 20px;
   z-index: 999;
+  background: transparent;
 }
 
 .detail-buttons button {
-  padding: 6px 12px;
-  font-size: 12px;
-  background: #f0f0f0;
+  padding: 8px 16px;
+  font-size: 13px;
+  background: #f0f0f0; /* proche du fond */
   color: #333;
-  border: none;
+  border: none; /* sans cadre */
   border-radius: 0;
   cursor: pointer;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .detail-buttons button:hover {
