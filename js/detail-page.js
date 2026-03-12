@@ -18,6 +18,7 @@ function showDetailPage(item) {
   document.getElementById('detail-statut-anime').textContent = '';
   document.getElementById('detail-note-anime').textContent = '';
   document.getElementById('detail-cover-waifu').src = '';
+  document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
 
   let animeData = null;
@@ -35,22 +36,23 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
- // Affichage anime
-if (animeData) {
-  document.getElementById('detail-cover-anime').src = animeData.urlCover;
-  document.getElementById('detail-nom-anime').textContent = animeData.nom;
-  document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type}`;
-  document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut}`;
-  document.getElementById('detail-note-anime').textContent = `Note : ${animeData.note}`;
-}
+  // Affichage anime (cover + infos à droite)
+  if (animeData) {
+    document.getElementById('detail-cover-anime').src = animeData.urlCover;
+    document.getElementById('detail-nom-anime').textContent = animeData.nom;
+    document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type}`;
+    document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut}`;
+    document.getElementById('detail-note-anime').textContent = `Note : ${animeData.note}`;
+  }
 
-  // Affichage waifu (si associée)
-if (waifuData) {
-  document.getElementById('detail-cover-waifu').src = waifuData.urlCover;
-  document.getElementById('detail-note-waifu').textContent = `Note waifu : ${waifuData.note}`;
-} else {
-  document.getElementById('detail-note-waifu').textContent = 'Aucune waifu associée';
-}
+  // Affichage waifu (cover + nom + note en dessous)
+  if (waifuData) {
+    document.getElementById('detail-cover-waifu').src = waifuData.urlCover;
+    document.getElementById('detail-nom-waifu').textContent = waifuData.nom;
+    document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note}`;
+  } else {
+    document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
+  }
 
   // Boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
@@ -60,7 +62,6 @@ if (waifuData) {
 
 // Modal Modifier (popup)
 function openModifyModal(animeData, waifuData) {
-  // Création du modal si pas déjà présent
   let modal = document.getElementById('modify-modal');
   if (!modal) {
     modal = document.createElement('div');
@@ -110,7 +111,6 @@ function openModifyModal(animeData, waifuData) {
   // Sauvegarde
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
-    // Mise à jour anime
     if (animeData) {
       let animes = JSON.parse(localStorage.getItem('animes') || '[]');
       const index = animes.findIndex(a => a.nom === animeData.nom);
@@ -122,7 +122,6 @@ function openModifyModal(animeData, waifuData) {
         localStorage.setItem('animes', JSON.stringify(animes));
       }
     }
-    // Mise à jour waifu
     if (waifuData) {
       let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
       const index = waifus.findIndex(w => w.nom === waifuData.nom);
@@ -141,12 +140,10 @@ function openModifyModal(animeData, waifuData) {
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée sera aussi supprimée.')) return;
 
-  // Supprime anime
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   animes = animes.filter(a => a.nom !== nomAnime);
   localStorage.setItem('animes', JSON.stringify(animes));
 
-  // Supprime waifu associée
   let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
   waifus = waifus.filter(w => w.animeAssocie !== nomAnime);
   localStorage.setItem('waifus', JSON.stringify(waifus));
