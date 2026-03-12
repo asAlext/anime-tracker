@@ -319,9 +319,9 @@ body {
   width: 180px;
 }
 
-/* Page détail – corrections pour ta demande */
+/* Page détail – TAILLES FIXES STRICTES pour toutes les covers */
 #page-detail {
-  padding-top: 80px; /* descend la cover anime pour ne pas coller à la nav noire */
+  padding-top: 80px; /* descend pour ne pas coller à la nav noire */
 }
 
 .detail-content {
@@ -331,23 +331,24 @@ body {
   padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 60px; /* espace entre anime et waifu */
+  gap: 60px;
 }
 
 .detail-left {
   display: flex;
   align-items: flex-start;
-  gap: 40px; /* espace entre cover anime et infos à droite */
+  gap: 40px; /* espace cover anime ↔ infos à droite */
 }
 
 .detail-cover-large {
-  width: 450px !important; /* plus grande mais raisonnable */
-  height: auto !important;
-  max-height: 630px !important;
-  object-fit: contain !important;
+  width: 420px !important;          /* TAILLE FIXE pour TOUTES les covers anime */
+  height: 590px !important;         /* ratio classique anime, fixe et uniforme */
+  object-fit: cover !important;     /* coupe si besoin, mais taille forcée */
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 30px; /* descend encore un peu plus */
+  margin-top: 30px;                 /* descend légèrement */
+  background: #111;                 /* fond sombre si image trop petite */
+  overflow: hidden;
 }
 
 .detail-anime-info {
@@ -366,7 +367,7 @@ body {
   line-height: 1.4;
 }
 
-/* Cover waifu = même taille que l’anime actuel */
+/* Cover waifu : plus petite que anime, mais fixe aussi */
 .detail-right {
   margin-left: auto;
   margin-right: 60px; /* marge droite */
@@ -374,13 +375,14 @@ body {
 }
 
 .detail-cover-small {
-  width: 450px !important; /* même taille que cover anime */
-  height: auto !important;
-  max-height: 630px !important;
-  object-fit: contain !important;
+  width: 260px !important;          /* plus petite que anime (420px) */
+  height: 365px !important;         /* ratio fixe, uniforme pour toutes les waifus */
+  object-fit: cover !important;     /* coupe si besoin, taille forcée */
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   margin-top: 30px;
+  background: #111;                 /* fond sombre si image trop petite */
+  overflow: hidden;
 }
 
 .detail-waifu-info {
@@ -389,16 +391,17 @@ body {
   text-align: center;
 }
 
-/* Force images */
+/* Force toutes les images à respecter les tailles fixes */
 .detail-left img, .detail-right img {
-  max-width: 100% !important;
-  height: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 /* Boutons sans cadre, fixés sous la nav (ne bougent pas au scroll) */
 .detail-buttons {
   position: fixed;
-  top: 45px; /* juste sous la nav (hauteur 45px) */
+  top: 45px; /* juste sous la nav */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
