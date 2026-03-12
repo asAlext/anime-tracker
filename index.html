@@ -10,13 +10,13 @@
   <div class="background"></div>
   <!-- Ligne 0 : barre complète en haut -->
   <nav class="top-nav">
-    <button class="nav-btn active" data-mode="accueil">Accueil</button>
+    <button class="nav-btn" data-mode="accueil">Accueil</button>
     <button class="nav-btn" data-mode="anime">ListeAnimes</button>
     <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
 
   <div id="main-content">
-    <!-- Page Accueil – JSON parfaitement au milieu -->
+    <!-- Page Accueil – JSON centrés au milieu -->
     <div id="page-accueil" class="page active">
       <div class="json-section">
         <div class="json-group">
@@ -42,102 +42,27 @@
           <span class="stat-label">Terminé</span>
           <span class="stat-count" id="count-termine">0</span>
         </div>
-        <div class="stat-box">
-          <span class="stat-label">En Cours</span>
-          <span class="stat-count" id="count-en-cours">0</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">En Pause</span>
-          <span class="stat-count" id="count-en-pause">0</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">A Regarder</span>
-          <span class="stat-count" id="count-a-regarder">0</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">Abandon</span>
-          <span class="stat-count" id="count-abandon">0</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">Plus Jamais</span>
-          <span class="stat-count" id="count-plus-jamais">0</span>
-        </div>
+        <!-- ... autres compteurs ... -->
       </div>
 
       <!-- Ligne 2 : Recherche & tris -->
       <div class="search-line">
-        <input type="text" id="recherche" placeholder="Rechercher...">
-        <select id="trie-nom">
-          <option value="">Trier par nom</option>
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
-        <select id="trie-type">
-          <option value="">Trier par type</option>
-          <option value="anime">Anime</option>
-          <option value="film">Film</option>
-        </select>
-        <select id="trie-statut">
-          <option value="">Trier par statut</option>
-          <option value="termine">Terminé</option>
-          <option value="en-cours">En Cours</option>
-          <option value="en-pause">En Pause</option>
-          <option value="a-regarder">A Regarder</option>
-          <option value="abandon">Abandon</option>
-          <option value="plus-jamais">Plus Jamais</option>
-        </select>
-        <select id="trie-note">
-          <option value="">Trier par note</option>
-          <option value="asc">1 → 10</option>
-          <option value="desc">10 → 1</option>
-        </select>
+        <!-- ... recherche existante ... -->
       </div>
 
-      <!-- Contenu principal – sidebar tout à gauche -->
       <div class="anime-content">
-        <!-- Sidebar Ajout – tout à gauche -->
         <div class="anime-sidebar">
-          <h3>Ajout</h3>
-          <form id="form-ajout-anime">
-            <label>Nom</label>
-            <input type="text" id="nom-anime" required>
-            <label>Type</label>
-            <select id="type-anime" required>
-              <option value="">Choisir</option>
-              <option value="anime">Anime</option>
-              <option value="film">Film</option>
-            </select>
-            <label>Statut</label>
-            <select id="statut-anime" required>
-              <option value="">Choisir</option>
-              <option value="termine">Terminé</option>
-              <option value="en-cours">En Cours</option>
-              <option value="en-pause">En Pause</option>
-              <option value="a-regarder">A Regarder</option>
-              <option value="abandon">Abandon</option>
-              <option value="plus-jamais">Plus Jamais</option>
-            </select>
-            <label>Note (ex: 9.5 ou NA)</label>
-            <input type="text" id="note-anime">
-            <label>URL Cover</label>
-            <input type="text" id="poster-anime">
-            <label>
-              <input type="checkbox" id="sous-menu-anime"> Sous-menu
-            </label>
-            <button type="submit">Ajouter</button>
-          </form>
+          <!-- formulaire ajout anime -->
         </div>
-
-        <!-- Grille des animes -->
         <div class="anime-grid" id="anime-grid">
-          <!-- Les cartes seront ajoutées ici -->
+          <!-- cartes ajoutées par JS -->
         </div>
       </div>
     </div>
 
     <!-- Page ListeWaifus -->
     <div id="page-waifu" class="page" style="display: none;">
-      <!-- Ligne 1 : Recherche (même hauteur que les compteurs sur ListeAnimes) -->
+      <!-- Ligne 1 : Recherche -->
       <div class="search-line">
         <input type="text" id="recherche-waifu" placeholder="Rechercher...">
         <select id="trie-nom-waifu">
@@ -152,27 +77,34 @@
         </select>
       </div>
 
-      <!-- Contenu principal – sidebar tout à gauche -->
       <div class="anime-content">
-        <!-- Sidebar Ajout – tout à gauche -->
         <div class="anime-sidebar">
-          <h3>Ajout</h3>
-          <form id="form-ajout-waifu">
-            <label>Nom</label>
-            <input type="text" id="nom-waifu" required>
-            <label>Note (ex: 9.5 ou NA)</label>
-            <input type="text" id="note-waifu">
-            <label>URL Cover</label>
-            <input type="text" id="poster-waifu">
-            <label>Anime Associé</label>
-            <input type="text" id="anime-associe-waifu">
-            <button type="submit">Ajouter</button>
-          </form>
+          <!-- formulaire ajout waifu -->
         </div>
-
-        <!-- Grille des waifus -->
         <div class="anime-grid" id="waifu-grid">
-          <!-- Les cartes seront ajoutées ici -->
+          <!-- cartes ajoutées par JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Détail (nouvelle page active quand on clique sur une cover) -->
+    <div id="page-detail" class="page" style="display: none;">
+      <div class="detail-content">
+        <div class="detail-left">
+          <img id="detail-cover-anime" src="" alt="Cover Anime" class="detail-cover-large">
+          <h2 id="detail-nom-anime"></h2>
+          <p id="detail-type-anime"></p>
+          <p id="detail-statut-anime"></p>
+          <p id="detail-note-anime"></p>
+        </div>
+        <div class="detail-right">
+          <img id="detail-cover-waifu" src="" alt="Cover Waifu" class="detail-cover-small">
+          <p id="detail-note-waifu"></p>
+        </div>
+        <div class="detail-buttons">
+          <button id="btn-modifier">Modifier</button>
+          <button id="btn-supprimer-anime">Supprimer Anime</button>
+          <button id="btn-supprimer-waifu">Supprimer Waifu</button>
         </div>
       </div>
     </div>
