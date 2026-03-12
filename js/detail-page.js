@@ -34,10 +34,14 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
-  // Affichage anime – tailles gérées par CSS uniquement
+  // Affichage anime – taille fixe stricte (inchangée)
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
-    document.getElementById('detail-cover-anime').src = coverUrl;
+    const imgAnime = document.getElementById('detail-cover-anime');
+    imgAnime.src = coverUrl;
+    imgAnime.style.width = '420px';
+    imgAnime.style.height = '590px';
+    imgAnime.style.objectFit = 'cover';
 
     // Infos verticales dans l’ordre demandé
     document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
@@ -48,10 +52,15 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-anime').textContent = 'Aucun anime sélectionné';
   }
 
-  // Affichage waifu – nom en gras
+  // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
-    document.getElementById('detail-cover-waifu').src = coverUrl;
+    const imgWaifu = document.getElementById('detail-cover-waifu');
+    imgWaifu.src = coverUrl;
+    imgWaifu.style.width = '260px';
+    imgWaifu.style.height = '365px';
+    imgWaifu.style.objectFit = 'cover';
+
     document.getElementById('detail-nom-waifu').innerHTML = `<strong>${waifuData.nom || 'Nom inconnu'}</strong>`;
     document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note || 'NA'}`;
   } else {
