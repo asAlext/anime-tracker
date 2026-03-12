@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Fetch cover depuis AniList si pas fournie
       if (!urlCover) {
         try {
           const query = `
@@ -65,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Création de la carte – nom directement sous l’image, sans conteneur
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -78,53 +76,49 @@ document.addEventListener('DOMContentLoaded', () => {
         ${nom}
       `;
 
-      card.onclick = () => alert('Page détail à venir pour : ' + nom);
+      // Clic sur la carte → ouvre la page détail
+      card.onclick = () => {
+        showDetailPage({ nom, type, statut, note, urlCover, isAnime: true });
+      };
+
       grid.appendChild(card);
 
-      // Mise à jour compteur et sauvegarde
       updateCounter(statut);
       saveAnime({ nom, type, statut, note, urlCover });
 
-      // Reset formulaire
       formAjout.reset();
     });
   }
 
-  // Fonction de chargement des animes (persistants + recherche/tri)
+  // Chargement + recherche/tri (inchangé, fonctionne déjà)
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
-    // Filtre par nom
     if (filter) {
       animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
     }
 
-    // Tri par nom
     if (trieNomVal === 'az') {
       animes.sort((a, b) => a.nom.localeCompare(b.nom));
     } else if (trieNomVal === 'za') {
       animes.sort((a, b) => b.nom.localeCompare(a.nom));
     }
 
-    // Tri par type
     if (trieTypeVal) {
       animes = animes.filter(anime => anime.type.toLowerCase() === trieTypeVal.toLowerCase());
     }
 
-    // Tri par statut
     if (trieStatutVal) {
       animes = animes.filter(anime => anime.statut.toLowerCase().replace(/\s+/g, '-') === trieStatutVal);
     }
 
-    // Tri par note
     if (trieNoteVal === 'asc') {
       animes.sort((a, b) => parseFloat(a.note) - parseFloat(b.note));
     } else if (trieNoteVal === 'desc') {
       animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
     }
 
-    // Affichage
-    grid.innerHTML = ''; // Nettoyage
+    grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
       card.className = 'anime-card';
@@ -137,15 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${anime.nom}
       `;
-      card.onclick = () => alert('Page détail à venir pour : ' + anime.nom);
+
+      card.onclick = () => {
+        showDetailPage({ nom: anime.nom, type: anime.type, statut: anime.statut, note: anime.note, urlCover: anime.urlCover, isAnime: true });
+      };
+
       grid.appendChild(card);
     });
 
-    // Mise à jour des compteurs (comptage réel des animes affichés)
     updateAllCounters(animes);
   }
 
-  // Mise à jour d'un compteur spécifique
+  // Fonctions compteurs (inchangées, fonctionnent déjà)
   function updateCounter(statut) {
     const key = statut.toLowerCase().replace(/\s+/g, '-');
     const countId = 'count-' + key;
@@ -156,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Mise à jour tous les compteurs (comptage réel)
   function updateAllCounters(animes) {
     const counts = {
       termine: 0,
@@ -182,47 +178,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Sauvegarde un anime dans localStorage
   function saveAnime(anime) {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animes.push(anime);
     localStorage.setItem('animes', JSON.stringify(animes));
   }
 
-  // Écouteurs pour recherche et tri
-  if (rechercheInput) {
-    rechercheInput.addEventListener('input', () => {
-      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
-    });
-  }
+  // Écouteurs recherche/tri (inchangés)
+  if (rechercheInput) rechercheInput.addEventListener('input', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
+  if (trieNom) trieNom.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
+  if (trieType) trieType.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
+  if (trieStatut) trieStatut.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
+  if (trieNote) trieNote.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
 
-  if (trieNom) {
-    trieNom.addEventListener('change', () => {
-      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
-    });
-  }
-
-  if (trieType) {
-    trieType.addEventListener('change', () => {
-      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
-    });
-  }
-
-  if (trieStatut) {
-    trieStatut.addEventListener('change', () => {
-      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
-    });
-  }
-
-  if (trieNote) {
-    trieNote.addEventListener('change', () => {
-      loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value);
-    });
-  }
-
-  // Fonction export JSON
+  // Fonction export JSON (corrigée pour fonctionner)
   function exportJSON(key = 'animes') {
     const data = JSON.parse(localStorage.getItem(key) || '[]');
+    if (data.length === 0) {
+      alert('Aucun élément à exporter.');
+      return;
+    }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -232,22 +207,28 @@ document.addEventListener('DOMContentLoaded', () => {
     URL.revokeObjectURL(url);
   }
 
-  // Fonction import JSON
+  // Fonction import JSON (corrigée pour fonctionner)
   function importJSON(key = 'animes') {
     const fileInput = document.getElementById(`import-${key}`);
     const file = fileInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          localStorage.setItem(key, JSON.stringify(data));
-          location.reload(); // Recharge pour appliquer
-        } catch (err) {
-          alert('Fichier JSON invalide');
-        }
-      };
-      reader.readAsText(file);
+    if (!file) {
+      alert('Aucun fichier sélectionné.');
+      return;
     }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (!Array.isArray(data)) {
+          alert('Fichier JSON invalide (doit être un tableau).');
+          return;
+        }
+        localStorage.setItem(key, JSON.stringify(data));
+        location.reload(); // Recharge pour appliquer
+      } catch (err) {
+        alert('Erreur lors de la lecture du fichier JSON.');
+      }
+    };
+    reader.readAsText(file);
   }
 });
