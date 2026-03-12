@@ -1,10 +1,12 @@
 // detail-page.js – Gestion de la page détail (anime ou waifu)
+
 function showDetailPage(item) {
   const detailPage = document.getElementById('page-detail');
   if (!detailPage) {
     console.error('Page détail non trouvée dans le HTML');
     return;
   }
+
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
@@ -32,11 +34,16 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
-  // Affichage anime – infos verticales dans l’ordre demandé
+  // Affichage anime – taille fixe stricte (inchangée)
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
-    document.getElementById('detail-cover-anime').src = coverUrl;
+    const imgAnime = document.getElementById('detail-cover-anime');
+    imgAnime.src = coverUrl;
+    imgAnime.style.width = '420px';
+    imgAnime.style.height = '590px';
+    imgAnime.style.objectFit = 'cover';
 
+    // Infos verticales dans l’ordre demandé
     document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
     document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type || 'Inconnu'}`;
     document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
@@ -45,10 +52,15 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-anime').textContent = 'Aucun anime sélectionné';
   }
 
-  // Affichage waifu – nom en gras
+  // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
-    document.getElementById('detail-cover-waifu').src = coverUrl;
+    const imgWaifu = document.getElementById('detail-cover-waifu');
+    imgWaifu.src = coverUrl;
+    imgWaifu.style.width = '260px';
+    imgWaifu.style.height = '365px';
+    imgWaifu.style.objectFit = 'cover';
+
     document.getElementById('detail-nom-waifu').innerHTML = `<strong>${waifuData.nom || 'Nom inconnu'}</strong>`;
     document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note || 'NA'}`;
   } else {
@@ -62,7 +74,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier (popup) – inchangé
+// Modal Modifier (inchangé)
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -97,6 +109,7 @@ function openModifyModal(animeData, waifuData) {
     `;
     document.body.appendChild(modal);
   }
+
   if (animeData) {
     document.getElementById('mod-nom-anime').value = animeData.nom || '';
     document.getElementById('mod-type-anime').value = animeData.type || '';
@@ -107,6 +120,7 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
+
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
     if (animeData) {
