@@ -34,14 +34,12 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
-  // Affichage anime – taille fixe stricte
+  // Affichage anime – tailles gérées par CSS uniquement
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
-    const imgAnime = document.getElementById('detail-cover-anime');
-    imgAnime.src = coverUrl;
-    imgAnime.style.width = '420px';
-    imgAnime.style.height = '590px';
-    imgAnime.style.objectFit = 'cover';
+    document.getElementById('detail-cover-anime').src = coverUrl;
+
+    // Infos verticales dans l’ordre demandé
     document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
     document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type || 'Inconnu'}`;
     document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
@@ -50,15 +48,11 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-anime').textContent = 'Aucun anime sélectionné';
   }
 
-  // Affichage waifu – taille fixe stricte (plus petite)
+  // Affichage waifu – nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
-    const imgWaifu = document.getElementById('detail-cover-waifu');
-    imgWaifu.src = coverUrl;
-    imgWaifu.style.width = '260px';
-    imgWaifu.style.height = '365px';
-    imgWaifu.style.objectFit = 'cover';
-    document.getElementById('detail-nom-waifu').textContent = waifuData.nom || 'Nom inconnu';
+    document.getElementById('detail-cover-waifu').src = coverUrl;
+    document.getElementById('detail-nom-waifu').innerHTML = `<strong>${waifuData.nom || 'Nom inconnu'}</strong>`;
     document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note || 'NA'}`;
   } else {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
@@ -71,7 +65,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier (popup) – inchangé
+// Modal Modifier (inchangé)
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
