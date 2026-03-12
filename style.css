@@ -69,7 +69,7 @@ body {
   flex-wrap: wrap;
   max-width: 90%;
   width: 100%;
-  margin-top: 80px; /* descend un peu plus vers le milieu */
+  margin-top: 80px;
 }
 
 .json-group {
@@ -319,9 +319,9 @@ body {
   width: 180px;
 }
 
-/* Page détail – TAILLES FIXES STRICTES pour toutes les covers */
+/* Page détail – TAILLES FIXES STRICTES + infos verticales à droite */
 #page-detail {
-  padding-top: 80px; /* descend pour ne pas coller à la nav noire */
+  padding-top: 80px; /* espace sous nav */
 }
 
 .detail-content {
@@ -337,23 +337,35 @@ body {
 .detail-left {
   display: flex;
   align-items: flex-start;
-  gap: 40px; /* espace cover anime ↔ infos à droite */
+  gap: 40px; /* espace cover ↔ infos verticales */
+}
+
+.detail-cover-container {
+  width: 420px;
+  height: 590px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background: #111; /* fond sombre si image absente */
+  margin-top: 30px;
 }
 
 .detail-cover-large {
-  width: 420px !important;          /* TAILLE FIXE pour TOUTES les covers anime */
-  height: 590px !important;         /* ratio classique anime, fixe et uniforme */
-  object-fit: cover !important;     /* coupe si besoin, mais taille forcée */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 30px;                 /* descend légèrement */
-  background: #111;                 /* fond sombre si image trop petite */
-  overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .detail-anime-info {
+  display: flex;
+  flex-direction: column; /* vertical */
+  justify-content: flex-start;
+  max-width: 400px;
   text-align: left;
-  max-width: 450px;
 }
 
 .detail-anime-info h2 {
@@ -367,22 +379,31 @@ body {
   line-height: 1.4;
 }
 
-/* Cover waifu : plus petite que anime, mais fixe aussi */
+/* Cover waifu – plus petite et fixe */
 .detail-right {
   margin-left: auto;
-  margin-right: 60px; /* marge droite */
+  margin-right: 60px;
   text-align: center;
 }
 
-.detail-cover-small {
-  width: 260px !important;          /* plus petite que anime (420px) */
-  height: 365px !important;         /* ratio fixe, uniforme pour toutes les waifus */
-  object-fit: cover !important;     /* coupe si besoin, taille forcée */
+.detail-cover-container-waifu {
+  width: 260px;
+  height: 365px;
+  position: relative;
+  overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background: #111;
   margin-top: 30px;
-  background: #111;                 /* fond sombre si image trop petite */
-  overflow: hidden;
+}
+
+.detail-cover-small {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .detail-waifu-info {
@@ -391,17 +412,17 @@ body {
   text-align: center;
 }
 
-/* Force toutes les images à respecter les tailles fixes */
-.detail-left img, .detail-right img {
+/* Force images */
+.detail-cover-large, .detail-cover-small {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
 }
 
-/* Boutons sans cadre, fixés sous la nav (ne bougent pas au scroll) */
+/* Boutons sans cadre, fixés sous nav */
 .detail-buttons {
   position: fixed;
-  top: 45px; /* juste sous la nav */
+  top: 45px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -413,9 +434,9 @@ body {
 .detail-buttons button {
   padding: 8px 16px;
   font-size: 13px;
-  background: #f0f0f0; /* proche du fond */
+  background: #f0f0f0;
   color: #333;
-  border: none; /* sans cadre */
+  border: none;
   border-radius: 0;
   cursor: pointer;
   opacity: 0.95;
