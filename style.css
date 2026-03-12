@@ -319,9 +319,9 @@ body {
   width: 180px;
 }
 
-/* Page détail – corrections précises */
+/* Page détail – corrections précises pour ta demande */
 #page-detail {
-  padding-top: 60px; /* espace sous la nav noire */
+  padding-top: 80px; /* descend la cover anime pour ne pas coller à la nav noire */
 }
 
 .detail-content {
@@ -331,23 +331,22 @@ body {
   padding: 20px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  gap: 40px;
+  gap: 60px; /* plus d’espace entre anime et waifu */
 }
 
 .detail-left {
   display: flex;
   align-items: flex-start;
-  gap: 30px; /* espace entre cover et texte */
+  gap: 40px; /* espace entre cover anime et infos à droite */
 }
 
 .detail-cover-large {
-  width: 380px !important;          /* taille max raisonnable pour l’anime */
+  width: 380px !important;
+  height: auto !important;
   max-height: 540px !important;
-  height: auto !important;          /* garde les proportions */
-  object-fit: contain !important;   /* affiche entier sans couper ni étirer */
+  object-fit: contain !important;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 20px;                 /* descend légèrement */
 }
 
 .detail-anime-info {
@@ -366,20 +365,19 @@ body {
 }
 
 .detail-right {
-  margin-left: auto; /* pousse à droite sans coller au bord */
-  margin-right: 40px; /* marge à droite */
+  margin-left: auto; /* pousse à droite */
+  margin-right: 60px; /* plus d’espace au bord droit */
   text-align: center;
 }
 
 .detail-cover-small {
-  width: 220px !important;          /* taille raisonnable pour waifu */
-  max-height: 320px !important;
+  width: 180px !important; /* beaucoup plus petite que l’anime (380px) */
   height: auto !important;
-  object-fit: contain !important;   /* entier sans déformation */
+  max-height: 260px !important;
+  object-fit: contain !important;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   margin-top: 20px;
-  margin-right: 40px;               /* pas collée au bord droit */
 }
 
 .detail-waifu-info {
@@ -388,6 +386,7 @@ body {
   text-align: center;
 }
 
+/* Force images à rester dans les limites */
 .detail-left img, .detail-right img {
   max-width: 100% !important;
   height: auto !important;
@@ -396,7 +395,7 @@ body {
 /* Boutons petits, sans cadre, juste sous la nav */
 .detail-buttons {
   position: fixed;
-  top: 50px; /* juste sous la nav */
+  top: 50px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -407,7 +406,7 @@ body {
 .detail-buttons button {
   padding: 6px 12px;
   font-size: 12px;
-  background: #f0f0f0; /* proche du fond #fefaf4 mais visible */
+  background: #f0f0f0;
   color: #333;
   border: none;
   border-radius: 0;
