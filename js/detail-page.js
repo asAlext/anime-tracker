@@ -36,22 +36,25 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
-  // Affichage anime (cover + infos à droite)
+  // Affichage anime
   if (animeData) {
-    document.getElementById('detail-cover-anime').src = animeData.urlCover;
-    document.getElementById('detail-nom-anime').textContent = animeData.nom;
-    document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type}`;
-    document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut}`;
-    document.getElementById('detail-note-anime').textContent = `Note : ${animeData.note}`;
+    document.getElementById('detail-cover-anime').src = animeData.urlCover || 'https://placehold.co/400x560?text=Cover+Anime';
+    document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
+    document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type || 'Inconnu'}`;
+    document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
+    document.getElementById('detail-note-anime').textContent = `Note : ${animeData.note || 'NA'}`;
+  } else {
+    document.getElementById('detail-nom-anime').textContent = 'Aucun anime sélectionné';
   }
 
-  // Affichage waifu (cover + nom + note en dessous)
+  // Affichage waifu (si associée)
   if (waifuData) {
-    document.getElementById('detail-cover-waifu').src = waifuData.urlCover;
-    document.getElementById('detail-nom-waifu').textContent = waifuData.nom;
-    document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note}`;
+    document.getElementById('detail-cover-waifu').src = waifuData.urlCover || 'https://placehold.co/250x350?text=Cover+Waifu';
+    document.getElementById('detail-nom-waifu').textContent = waifuData.nom || 'Nom inconnu';
+    document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note || 'NA'}`;
   } else {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
+    document.getElementById('detail-note-waifu').textContent = '';
   }
 
   // Boutons
@@ -60,7 +63,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier (popup)
+// Modal Modifier (popup) – inchangé
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -98,14 +101,14 @@ function openModifyModal(animeData, waifuData) {
 
   // Pré-remplir les champs
   if (animeData) {
-    document.getElementById('mod-nom-anime').value = animeData.nom;
-    document.getElementById('mod-type-anime').value = animeData.type;
-    document.getElementById('mod-statut-anime').value = animeData.statut;
-    document.getElementById('mod-note-anime').value = animeData.note;
+    document.getElementById('mod-nom-anime').value = animeData.nom || '';
+    document.getElementById('mod-type-anime').value = animeData.type || '';
+    document.getElementById('mod-statut-anime').value = animeData.statut || '';
+    document.getElementById('mod-note-anime').value = animeData.note || '';
   }
   if (waifuData) {
-    document.getElementById('mod-nom-waifu').value = waifuData.nom;
-    document.getElementById('mod-note-waifu').value = waifuData.note;
+    document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
+    document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
   // Sauvegarde
