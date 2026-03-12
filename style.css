@@ -341,3 +341,54 @@ body {
 #page-waifu .search-line input {
   width: 180px;
 }
+
+/* Page détail – covers fixes et mêmes tailles */
+.detail-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-left, .detail-right {
+  flex: 1;
+  text-align: center;
+}
+
+.detail-cover-large {
+  width: 400px;  /* taille fixe pour anime */
+  height: 560px; /* ratio 2:3 classique anime */
+  object-fit: cover; /* garde les proportions sans déformation */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.detail-cover-small {
+  width: 250px;  /* taille fixe pour waifu (plus petite) */
+  height: 350px; /* ratio 2:3 */
+  object-fit: cover; /* fixe, pas de déformation */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  margin-top: 20px;
+}
+
+/* Infos à droite des covers (pas en bas) */
+.detail-left h2, .detail-left p, .detail-right p {
+  text-align: left;
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+/* Boutons en bas */
+.detail-buttons {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.detail-buttons button {
+  margin: 0 10px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
