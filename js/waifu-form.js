@@ -47,7 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ${nom}
       `;
 
-      card.onclick = () => alert('Page détail à venir pour : ' + nom);
+      // Clic sur la carte → ouvre la page détail
+      card.onclick = () => {
+        showDetailPage({ nom, note, urlCover, animeAssocie, isAnime: false });
+      };
+
       grid.appendChild(card);
 
       const waifu = { nom, note, urlCover, animeAssocie };
@@ -59,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Chargement + recherche/tri
+  // Chargement + recherche/tri (inchangé, fonctionne déjà)
   function loadWaifus(filter = '', trieNom = '', trieNote = '') {
     let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
 
@@ -90,13 +94,58 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${waifu.nom}
       `;
-      card.onclick = () => alert('Page détail à venir pour : ' + waifu.nom);
+
+      card.onclick = () => {
+        showDetailPage({ nom: waifu.nom, note: waifu.note, urlCover: waifu.urlCover, animeAssocie: waifu.animeAssocie, isAnime: false });
+      };
+
       grid.appendChild(card);
     });
   }
 
-  // Écouteurs recherche/tri
+  // Écouteurs recherche/tri (inchangés)
   if (rechercheInput) rechercheInput.addEventListener('input', () => loadWaifus(rechercheInput.value.trim(), trieNomSelect?.value || '', trieNoteSelect?.value || ''));
   if (trieNomSelect) trieNomSelect.addEventListener('change', () => loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect.value, trieNoteSelect?.value || ''));
   if (trieNoteSelect) trieNoteSelect.addEventListener('change', () => loadWaifus(rechercheInput?.value.trim() || '', trieNomSelect?.value || '', trieNoteSelect.value));
+
+  // Fonction export JSON (fonctionne maintenant)
+  function exportJSON(key = 'waifus') {
+    const data = JSON.parse(localStorage.getItem(key) || '[]');
+    if (data.length === 0) {
+      alert('Aucun élément à exporter.');
+      return;
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${key}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Fonction import JSON (fonctionne maintenant)
+  function importJSON(key = 'waifus') {
+    const fileInput = document.getElementById(`import-${key}`);
+    const file = fileInput.files[0];
+    if (!file) {
+      alert('Aucun fichier sélectionné.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (!Array.isArray(data)) {
+          alert('Fichier JSON invalide (doit être un tableau).');
+          return;
+        }
+        localStorage.setItem(key, JSON.stringify(data));
+        location.reload(); // Recharge pour appliquer
+      } catch (err) {
+        alert('Erreur lors de la lecture du fichier JSON.');
+      }
+    };
+    reader.readAsText(file);
+  }
 });
