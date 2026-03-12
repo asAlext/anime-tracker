@@ -51,7 +51,7 @@ body {
   background: rgba(255,255,255,0.08);
 }
 
-/* Page Accueil – JSON parfaitement au milieu (descendus un peu plus) */
+/* Page Accueil – JSON centrés milieu */
 #page-accueil {
   min-height: 100vh;
   display: flex;
@@ -107,7 +107,7 @@ body {
   display: block;
 }
 
-/* Ligne 1 – Compteurs encore plus petits */
+/* Ligne 1 – Compteurs */
 .stats-line {
   background: #f7f1e7;
   padding: 5px 10px;
@@ -134,7 +134,7 @@ body {
   color: #000;
 }
 
-/* Ligne 2 – Recherche encore plus compacte */
+/* Ligne 2 – Recherche */
 .search-line {
   background: #f7f1e7;
   padding: 5px 10px;
@@ -157,7 +157,7 @@ body {
   width: 180px;
 }
 
-/* Contenu principal – zéro décalage */
+/* Contenu principal */
 .anime-content {
   background: #fefaf4;
   margin: 0;
@@ -167,7 +167,7 @@ body {
   overflow-y: visible;
 }
 
-/* Section Ajout – largeur réduite, fond touche le bas de la page */
+/* Section Ajout */
 .anime-sidebar {
   width: 300px;
   background: #f7f1e7;
@@ -180,7 +180,6 @@ body {
   overflow-y: hidden;
 }
 
-/* Alignement vertical strict + "Sous-menu" aligné horizontalement */
 .anime-sidebar form {
   display: flex;
   flex-direction: column;
@@ -208,7 +207,6 @@ body {
   margin: 0;
 }
 
-/* Inputs et bouton plus petits */
 .anime-sidebar input,
 .anime-sidebar select,
 .anime-sidebar button {
@@ -230,7 +228,7 @@ body {
   margin-top: 8px;
 }
 
-/* Grille 6 colonnes max, forcée partout */
+/* Grille 6 colonnes */
 .anime-grid {
   flex: 1;
   display: grid;
@@ -242,7 +240,7 @@ body {
   overflow-y: visible;
 }
 
-/* Cards anime – espace sous nom supprimé */
+/* Cards anime */
 .anime-card {
   position: relative;
   width: 100%;
@@ -276,10 +274,8 @@ body {
   line-height: 1;
 }
 
-.note {
+.note, .type, .statut {
   position: absolute;
-  bottom: 8px;
-  left: 8px;
   background: rgba(0,0,0,0.7);
   color: white;
   padding: 3px 6px;
@@ -287,40 +283,21 @@ body {
   border-radius: 4px;
 }
 
-.type {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 3px 6px;
-  font-size: 13px;
-  border-radius: 4px;
-}
+.note { bottom: 8px; left: 8px; }
+.type { bottom: 8px; right: 8px; }
+.statut { top: 8px; left: 8px; text-transform: uppercase; }
 
-.statut {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 3px 6px;
-  font-size: 13px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-/* Force continuité couleur #f7f1e7 */
+/* Force continuité couleur */
 .search-line,
 .anime-sidebar {
   background: #f7f1e7 !important;
 }
 
-/* Recherche sur ListeWaifus – même style et même hauteur que les compteurs sur ListeAnimes */
+/* Recherche sur ListeWaifus */
 #page-waifu .search-line {
   background: #f7f1e7;
   padding: 5px 10px;
-  margin: 45px 0 0 0; /* même marge que .stats-line sur ListeAnimes */
+  margin: 45px 0 0 0;
   display: flex !important;
   justify-content: center;
   gap: 8px;
@@ -342,53 +319,92 @@ body {
   width: 180px;
 }
 
-/* Page détail – covers fixes et mêmes tailles */
-.detail-content {
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Page détail – corrections précises */
+#page-detail {
+  padding-top: 60px; /* espace sous la nav noire */
 }
 
-.detail-left, .detail-right {
-  flex: 1;
-  text-align: center;
+.detail-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.detail-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px; /* espace entre cover et infos */
 }
 
 .detail-cover-large {
-  width: 400px;  /* taille fixe pour anime */
-  height: 560px; /* ratio 2:3 classique anime */
-  object-fit: cover; /* garde les proportions sans déformation */
+  width: 400px;
+  height: 560px;
+  object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  margin-top: 20px; /* descend légèrement la cover anime */
 }
 
-.detail-cover-small {
-  width: 250px;  /* taille fixe pour waifu (plus petite) */
-  height: 350px; /* ratio 2:3 */
-  object-fit: cover; /* fixe, pas de déformation */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  margin-top: 20px;
-}
-
-/* Infos à droite des covers (pas en bas) */
-.detail-left h2, .detail-left p, .detail-right p {
+.detail-anime-info {
   text-align: left;
-  margin: 10px 0;
-  padding-left: 20px;
 }
 
-/* Boutons en bas */
-.detail-buttons {
-  margin-top: 40px;
+.detail-anime-info h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+.detail-anime-info p {
+  margin: 8px 0;
+  font-size: 18px;
+}
+
+.detail-right {
+  margin-left: auto; /* pousse à droite sans coller au bord */
+  margin-right: 40px; /* marge à droite */
   text-align: center;
 }
 
+.detail-cover-small {
+  width: 250px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.detail-waifu-info {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* Boutons petits, sans cadre, juste sous la nav */
+.detail-buttons {
+  position: fixed;
+  top: 50px; /* juste sous la nav */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 999;
+}
+
 .detail-buttons button {
-  margin: 0 10px;
-  padding: 12px 30px;
-  font-size: 16px;
+  padding: 6px 12px;
+  font-size: 12px;
+  background: #f0f0f0; /* proche du fond #fefaf4 mais visible */
+  color: #333;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
+  opacity: 0.9;
+}
+
+.detail-buttons button:hover {
+  background: #e0e0e0;
+  opacity: 1;
 }
