@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (trieStatut) trieStatut.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieNote) trieNote.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
 
-  // Fonction export JSON (corrigée pour fonctionner)
+  // Fonction export JSON (fonctionne maintenant)
   function exportJSON(key = 'animes') {
     const data = JSON.parse(localStorage.getItem(key) || '[]');
     if (data.length === 0) {
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     URL.revokeObjectURL(url);
   }
 
-  // Fonction import JSON (corrigée pour fonctionner)
+  // Fonction import JSON (fonctionne maintenant)
   function importJSON(key = 'animes') {
     const fileInput = document.getElementById(`import-${key}`);
     const file = fileInput.files[0];
