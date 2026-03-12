@@ -43,7 +43,7 @@ function showDetailPage(item) {
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
 
-    // Infos verticales dans l’ordre demandé
+    // Infos verticales dans l’ordre demandé (Nom → Type → Statut → Note)
     document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
     document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type || 'Inconnu'}`;
     document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
