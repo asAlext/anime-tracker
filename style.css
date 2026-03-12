@@ -319,9 +319,9 @@ body {
   width: 180px;
 }
 
-/* Page détail – TAILLES FIXES STRICTES + infos verticales à droite */
+/* Page détail – infos verticales à droite + nom waifu en gras */
 #page-detail {
-  padding-top: 80px; /* espace sous nav */
+  padding-top: 80px;
 }
 
 .detail-content {
@@ -337,7 +337,7 @@ body {
 .detail-left {
   display: flex;
   align-items: flex-start;
-  gap: 40px; /* espace cover ↔ infos verticales */
+  gap: 40px;
 }
 
 .detail-cover-container {
@@ -347,14 +347,14 @@ body {
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  background: #111; /* fond sombre si image absente */
+  background: #111;
   margin-top: 30px;
 }
 
 .detail-cover-large {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
@@ -366,20 +366,22 @@ body {
   justify-content: flex-start;
   max-width: 400px;
   text-align: left;
+  gap: 10px; /* espace entre chaque ligne */
 }
 
 .detail-anime-info h2 {
   font-size: 32px;
-  margin: 0 0 12px 0;
+  margin: 0;
+  font-weight: bold;
 }
 
 .detail-anime-info p {
   font-size: 18px;
-  margin: 8px 0;
+  margin: 0;
   line-height: 1.4;
 }
 
-/* Cover waifu – plus petite et fixe */
+/* Cover waifu */
 .detail-right {
   margin-left: auto;
   margin-right: 60px;
@@ -398,9 +400,9 @@ body {
 }
 
 .detail-cover-small {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
@@ -412,11 +414,16 @@ body {
   text-align: center;
 }
 
+.detail-waifu-info strong { /* nom waifu en gras */
+  font-weight: bold;
+  font-size: 20px;
+}
+
 /* Force images */
 .detail-cover-large, .detail-cover-small {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Boutons sans cadre, fixés sous nav */
