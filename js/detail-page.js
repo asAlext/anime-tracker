@@ -85,7 +85,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier – plus petit + sauvegarde sans reload
+// Modal Modifier – sauvegarde sans reload + appel à updateStats()
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -168,7 +168,7 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
-  // Sauvegarde SANS RELOAD + mise à jour en live
+  // Sauvegarde SANS RELOAD + mise à jour en live + appel à updateStats()
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
 
@@ -206,7 +206,12 @@ function openModifyModal(animeData, waifuData) {
       }
     }
 
-    // Ferme le modal sans recharger
+    // Mise à jour des compteurs (appelle la fonction updateStats() qui est dans index.html)
+    if (typeof updateStats === 'function') {
+      updateStats();
+    }
+
+    // Ferme le modal sans recharger la page
     modal.remove();
   };
 }
