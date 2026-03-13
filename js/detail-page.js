@@ -1,16 +1,13 @@
 // detail-page.js – Gestion de la page détail (anime ou waifu)
-
 function showDetailPage(item) {
   const detailPage = document.getElementById('page-detail');
   if (!detailPage) {
     console.error('Page détail non trouvée dans le HTML');
     return;
   }
-
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
-
   // Reset les champs
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
@@ -20,10 +17,8 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
-
   let animeData = null;
   let waifuData = null;
-
   if (item.isAnime) {
     animeData = item;
     const waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
@@ -33,7 +28,6 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
-
   // Affichage anime – taille fixe stricte (inchangée)
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -42,7 +36,6 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
-
     // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
     // On crée un wrapper qui force la colonne
     let infoWrapper = document.createElement('div');
@@ -51,34 +44,27 @@ function showDetailPage(item) {
     infoWrapper.style.gap = '8px';
     infoWrapper.style.maxWidth = '400px';
     infoWrapper.style.textAlign = 'left';
-
     // On met les infos dedans dans l’ordre exact
     const nomEl = document.getElementById('detail-nom-anime');
     nomEl.textContent = animeData.nom || 'Nom inconnu';
     infoWrapper.appendChild(nomEl);
-
     const typeEl = document.getElementById('detail-type-anime');
     typeEl.textContent = `Type : ${animeData.type || 'Inconnu'}`;
     infoWrapper.appendChild(typeEl);
-
     const statutEl = document.getElementById('detail-statut-anime');
     statutEl.textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
     infoWrapper.appendChild(statutEl);
-
     const noteEl = document.getElementById('detail-note-anime');
     noteEl.textContent = `Note : ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
-
     // On vide l’ancien conteneur et on ajoute le wrapper vertical
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // On garde la cover et on ajoute le wrapper à côté
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
       detailLeft.appendChild(infoWrapper);
     }
   }
-
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
@@ -87,21 +73,19 @@ function showDetailPage(item) {
     imgWaifu.style.width = '260px';
     imgWaifu.style.height = '365px';
     imgWaifu.style.objectFit = 'cover';
-
     document.getElementById('detail-nom-waifu').innerHTML = `<strong>${waifuData.nom || 'Nom inconnu'}</strong>`;
     document.getElementById('detail-note-waifu').textContent = `Note : ${waifuData.note || 'NA'}`;
   } else {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
-
   // Boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier (inchangé)
+// Modal Modifier – version améliorée avec tes choix
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -112,42 +96,76 @@ function openModifyModal(animeData, waifuData) {
     modal.style.left = '0';
     modal.style.width = '100%';
     modal.style.height = '100%';
-    modal.style.background = 'rgba(0,0,0,0.7)';
+    modal.style.background = 'rgba(0,0,0,0.6)';
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
     modal.style.zIndex = '2000';
     modal.innerHTML = `
-      <div style="background:white; padding:30px; border-radius:12px; width:500px; max-width:90%;">
-        <h2>Modifier</h2>
-        <form id="modify-form">
-          <h3>Anime</h3>
-          <label>Nom</label><input type="text" id="mod-nom-anime"><br>
-          <label>Type</label><input type="text" id="mod-type-anime"><br>
-          <label>Statut</label><input type="text" id="mod-statut-anime"><br>
-          <label>Note</label><input type="text" id="mod-note-anime"><br>
-          <h3>Waifu associée</h3>
-          <label>Nom</label><input type="text" id="mod-nom-waifu"><br>
-          <label>Note</label><input type="text" id="mod-note-waifu"><br>
-          <button type="submit">Sauvegarder</button>
-          <button type="button" onclick="document.getElementById('modify-modal').remove()">Annuler</button>
-        </form>
+      <div style="background:#fff; padding:32px; border-radius:16px; width:520px; max-width:92%; box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+        <h2 style="margin:0 0 24px; font-size:28px; text-align:center; color:#333;">Modifier</h2>
+        
+        <div style="margin-bottom:32px;">
+          <h3 style="margin:0 0 16px; font-size:20px; color:#555;">Anime</h3>
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Nom</label>
+          <input type="text" id="mod-nom-anime" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Type</label>
+          <select id="mod-type-anime" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+            <option value="anime">anime</option>
+            <option value="film">film</option>
+          </select>
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Statut</label>
+          <select id="mod-statut-anime" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+            <option value="en-cours">en-cours</option>
+            <option value="terminé">terminé</option>
+            <option value="plus-jamais">plus-jamais</option>
+            <option value="en attente">en attente</option>
+          </select>
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Note</label>
+          <input type="text" id="mod-note-anime" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Url Cover (optionnel)</label>
+          <input type="text" id="mod-url-cover" placeholder="https://..." style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+        </div>
+
+        <div style="margin-bottom:32px;">
+          <h3 style="margin:0 0 16px; font-size:20px; color:#555;">Waifu associée</h3>
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Nom</label>
+          <input type="text" id="mod-nom-waifu" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+          
+          <label style="display:block; margin-bottom:6px; font-weight:bold; color:#444;">Note</label>
+          <input type="text" id="mod-note-waifu" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:8px; font-size:16px;">
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:16px;">
+          <button type="button" onclick="document.getElementById('modify-modal').remove()" style="padding:12px 24px; font-size:16px; background:#ccc; color:#333; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
+          <button type="submit" form="modify-form" style="padding:12px 24px; font-size:16px; background:#7e57c2; color:white; border:none; border-radius:8px; cursor:pointer;">Sauvegarder</button>
+        </div>
       </div>
     `;
     document.body.appendChild(modal);
   }
 
+  // Pré-remplir les champs
   if (animeData) {
     document.getElementById('mod-nom-anime').value = animeData.nom || '';
-    document.getElementById('mod-type-anime').value = animeData.type || '';
-    document.getElementById('mod-statut-anime').value = animeData.statut || '';
+    document.getElementById('mod-type-anime').value = animeData.type || 'anime';
+    document.getElementById('mod-statut-anime').value = animeData.statut || 'en-cours';
     document.getElementById('mod-note-anime').value = animeData.note || '';
+    // Pré-remplir l'url cover si elle existe déjà
+    document.getElementById('mod-url-cover').value = animeData.urlCover || '';
   }
   if (waifuData) {
     document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
+  // Sauvegarde – on gère aussi l'urlCover si modifié
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
     if (animeData) {
@@ -158,6 +176,8 @@ function openModifyModal(animeData, waifuData) {
         animes[index].type = document.getElementById('mod-type-anime').value;
         animes[index].statut = document.getElementById('mod-statut-anime').value;
         animes[index].note = document.getElementById('mod-note-anime').value;
+        const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
+        if (newCoverUrl) animes[index].urlCover = newCoverUrl;
         localStorage.setItem('animes', JSON.stringify(animes));
       }
     }
