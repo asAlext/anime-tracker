@@ -43,13 +43,40 @@ function showDetailPage(item) {
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
 
-    // Infos verticales dans l’ordre demandé (Nom → Type → Statut → Note)
-    document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
-    document.getElementById('detail-type-anime').textContent = `Type : ${animeData.type || 'Inconnu'}`;
-    document.getElementById('detail-statut-anime').textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
-    document.getElementById('detail-note-anime').textContent = `Note : ${animeData.note || 'NA'}`;
-  } else {
-    document.getElementById('detail-nom-anime').textContent = 'Aucun anime sélectionné';
+    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
+    // On crée un wrapper qui force la colonne
+    let infoWrapper = document.createElement('div');
+    infoWrapper.style.display = 'flex';
+    infoWrapper.style.flexDirection = 'column';
+    infoWrapper.style.gap = '8px';
+    infoWrapper.style.maxWidth = '400px';
+    infoWrapper.style.textAlign = 'left';
+
+    // On met les infos dedans dans l’ordre exact
+    const nomEl = document.getElementById('detail-nom-anime');
+    nomEl.textContent = animeData.nom || 'Nom inconnu';
+    infoWrapper.appendChild(nomEl);
+
+    const typeEl = document.getElementById('detail-type-anime');
+    typeEl.textContent = `Type : ${animeData.type || 'Inconnu'}`;
+    infoWrapper.appendChild(typeEl);
+
+    const statutEl = document.getElementById('detail-statut-anime');
+    statutEl.textContent = `Statut : ${animeData.statut || 'Inconnu'}`;
+    infoWrapper.appendChild(statutEl);
+
+    const noteEl = document.getElementById('detail-note-anime');
+    noteEl.textContent = `Note : ${animeData.note || 'NA'}`;
+    infoWrapper.appendChild(noteEl);
+
+    // On vide l’ancien conteneur et on ajoute le wrapper vertical
+    const detailLeft = document.querySelector('.detail-left');
+    if (detailLeft) {
+      // On garde la cover et on ajoute le wrapper à côté
+      const existingInfo = detailLeft.querySelector('.detail-anime-info');
+      if (existingInfo) existingInfo.remove();
+      detailLeft.appendChild(infoWrapper);
+    }
   }
 
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
