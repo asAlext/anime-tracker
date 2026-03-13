@@ -14,7 +14,6 @@
     <button class="nav-btn" data-mode="anime">ListeAnimes</button>
     <button class="nav-btn" data-mode="waifu">ListeWaifus</button>
   </nav>
-
   <div id="main-content">
     <!-- Page Accueil – JSON centrés milieu -->
     <div id="page-accueil" class="page active">
@@ -33,7 +32,6 @@
         </div>
       </div>
     </div>
-
     <!-- Page ListeAnimes -->
     <div id="page-anime" class="page" style="display: none;">
       <!-- Ligne 1 : Compteurs -->
@@ -63,7 +61,6 @@
           <span class="stat-count" id="count-plus-jamais">0</span>
         </div>
       </div>
-
       <!-- Ligne 2 : Recherche & tris -->
       <div class="search-line">
         <input type="text" id="recherche" placeholder="Rechercher...">
@@ -92,7 +89,6 @@
           <option value="desc">10 → 1</option>
         </select>
       </div>
-
       <div class="anime-content">
         <div class="anime-sidebar">
           <h3>Ajout</h3>
@@ -125,13 +121,11 @@
             <button type="submit">Ajouter</button>
           </form>
         </div>
-
         <div class="anime-grid" id="anime-grid">
           <!-- cartes -->
         </div>
       </div>
     </div>
-
     <!-- Page ListeWaifus -->
     <div id="page-waifu" class="page" style="display: none;">
       <!-- Ligne 1 : Recherche -->
@@ -148,7 +142,6 @@
           <option value="desc">10 → 1</option>
         </select>
       </div>
-
       <div class="anime-content">
         <div class="anime-sidebar">
           <h3>Ajout</h3>
@@ -164,40 +157,118 @@
             <button type="submit">Ajouter</button>
           </form>
         </div>
-
         <div class="anime-grid" id="waifu-grid">
           <!-- cartes -->
         </div>
       </div>
     </div>
-
     <!-- Page Détail -->
-<div id="page-detail" class="page" style="display: none;">
-  <div class="detail-content">
-    <div class="detail-left">
-      <img id="detail-cover-anime" src="" alt="Cover Anime">
-      <h2 id="detail-nom-anime"></h2>
-      <p id="detail-type-anime"></p>
-      <p id="detail-statut-anime"></p>
-      <p id="detail-note-anime"></p>
-    </div>
-    <div class="detail-right">
-      <img id="detail-cover-waifu" src="" alt="Cover Waifu">
-      <p id="detail-nom-waifu"></p>
-      <p id="detail-note-waifu"></p>
-    </div>
-    <div class="detail-buttons">
-      <button id="btn-modifier">Modifier</button>
-      <button id="btn-supprimer-anime">Supprimer Anime</button>
-      <button id="btn-supprimer-waifu">Supprimer Waifu</button>
+    <div id="page-detail" class="page" style="display: none;">
+      <div class="detail-content">
+        <div class="detail-left">
+          <img id="detail-cover-anime" src="" alt="Cover Anime">
+          <h2 id="detail-nom-anime"></h2>
+          <p id="detail-type-anime"></p>
+          <p id="detail-statut-anime"></p>
+          <p id="detail-note-anime"></p>
+        </div>
+        <div class="detail-right">
+          <img id="detail-cover-waifu" src="" alt="Cover Waifu">
+          <p id="detail-nom-waifu"></p>
+          <p id="detail-note-waifu"></p>
+        </div>
+        <div class="detail-buttons">
+          <button id="btn-modifier">Modifier</button>
+          <button id="btn-supprimer-anime">Supprimer Anime</button>
+          <button id="btn-supprimer-waifu">Supprimer Waifu</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   <script src="js/anime-form.js"></script>
   <script src="js/waifu-form.js"></script>
   <script src="js/detail-page.js"></script>
+
+  <!-- Scripts inline pour updateStats + JSON import/export -->
+  <script>
+    // Fonction qui met à jour tous les compteurs
+    function updateStats() {
+      const animes = JSON.parse(localStorage.getItem('animes') || '[]');
+
+      const counts = {
+        termine: 0,
+        'en-cours': 0,
+        'en-pause': 0,
+        'a-regarder': 0,
+        abandon: 0,
+        'plus-jamais': 0
+      };
+
+      animes.forEach(anime => {
+        let statut = (anime.statut || '').toLowerCase().trim();
+        if (statut.includes('termin')) counts.termine++;
+        else if (statut.includes('en cours') || statut.includes('encours')) counts['en-cours']++;
+        else if (statut.includes('pause')) counts['en-pause']++;
+        else if (statut.includes('regarder')) counts['a-regarder']++;
+        else if (statut.includes('abandon')) counts.abandon++;
+        else if (statut.includes('jamais')) counts['plus-jamais']++;
+      });
+
+      document.getElementById('count-termine').textContent = counts.termine;
+      document.getElementById('count-en-cours').textContent = counts['en-cours'];
+      document.getElementById('count-en-pause').textContent = counts['en-pause'];
+      document.getElementById('count-a-regarder').textContent = counts['a-regarder'];
+      document.getElementById('count-abandon').textContent = counts.abandon;
+      document.getElementById('count-plus-jamais').textContent = counts['plus-jamais'];
+    }
+
+    // Appelle au chargement initial
+    window.addEventListener('load', updateStats);
+
+    // Exporter JSON
+    function exportJSON(type) {
+      const data = JSON.parse(localStorage.getItem(type) || '[]');
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${type}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Importer JSON
+    function importJSON(type) {
+      const input = document.getElementById(`import-${type}`);
+      if (input.files.length === 0) {
+        alert('Sélectionne un fichier JSON d’abord !');
+        return;
+      }
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          localStorage.setItem(type, JSON.stringify(data));
+          alert(`${type.charAt(0).toUpperCase() + type.slice(1)} importés avec succès !`);
+          // Recharger les grilles si on est sur la bonne page
+          if (type === 'animes' && document.getElementById('page-anime').style.display === 'block') {
+            // Si tu as une fonction loadAnimes() dans anime-form.js, appelle-la :
+            if (typeof loadAnimes === 'function') loadAnimes();
+          }
+          if (type === 'waifus' && document.getElementById('page-waifu').style.display === 'block') {
+            if (typeof loadWaifus === 'function') loadWaifus();
+          }
+          updateStats(); // Met à jour les compteurs après import
+        } catch (err) {
+          alert('Erreur : le fichier JSON est invalide.');
+        }
+      };
+      reader.readAsText(file);
+    }
+  </script>
 </body>
 </html>
