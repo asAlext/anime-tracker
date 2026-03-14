@@ -186,7 +186,11 @@ function openModifyModal(animeData, waifuData) {
       if (index !== -1) {
         animes[index].nom = document.getElementById('mod-nom-anime').value;
         animes[index].type = document.getElementById('mod-type-anime').value;
-        animes[index].statut = normalizeStatut(document.getElementById('mod-statut-anime').value); // ← NORMALISATION ICI
+
+        // NORMALISATION : on stocke la version propre
+        const statutOriginal = document.getElementById('mod-statut-anime').value;
+        animes[index].statut = normalizeStatut(statutOriginal); // ← clé propre pour les compteurs
+
         animes[index].note = document.getElementById('mod-note-anime').value;
         const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
@@ -195,7 +199,7 @@ function openModifyModal(animeData, waifuData) {
         // Mise à jour live de la page détail (affichage original avec accent/majuscule)
         document.getElementById('detail-nom-anime').textContent = animes[index].nom || 'Nom inconnu';
         document.getElementById('detail-type-anime').textContent = `Type : ${animes[index].type || 'Inconnu'}`;
-        document.getElementById('detail-statut-anime').textContent = `Statut : ${document.getElementById('mod-statut-anime').value || 'Inconnu'}`; // valeur originale
+        document.getElementById('detail-statut-anime').textContent = `Statut : ${statutOriginal || 'Inconnu'}`; // ← valeur originale
         document.getElementById('detail-note-anime').textContent = `Note : ${animes[index].note || 'NA'}`;
         if (newCoverUrl) document.getElementById('detail-cover-anime').src = newCoverUrl;
       }
@@ -214,9 +218,12 @@ function openModifyModal(animeData, waifuData) {
       }
     }
 
-    // Mise à jour des compteurs (appelle la fonction qui est dans index.html)
+    // Mise à jour des compteurs (index.html + anime-form.js)
     if (typeof updateStats === 'function') {
       updateStats();
+    }
+    if (typeof updateAllCounters === 'function') {
+      updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
     }
 
     modal.remove();
