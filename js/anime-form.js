@@ -82,15 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
-    // Fonction de normalisation pour statut (supprime espaces, accents, maj/min)
+    // Fonction de normalisation pour statut
     function normalizeStatut(str) {
       if (!str) return '';
       return str
         .toLowerCase()
-        .normalize("NFD") // supprime accents
+        .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/\s+/g, '-')
-        .replace(/[^a-z-]/g, ''); // garde seulement lettres et -
+        .replace(/[^a-z-]/g, '');
     }
 
     if (filter) {
@@ -114,8 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
       animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
     }
 
-        // ... (le code de filtrage et affichage des cartes reste inchangé)
-
     grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
@@ -135,13 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    // CORRECTION : on compte TOUJOURS tous les animes, pas seulement les filtrés
+    // IMPORTANT : on compte TOUJOURS tous les animes (liste complète du localStorage)
     const allAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
     updateAllCounters(allAnimes);
-  }
-
-    // IMPORTANT : on met à jour les compteurs avec TOUS les animes, pas seulement les filtrés
-    updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
   }
 
   // Fonctions compteurs
@@ -182,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animes.push(anime);
     localStorage.setItem('animes', JSON.stringify(animes));
-    updateAllCounters(animes); // mise à jour immédiate après ajout
+    updateAllCounters(animes);
   }
 
   // Écouteurs recherche/tri
@@ -227,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(key, JSON.stringify(data));
         alert(`${key.charAt(0).toUpperCase() + key.slice(1)} importés avec succès !`);
         loadAnimes(); // Recharge la grille
-        updateAllCounters(data); // Met à jour les compteurs avec les données importées
+        updateAllCounters(data); // Met à jour les compteurs
       } catch (err) {
         alert('Erreur lors de la lecture du fichier JSON.');
       }
