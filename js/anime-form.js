@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
-    // Fonction de normalisation pour statut
+    // Normalisation pour filtre statut
     function normalizeStatut(str) {
       if (!str) return '';
       return str
@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/[^a-z-]/g, '');
     }
 
+    // Appliquer les filtres
     if (filter) {
       animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
     }
@@ -114,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
     }
 
+    // Affichage des cartes (filtrées)
     grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
@@ -133,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    // IMPORTANT : on compte TOUJOURS tous les animes (liste complète du localStorage)
+    // COMPTEURS : on utilise TOUJOURS la liste complète du localStorage
     const allAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
     updateAllCounters(allAnimes);
   }
@@ -220,8 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         localStorage.setItem(key, JSON.stringify(data));
         alert(`${key.charAt(0).toUpperCase() + key.slice(1)} importés avec succès !`);
-        loadAnimes(); // Recharge la grille
-        updateAllCounters(data); // Met à jour les compteurs
+        loadAnimes();
+        updateAllCounters(data);
       } catch (err) {
         alert('Erreur lors de la lecture du fichier JSON.');
       }
