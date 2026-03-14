@@ -1,5 +1,4 @@
 // anime-form.js – Gestion du formulaire ajout anime et grille
-
 document.addEventListener('DOMContentLoaded', () => {
   const formAjout = document.getElementById('form-ajout-anime');
   const messageError = document.createElement('p');
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   messageError.style.marginTop = '10px';
   messageError.style.textAlign = 'center';
   formAjout.appendChild(messageError);
-
   const grid = document.getElementById('anime-grid');
   const rechercheInput = document.getElementById('recherche');
   const trieNom = document.getElementById('trie-nom');
@@ -22,20 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const nom = document.getElementById('nom-anime').value.trim();
       const type = document.getElementById('type-anime').value;
       const statut = document.getElementById('statut-anime').value;
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
-
       messageError.textContent = '';
-
       if (!nom || !type || !statut) {
         messageError.textContent = 'Nom, Type et Statut sont obligatoires';
         return;
       }
-
       if (!urlCover) {
         try {
           const query = `
@@ -63,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
           urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
-
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -75,43 +68,46 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${nom}
       `;
-
-      // Clic sur la carte → ouvre la page détail
       card.onclick = () => {
         showDetailPage({ nom, type, statut, note, urlCover, isAnime: true });
       };
-
       grid.appendChild(card);
-
       updateCounter(statut);
       saveAnime({ nom, type, statut, note, urlCover });
-
       formAjout.reset();
     });
   }
 
-  // Chargement + recherche/tri (inchangé, fonctionne déjà)
+  // Chargement + recherche/tri (CORRIGÉ pour le bug Terminé)
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+
+    // Fonction de normalisation pour statut (supprime espaces, accents, maj/min)
+    function normalizeStatut(str) {
+      if (!str) return '';
+      return str
+        .toLowerCase()
+        .normalize("NFD") // supprime accents
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z-]/g, ''); // garde seulement lettres et -
+    }
 
     if (filter) {
       animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
     }
-
     if (trieNomVal === 'az') {
       animes.sort((a, b) => a.nom.localeCompare(b.nom));
     } else if (trieNomVal === 'za') {
       animes.sort((a, b) => b.nom.localeCompare(a.nom));
     }
-
     if (trieTypeVal) {
       animes = animes.filter(anime => anime.type.toLowerCase() === trieTypeVal.toLowerCase());
     }
-
     if (trieStatutVal) {
-      animes = animes.filter(anime => anime.statut.toLowerCase().replace(/\s+/g, '-') === trieStatutVal);
+      const normalizedFilter = normalizeStatut(trieStatutVal);
+      animes = animes.filter(anime => normalizeStatut(anime.statut) === normalizedFilter);
     }
-
     if (trieNoteVal === 'asc') {
       animes.sort((a, b) => parseFloat(a.note) - parseFloat(b.note));
     } else if (trieNoteVal === 'desc') {
@@ -131,11 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         ${anime.nom}
       `;
-
       card.onclick = () => {
         showDetailPage({ nom: anime.nom, type: anime.type, statut: anime.statut, note: anime.note, urlCover: anime.urlCover, isAnime: true });
       };
-
       grid.appendChild(card);
     });
 
@@ -162,14 +156,12 @@ document.addEventListener('DOMContentLoaded', () => {
       abandon: 0,
       'plus-jamais': 0
     };
-
     animes.forEach(anime => {
       const key = anime.statut.toLowerCase().replace(/\s+/g, '-');
       if (counts[key] !== undefined) {
         counts[key]++;
       }
     });
-
     for (const [key, value] of Object.entries(counts)) {
       const countElement = document.getElementById(`count-${key}`);
       if (countElement) {
@@ -184,14 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('animes', JSON.stringify(animes));
   }
 
-  // Écouteurs recherche/tri (inchangés)
+  // Écouteurs recherche/tri
   if (rechercheInput) rechercheInput.addEventListener('input', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieNom) trieNom.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieType) trieType.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieStatut) trieStatut.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieNote) trieNote.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
 
-  // Fonction export JSON (fonctionne maintenant)
+  // Fonction export JSON
   function exportJSON(key = 'animes') {
     const data = JSON.parse(localStorage.getItem(key) || '[]');
     if (data.length === 0) {
@@ -207,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     URL.revokeObjectURL(url);
   }
 
-  // Fonction import JSON (fonctionne maintenant)
+  // Fonction import JSON
   function importJSON(key = 'animes') {
     const fileInput = document.getElementById(`import-${key}`);
     const file = fileInput.files[0];
@@ -224,7 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
         localStorage.setItem(key, JSON.stringify(data));
-        location.reload(); // Recharge pour appliquer
+        alert(`${key.charAt(0).toUpperCase() + key.slice(1)} importés avec succès !`);
+        loadAnimes(); // Recharge la grille
+        updateStats(); // Met à jour les compteurs
       } catch (err) {
         alert('Erreur lors de la lecture du fichier JSON.');
       }
