@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Chargement + recherche/tri (CORRIGÉ pour le bug Terminé)
+  // Chargement + recherche/tri
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
@@ -133,10 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    updateAllCounters(animes);
+    // IMPORTANT : on met à jour les compteurs avec TOUS les animes, pas seulement les filtrés
+    updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
   }
 
-  // Fonctions compteurs (inchangées, fonctionnent déjà)
+  // Fonctions compteurs
   function updateCounter(statut) {
     const key = statut.toLowerCase().replace(/\s+/g, '-');
     const countId = 'count-' + key;
@@ -174,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animes.push(anime);
     localStorage.setItem('animes', JSON.stringify(animes));
+    updateAllCounters(animes); // mise à jour immédiate après ajout
   }
 
   // Écouteurs recherche/tri
@@ -218,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(key, JSON.stringify(data));
         alert(`${key.charAt(0).toUpperCase() + key.slice(1)} importés avec succès !`);
         loadAnimes(); // Recharge la grille
-        updateStats(); // Met à jour les compteurs
+        updateAllCounters(data); // Met à jour les compteurs avec les données importées
       } catch (err) {
         alert('Erreur lors de la lecture du fichier JSON.');
       }
