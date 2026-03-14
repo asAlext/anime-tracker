@@ -165,17 +165,19 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
-  // Sauvegarde SANS RELOAD + normalisation du statut "Terminé"
+  // Sauvegarde SANS RELOAD + NORMALISATION du statut
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
 
-    // Fonction de normalisation pour éviter le bug "Terminé"
+    // Normalisation pour que "Terminé" devienne "termine" (sans accent, minuscule, sans espace)
     function normalizeStatut(str) {
       if (!str) return '';
       return str
-        .replace(/é/g, 'e')
-        .replace(/É/g, 'E')
-        .trim();
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // supprime accents (é → e)
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z-]/g, '');
     }
 
     if (animeData) {
@@ -190,10 +192,10 @@ function openModifyModal(animeData, waifuData) {
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
         localStorage.setItem('animes', JSON.stringify(animes));
 
-        // Mise à jour live de la page détail
+        // Mise à jour live de la page détail (affichage original avec accent)
         document.getElementById('detail-nom-anime').textContent = animes[index].nom || 'Nom inconnu';
         document.getElementById('detail-type-anime').textContent = `Type : ${animes[index].type || 'Inconnu'}`;
-        document.getElementById('detail-statut-anime').textContent = `Statut : ${animes[index].statut || 'Inconnu'}`;
+        document.getElementById('detail-statut-anime').textContent = `Statut : ${document.getElementById('mod-statut-anime').value || 'Inconnu'}`; // ← on affiche la valeur originale (avec accent)
         document.getElementById('detail-note-anime').textContent = `Note : ${animes[index].note || 'NA'}`;
         if (newCoverUrl) document.getElementById('detail-cover-anime').src = newCoverUrl;
       }
@@ -212,7 +214,7 @@ function openModifyModal(animeData, waifuData) {
       }
     }
 
-    // Mise à jour des compteurs en live
+    // Mise à jour des compteurs
     if (typeof updateStats === 'function') {
       updateStats();
     }
