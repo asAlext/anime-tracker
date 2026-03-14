@@ -37,14 +37,12 @@ function showDetailPage(item) {
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
     // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
-    // On crée un wrapper qui force la colonne
     let infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
     infoWrapper.style.gap = '8px';
     infoWrapper.style.maxWidth = '400px';
     infoWrapper.style.textAlign = 'left';
-    // On met les infos dedans dans l’ordre exact
     const nomEl = document.getElementById('detail-nom-anime');
     nomEl.textContent = animeData.nom || 'Nom inconnu';
     infoWrapper.appendChild(nomEl);
@@ -57,7 +55,6 @@ function showDetailPage(item) {
     const noteEl = document.getElementById('detail-note-anime');
     noteEl.textContent = `Note : ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
-    // On vide l’ancien conteneur et on ajoute le wrapper vertical
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
@@ -85,7 +82,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier – sauvegarde sans reload + appel à updateStats()
+// Modal Modifier – sauvegarde sans reload + normalisation du statut "Terminé"
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -168,9 +165,18 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
-  // Sauvegarde SANS RELOAD + mise à jour en live + appel à updateStats()
+  // Sauvegarde SANS RELOAD + normalisation du statut "Terminé"
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
+
+    // Fonction de normalisation pour éviter le bug "Terminé"
+    function normalizeStatut(str) {
+      if (!str) return '';
+      return str
+        .replace(/é/g, 'e')
+        .replace(/É/g, 'E')
+        .trim();
+    }
 
     if (animeData) {
       let animes = JSON.parse(localStorage.getItem('animes') || '[]');
@@ -178,7 +184,7 @@ function openModifyModal(animeData, waifuData) {
       if (index !== -1) {
         animes[index].nom = document.getElementById('mod-nom-anime').value;
         animes[index].type = document.getElementById('mod-type-anime').value;
-        animes[index].statut = document.getElementById('mod-statut-anime').value;
+        animes[index].statut = normalizeStatut(document.getElementById('mod-statut-anime').value); // ← NORMALISATION ICI
         animes[index].note = document.getElementById('mod-note-anime').value;
         const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
@@ -206,12 +212,11 @@ function openModifyModal(animeData, waifuData) {
       }
     }
 
-    // Mise à jour des compteurs (appelle la fonction updateStats() qui est dans index.html)
+    // Mise à jour des compteurs en live
     if (typeof updateStats === 'function') {
       updateStats();
     }
 
-    // Ferme le modal sans recharger la page
     modal.remove();
   };
 }
