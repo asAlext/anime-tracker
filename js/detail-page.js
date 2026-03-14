@@ -82,7 +82,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier – sauvegarde sans reload + normalisation du statut "Terminé"
+// Modal Modifier – sauvegarde sans reload + NORMALISATION complète des statuts
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -165,19 +165,19 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
 
-  // Sauvegarde SANS RELOAD + NORMALISATION du statut
+  // Sauvegarde SANS RELOAD + NORMALISATION complète des statuts
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
 
-    // Normalisation pour que "Terminé" devienne "termine" (sans accent, minuscule, sans espace)
+    // Normalisation : minuscule, sans accent, espaces → tiret
     function normalizeStatut(str) {
       if (!str) return '';
       return str
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "") // supprime accents (é → e)
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z-]/g, '');
+        .replace(/\s+/g, '-')             // espaces → tiret
+        .replace(/[^a-z-]/g, '');         // garde seulement lettres et tiret
     }
 
     if (animeData) {
@@ -192,10 +192,10 @@ function openModifyModal(animeData, waifuData) {
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
         localStorage.setItem('animes', JSON.stringify(animes));
 
-        // Mise à jour live de la page détail (affichage original avec accent)
+        // Mise à jour live de la page détail (affichage original avec accent/majuscule)
         document.getElementById('detail-nom-anime').textContent = animes[index].nom || 'Nom inconnu';
         document.getElementById('detail-type-anime').textContent = `Type : ${animes[index].type || 'Inconnu'}`;
-        document.getElementById('detail-statut-anime').textContent = `Statut : ${document.getElementById('mod-statut-anime').value || 'Inconnu'}`; // ← on affiche la valeur originale (avec accent)
+        document.getElementById('detail-statut-anime').textContent = `Statut : ${document.getElementById('mod-statut-anime').value || 'Inconnu'}`; // valeur originale
         document.getElementById('detail-note-anime').textContent = `Note : ${animes[index].note || 'NA'}`;
         if (newCoverUrl) document.getElementById('detail-cover-anime').src = newCoverUrl;
       }
@@ -214,7 +214,7 @@ function openModifyModal(animeData, waifuData) {
       }
     }
 
-    // Mise à jour des compteurs
+    // Mise à jour des compteurs (appelle la fonction qui est dans index.html)
     if (typeof updateStats === 'function') {
       updateStats();
     }
