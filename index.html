@@ -194,10 +194,9 @@
 
   <!-- Scripts inline pour updateStats + JSON import/export -->
   <script>
-    // Fonction qui met à jour tous les compteurs
+    // Fonction qui met à jour tous les compteurs – NORMALISATION IDENTIQUE partout
     function updateStats() {
       const animes = JSON.parse(localStorage.getItem('animes') || '[]');
-
       const counts = {
         termine: 0,
         'en-cours': 0,
@@ -209,12 +208,15 @@
 
       animes.forEach(anime => {
         let statut = (anime.statut || '').toLowerCase().trim();
-        if (statut.includes('termin')) counts.termine++;
-        else if (statut.includes('en cours') || statut.includes('encours')) counts['en-cours']++;
-        else if (statut.includes('pause')) counts['en-pause']++;
-        else if (statut.includes('regarder')) counts['a-regarder']++;
-        else if (statut.includes('abandon')) counts.abandon++;
-        else if (statut.includes('jamais')) counts['plus-jamais']++;
+        statut = statut.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // supprime accents (é → e)
+        statut = statut.replace(/\s+/g, '-'); // espaces → tiret
+
+        if (statut === 'termine') counts.termine++;
+        else if (statut === 'en-cours') counts['en-cours']++;
+        else if (statut === 'en-pause') counts['en-pause']++;
+        else if (statut === 'a-regarder') counts['a-regarder']++;
+        else if (statut === 'abandon') counts.abandon++;
+        else if (statut === 'plus-jamais') counts['plus-jamais']++;
       });
 
       document.getElementById('count-termine').textContent = counts.termine;
@@ -254,9 +256,7 @@
           const data = JSON.parse(e.target.result);
           localStorage.setItem(type, JSON.stringify(data));
           alert(`${type.charAt(0).toUpperCase() + type.slice(1)} importés avec succès !`);
-          // Recharger les grilles si on est sur la bonne page
           if (type === 'animes' && document.getElementById('page-anime').style.display === 'block') {
-            // Si tu as une fonction loadAnimes() dans anime-form.js, appelle-la :
             if (typeof loadAnimes === 'function') loadAnimes();
           }
           if (type === 'waifus' && document.getElementById('page-waifu').style.display === 'block') {
