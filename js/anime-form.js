@@ -14,8 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const trieStatut = document.getElementById('trie-statut');
   const trieNote = document.getElementById('trie-note');
 
-  // Chargement initial
+  // Chargement initial + mise à jour compteurs immédiate
   loadAnimes();
+  updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]')); // ← AJOUT CRUCIAL AU CHARGEMENT
 
   if (formAjout) {
     formAjout.addEventListener('submit', async (e) => {
@@ -57,6 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
           urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
+
+      // NORMALISATION du statut à l'ajout
+      const statutNormalise = statut
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z-]/g, '');
+
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       grid.appendChild(card);
       updateCounter(statut);
-      saveAnime({ nom, type, statut, note, urlCover });
+      saveAnime({ nom, type, statut: statutNormalise, note, urlCover }); // ← stocke normalisé
       formAjout.reset();
     });
   }
@@ -82,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
-    // Normalisation pour filtre statut
     function normalizeStatut(str) {
       if (!str) return '';
       return str
@@ -93,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/[^a-z-]/g, '');
     }
 
-    // Appliquer les filtres
     if (filter) {
       animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
     }
@@ -115,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
       animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
     }
 
-    // Affichage des cartes (filtrées)
     grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
@@ -135,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    // COMPTEURS : on utilise TOUJOURS la liste complète du localStorage
+    // COMPTEURS : toujours la liste complète
     const allAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
     updateAllCounters(allAnimes);
   }
@@ -176,6 +183,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveAnime(anime) {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+
+    // NORMALISATION du statut à l'ajout
+    anime.statut = anime.statut
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z-]/g, '');
+
     animes.push(anime);
     localStorage.setItem('animes', JSON.stringify(animes));
     updateAllCounters(animes);
