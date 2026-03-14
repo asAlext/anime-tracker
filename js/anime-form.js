@@ -114,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
       animes.sort((a, b) => parseFloat(b.note) - parseFloat(a.note));
     }
 
+        // ... (le code de filtrage et affichage des cartes reste inchangé)
+
     grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
@@ -132,6 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       grid.appendChild(card);
     });
+
+    // CORRECTION : on compte TOUJOURS tous les animes, pas seulement les filtrés
+    const allAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
+    updateAllCounters(allAnimes);
+  }
 
     // IMPORTANT : on met à jour les compteurs avec TOUS les animes, pas seulement les filtrés
     updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
