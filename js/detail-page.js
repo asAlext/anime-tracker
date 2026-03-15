@@ -31,7 +31,7 @@ function showDetailPage(item) {
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
 
-  // Affichage anime – taille fixe stricte (inchangée)
+  // Affichage anime – taille fixe stricte
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
     const imgAnime = document.getElementById('detail-cover-anime');
@@ -40,7 +40,7 @@ function showDetailPage(item) {
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
 
-    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
+    // Infos verticales
     let infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
@@ -71,13 +71,13 @@ function showDetailPage(item) {
       detailLeft.appendChild(infoWrapper);
     }
 
-    // === SOUS-MENU : on l'ajoute juste après les infos anime ===
-    if (animeData.nom) {
-      renderSousMenu(animeData.nom, detailLeft);
+    // SOUS-MENU : uniquement si checkbox cochée (hasSousMenu true)
+    if (animeData.hasSousMenu === true) {
+      renderSousMenu(animeData.nom);
     }
   }
 
-  // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
+  // Affichage waifu
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -98,76 +98,65 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// === FONCTION SOUS-MENU (à placer ici ou dans un fichier séparé) ===
-function renderSousMenu(nomAnime, parentContainer) {
-  // On crée un conteneur juste après les infos
-  let sousMenuContainer = document.getElementById('sous-menu-container');
-  if (sousMenuContainer) sousMenuContainer.remove(); // évite doublons
+// === FONCTION SOUS-MENU ===
+function renderSousMenu(nomAnime) {
+  let container = document.getElementById('sous-menu-container');
+  if (container) container.remove();
 
-  sousMenuContainer = document.createElement('div');
-  sousMenuContainer.id = 'sous-menu-container';
-  sousMenuContainer.style.marginTop = '30px';
-  sousMenuContainer.style.padding = '15px';
-  sousMenuContainer.style.background = '#f8f9fa';
-  sousMenuContainer.style.borderRadius = '8px';
-  sousMenuContainer.style.border = '1px solid #ddd';
+  container = document.createElement('div');
+  container.id = 'sous-menu-container';
+  container.style.marginTop = '30px';
+  container.style.padding = '20px';
+  container.style.background = '#f9f9f9';
+  container.style.border = '1px solid #ddd';
+  container.style.borderRadius = '8px';
+  container.style.width = '100%';
 
-  // Barre d'outils fixe
+  // Barre d'outils fixe (juste sous la cover)
   const toolbar = document.createElement('div');
   toolbar.style.display = 'flex';
-  toolbar.style.gap = '12px';
-  toolbar.style.marginBottom = '20px';
-  toolbar.style.flexWrap = 'wrap';
+  toolbar.style.gap = '15px';
+  toolbar.style.marginBottom = '25px';
 
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
-  btnTitre.style.padding = '8px 16px';
+  btnTitre.style.padding = '10px 18px';
   btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre');
 
   const btnAjout = document.createElement('button');
   btnAjout.textContent = 'Ajouter entrée';
-  btnAjout.style.padding = '8px 16px';
+  btnAjout.style.padding = '10px 18px';
   btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree');
 
   const btnSeparateur = document.createElement('button');
   btnSeparateur.textContent = 'Séparateur';
-  btnSeparateur.style.padding = '8px 16px';
+  btnSeparateur.style.padding = '10px 18px';
   btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur');
 
-  toolbar.appendChild(btnTitre);
-  toolbar.appendChild(btnAjout);
-  toolbar.appendChild(btnSeparateur);
-  sousMenuContainer.appendChild(toolbar);
+  toolbar.append(btnTitre, btnAjout, btnSeparateur);
+  container.appendChild(toolbar);
 
-  // Zone contenu
   const content = document.createElement('div');
   content.id = 'sous-menu-content';
-  sousMenuContainer.appendChild(content);
+  container.appendChild(content);
 
-  parentContainer.appendChild(sousMenuContainer);
+  // Ajout juste après les infos anime (dans .detail-left)
+  const detailLeft = document.querySelector('.detail-left');
+  if (detailLeft) detailLeft.appendChild(container);
 
-  // Charge et affiche les items existants
   loadSousMenuItems(nomAnime, content);
 }
 
-// Ajoute un item (titre, entrée, séparateur)
+// Ajout d'un item sans prompt
 function addSousMenuItem(nomAnime, type) {
   let sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
   if (!sousMenus[nomAnime]) sousMenus[nomAnime] = [];
 
   let item;
   if (type === 'titre') {
-    const texte = prompt("Titre du groupe (ex: Trame principale) :");
-    if (!texte) return;
-    item = { type: 'titre', texte };
+    item = { type: 'titre', texte: 'Nouveau titre' };
   } else if (type === 'entree') {
-    const nom = prompt("Nom de l'œuvre :");
-    if (!nom) return;
-    const typeVal = prompt("Type (Anime, Film, OAV) :", "Anime");
-    if (!['Anime', 'Film', 'OAV'].includes(typeVal)) return alert("Type invalide.");
-    const statut = prompt("Statut (Terminé, En Cours, En Pause, A Regarder) :", "En Cours");
-    if (!['Terminé', 'En Cours', 'En Pause', 'A Regarder'].includes(statut)) return alert("Statut invalide.");
-    item = { type: 'entree', nom, type: typeVal, statut };
+    item = { type: 'entree', nom: 'Nouveau nom', type: 'Anime', statut: 'En Cours' };
   } else if (type === 'separateur') {
     item = { type: 'separateur' };
   }
@@ -175,12 +164,11 @@ function addSousMenuItem(nomAnime, type) {
   sousMenus[nomAnime].push(item);
   localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
 
-  // Re-render le contenu
   const content = document.getElementById('sous-menu-content');
   if (content) loadSousMenuItems(nomAnime, content);
 }
 
-// Charge et affiche les items
+// Charge et affiche (avec édition directe)
 function loadSousMenuItems(nomAnime, container) {
   container.innerHTML = '';
   const sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
@@ -189,23 +177,25 @@ function loadSousMenuItems(nomAnime, container) {
   items.forEach((item, index) => {
     const ligne = document.createElement('div');
     ligne.style.position = 'relative';
-    ligne.style.padding = '10px 0';
-    ligne.style.borderBottom = '1px solid #eee';
+    ligne.style.marginBottom = '16px';
+    ligne.style.padding = '10px';
+    ligne.style.background = '#fff';
+    ligne.style.border = '1px solid #eee';
+    ligne.style.borderRadius = '6px';
 
-    // Bouton X au hover
     const x = document.createElement('span');
     x.textContent = '×';
     x.style.position = 'absolute';
-    x.style.right = '0';
+    x.style.right = '12px';
     x.style.top = '50%';
     x.style.transform = 'translateY(-50%)';
     x.style.color = 'red';
-    x.style.fontSize = '22px';
+    x.style.fontSize = '24px';
     x.style.cursor = 'pointer';
     x.style.opacity = '0';
     x.style.transition = 'opacity 0.2s';
     x.onclick = () => {
-      if (confirm('Supprimer cette ligne ?')) {
+      if (confirm('Supprimer ?')) {
         items.splice(index, 1);
         sousMenus[nomAnime] = items;
         localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
@@ -217,11 +207,63 @@ function loadSousMenuItems(nomAnime, container) {
     ligne.onmouseleave = () => x.style.opacity = '0';
 
     if (item.type === 'titre') {
-      ligne.innerHTML = `<strong style="font-size: 22px;">${item.texte}</strong>`;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = item.texte;
+      input.style.fontSize = '22px';
+      input.style.fontWeight = 'bold';
+      input.style.width = '100%';
+      input.style.border = 'none';
+      input.style.background = 'transparent';
+      input.onchange = (e) => {
+        item.texte = e.target.value;
+        sousMenus[nomAnime] = items;
+        localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+      };
+      ligne.appendChild(input);
     } else if (item.type === 'entree') {
-      ligne.innerHTML = `${item.nom} - <em>${item.type}</em> - ${item.statut}`;
+      const nomInput = document.createElement('input');
+      nomInput.type = 'text';
+      nomInput.value = item.nom;
+      nomInput.style.width = '40%';
+      nomInput.style.marginRight = '10px';
+      nomInput.onchange = (e) => {
+        item.nom = e.target.value;
+        sousMenus[nomAnime] = items;
+        localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+      };
+
+      const typeSelect = document.createElement('select');
+      ['Anime', 'Film', 'OAV'].forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        if (t === item.type) opt.selected = true;
+        typeSelect.appendChild(opt);
+      });
+      typeSelect.onchange = (e) => {
+        item.type = e.target.value;
+        sousMenus[nomAnime] = items;
+        localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+      };
+
+      const statutSelect = document.createElement('select');
+      ['Terminé', 'En Cours', 'En Pause', 'A Regarder'].forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        if (s === item.statut) opt.selected = true;
+        statutSelect.appendChild(opt);
+      });
+      statutSelect.onchange = (e) => {
+        item.statut = e.target.value;
+        sousMenus[nomAnime] = items;
+        localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+      };
+
+      ligne.append(nomInput, typeSelect, statutSelect);
     } else if (item.type === 'separateur') {
-      ligne.innerHTML = '<hr style="border: none; border-top: 4px solid #aaa; margin: 25px 0;">';
+      ligne.innerHTML = '<hr style="border:none; border-top:8px solid #aaa; margin:35px 0;">';
     }
 
     ligne.appendChild(x);
@@ -229,43 +271,7 @@ function loadSousMenuItems(nomAnime, container) {
   });
 }
 
-// === Appel au chargement initial + quand on navigue ===
-document.addEventListener('DOMContentLoaded', () => {
-  // On ré-appelle quand on clique sur un nav-btn (car les cartes sont rechargées)
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setTimeout(() => {
-        const animeGrid = document.getElementById('anime-grid');
-        if (animeGrid) {
-          const cartes = animeGrid.querySelectorAll('.anime-card');
-          cartes.forEach(card => {
-            const nom = card.textContent.trim();
-            const sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
-            if (sousMenus[nom] && sousMenus[nom].length > 0) {
-              let star = card.querySelector('.sous-menu-star');
-              if (!star) {
-                star = document.createElement('span');
-                star.className = 'sous-menu-star';
-                star.textContent = '*';
-                star.style.position = 'absolute';
-                star.style.top = '5px';
-                star.style.right = '5px';
-                star.style.color = 'red';
-                star.style.fontSize = '24px';
-                star.style.fontWeight = 'bold';
-                star.style.zIndex = '10';
-                card.querySelector('.img-wrapper').style.position = 'relative';
-                card.querySelector('.img-wrapper').appendChild(star);
-              }
-            }
-          });
-        }
-      }, 300); // petit délai pour laisser le DOM se mettre à jour
-    });
-  });
-});
-
-// === Suppression automatique du sous-menu quand on supprime l'anime ===
+// Suppression automatique du sous-menu quand on supprime l'anime
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée et le sous-menu seront aussi supprimés.')) return;
 
@@ -285,4 +291,4 @@ function deleteAnime(nomAnime) {
   location.reload();
 }
 
-// (le reste du fichier reste inchangé)
+// (le reste du fichier reste inchangé : openModifyModal, deleteWaifu, etc.)
