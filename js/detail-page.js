@@ -69,11 +69,11 @@ function showDetailPage(item) {
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
       detailLeft.appendChild(infoWrapper);
-    }
 
-    // SOUS-MENU : uniquement si checkbox cochée (hasSousMenu true)
-    if (animeData.hasSousMenu === true) {
-      renderSousMenu(animeData.nom);
+      // SOUS-MENU : uniquement si hasSousMenu true, placé juste sous les infos (dans detailLeft)
+      if (animeData.hasSousMenu === true) {
+        renderSousMenu(animeData.nom, detailLeft);
+      }
     }
   }
 
@@ -98,8 +98,8 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// === FONCTION SOUS-MENU ===
-function renderSousMenu(nomAnime) {
+// === SOUS-MENU : rendu et gestion ===
+function renderSousMenu(nomAnime, parentContainer) {
   let container = document.getElementById('sous-menu-container');
   if (container) container.remove();
 
@@ -112,7 +112,7 @@ function renderSousMenu(nomAnime) {
   container.style.borderRadius = '8px';
   container.style.width = '100%';
 
-  // Barre d'outils fixe (juste sous la cover)
+  // Barre d'outils fixe
   const toolbar = document.createElement('div');
   toolbar.style.display = 'flex';
   toolbar.style.gap = '15px';
@@ -121,17 +121,17 @@ function renderSousMenu(nomAnime) {
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
   btnTitre.style.padding = '10px 18px';
-  btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre');
+  btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre', container);
 
   const btnAjout = document.createElement('button');
   btnAjout.textContent = 'Ajouter entrée';
   btnAjout.style.padding = '10px 18px';
-  btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree');
+  btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree', container);
 
   const btnSeparateur = document.createElement('button');
   btnSeparateur.textContent = 'Séparateur';
   btnSeparateur.style.padding = '10px 18px';
-  btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur');
+  btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur', container);
 
   toolbar.append(btnTitre, btnAjout, btnSeparateur);
   container.appendChild(toolbar);
@@ -140,15 +140,13 @@ function renderSousMenu(nomAnime) {
   content.id = 'sous-menu-content';
   container.appendChild(content);
 
-  // Ajout juste après les infos anime (dans .detail-left)
-  const detailLeft = document.querySelector('.detail-left');
-  if (detailLeft) detailLeft.appendChild(container);
+  parentContainer.appendChild(container);
 
   loadSousMenuItems(nomAnime, content);
 }
 
-// Ajout d'un item sans prompt
-function addSousMenuItem(nomAnime, type) {
+// Ajout d'un item (sans popup)
+function addSousMenuItem(nomAnime, type, container) {
   let sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
   if (!sousMenus[nomAnime]) sousMenus[nomAnime] = [];
 
@@ -164,11 +162,10 @@ function addSousMenuItem(nomAnime, type) {
   sousMenus[nomAnime].push(item);
   localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
 
-  const content = document.getElementById('sous-menu-content');
-  if (content) loadSousMenuItems(nomAnime, content);
+  loadSousMenuItems(nomAnime, container);
 }
 
-// Charge et affiche (avec édition directe)
+// Charge et affiche avec édition directe
 function loadSousMenuItems(nomAnime, container) {
   container.innerHTML = '';
   const sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
@@ -195,7 +192,7 @@ function loadSousMenuItems(nomAnime, container) {
     x.style.opacity = '0';
     x.style.transition = 'opacity 0.2s';
     x.onclick = () => {
-      if (confirm('Supprimer ?')) {
+      if (confirm('Supprimer cette ligne ?')) {
         items.splice(index, 1);
         sousMenus[nomAnime] = items;
         localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
@@ -225,6 +222,7 @@ function loadSousMenuItems(nomAnime, container) {
       const nomInput = document.createElement('input');
       nomInput.type = 'text';
       nomInput.value = item.nom;
+      nomInput.placeholder = 'Nom';
       nomInput.style.width = '40%';
       nomInput.style.marginRight = '10px';
       nomInput.onchange = (e) => {
@@ -263,7 +261,7 @@ function loadSousMenuItems(nomAnime, container) {
 
       ligne.append(nomInput, typeSelect, statutSelect);
     } else if (item.type === 'separateur') {
-      ligne.innerHTML = '<hr style="border:none; border-top:8px solid #aaa; margin:35px 0;">';
+      ligne.innerHTML = '<hr style="border:none; border-top:4px solid #ccc; margin:20px 0;">'; // ← plus fin, couleur discrète
     }
 
     ligne.appendChild(x);
@@ -274,20 +272,16 @@ function loadSousMenuItems(nomAnime, container) {
 // Suppression automatique du sous-menu quand on supprime l'anime
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée et le sous-menu seront aussi supprimés.')) return;
-
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   animes = animes.filter(a => a.nom !== nomAnime);
   localStorage.setItem('animes', JSON.stringify(animes));
-
   let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
   waifus = waifus.filter(w => w.animeAssocie !== nomAnime);
   localStorage.setItem('waifus', JSON.stringify(waifus));
-
   // Suppression du sous-menu
   let sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
   delete sousMenus[nomAnime];
   localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
-
   location.reload();
 }
 
