@@ -27,10 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
       messageError.textContent = '';
+
       if (!nom || !type || !statut) {
         messageError.textContent = 'Nom, Type et Statut sont obligatoires';
         return;
       }
+
       if (!urlCover) {
         try {
           const query = `
@@ -58,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
           urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
+
       // NORMALISATION du statut à l'ajout
       const statutNormalise = statut
         .toLowerCase()
@@ -65,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/\s+/g, '-')
         .replace(/[^a-z-]/g, '');
+
+      // === AJOUT DU FLAG SOUS-MENU (la seule modification) ===
+      const hasSousMenu = document.getElementById('sous-menu-anime').checked;
+
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -77,11 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
         ${nom}
       `;
       card.onclick = () => {
-        showDetailPage({ nom, type, statut, note, urlCover, isAnime: true });
+        showDetailPage({ nom, type, statut, note, urlCover, hasSousMenu, isAnime: true });
       };
       grid.appendChild(card);
       updateCounter(statut);
-      saveAnime({ nom, type, statut: statutNormalise, note, urlCover });
+
+      // On passe le flag hasSousMenu à l'objet sauvegardé
+      saveAnime({ 
+        nom, 
+        type, 
+        statut: statutNormalise, 
+        note, 
+        urlCover, 
+        hasSousMenu 
+      });
+
       formAjout.reset();
     });
   }
@@ -121,13 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // TRI PAR NOTE – "NA" = 0 + gestion des virgules françaises
     if (trieNoteVal === 'asc' || trieNoteVal === 'desc') {
       animes.sort((a, b) => {
-        // Remplace virgule par point et traite "NA" comme 0
         let noteA = a.note === 'NA' ? 0 : parseFloat((a.note || '0').replace(',', '.'));
         let noteB = b.note === 'NA' ? 0 : parseFloat((b.note || '0').replace(',', '.'));
-        // Si parseFloat échoue (texte invalide), on met 0
         if (isNaN(noteA)) noteA = 0;
         if (isNaN(noteB)) noteB = 0;
-
         return trieNoteVal === 'asc' ? noteA - noteB : noteB - noteA;
       });
     }
@@ -147,7 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ${anime.nom}
       `;
       card.onclick = () => {
-        showDetailPage({ nom: anime.nom, type: anime.type, statut: anime.statut, note: anime.note, urlCover: anime.urlCover, isAnime: true });
+        showDetailPage({ 
+          nom: anime.nom, 
+          type: anime.type, 
+          statut: anime.statut, 
+          note: anime.note, 
+          urlCover: anime.urlCover, 
+          hasSousMenu: anime.hasSousMenu || false, 
+          isAnime: true 
+        });
       };
       grid.appendChild(card);
     });
