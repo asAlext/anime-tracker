@@ -8,6 +8,7 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
+
   // Reset les champs
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
@@ -17,6 +18,7 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
+
   let animeData = null;
   let waifuData = null;
   if (item.isAnime) {
@@ -28,6 +30,7 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
+
   // Affichage anime – taille fixe stricte (inchangée)
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -36,12 +39,12 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
+
     // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
-    // On crée un wrapper qui force la colonne + plus d'espace
     let infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
-    infoWrapper.style.gap = '16px';          // ← ESPACEMENT AUGMENTÉ (8 → 16px)
+    infoWrapper.style.gap = '16px';
     infoWrapper.style.maxWidth = '400px';
     infoWrapper.style.textAlign = 'left';
 
@@ -50,25 +53,30 @@ function showDetailPage(item) {
     infoWrapper.appendChild(nomEl);
 
     const typeEl = document.getElementById('detail-type-anime');
-    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;  // ← GRAS
+    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
     infoWrapper.appendChild(typeEl);
 
     const statutEl = document.getElementById('detail-statut-anime');
-    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;  // ← GRAS
+    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
     infoWrapper.appendChild(statutEl);
 
     const noteEl = document.getElementById('detail-note-anime');
-    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;  // ← GRAS
+    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
 
-    // On vide l’ancien conteneur et on ajoute le wrapper vertical
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
       detailLeft.appendChild(infoWrapper);
     }
+
+    // === SOUS-MENU : on l'ajoute juste après les infos anime ===
+    if (animeData.nom) {
+      renderSousMenu(animeData.nom, detailLeft);
+    }
   }
+
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
@@ -83,162 +91,198 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
+
   // Boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// Modal Modifier – sauvegarde sans reload + NORMALISATION complète des statuts
-function openModifyModal(animeData, waifuData) {
-  let modal = document.getElementById('modify-modal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'modify-modal';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.background = 'rgba(0,0,0,0.6)';
-    modal.style.display = 'flex';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
-    modal.style.zIndex = '2000';
-    modal.innerHTML = `
-      <div style="background:#fff; padding:20px; border-radius:12px; width:400px; max-width:92%; box-shadow:0 6px 30px rgba(0,0,0,0.25);">
-        <h2 style="margin:0 0 16px; font-size:22px; text-align:center; color:#333;">Modifier</h2>
-       
-        <form id="modify-form">
-          <div style="margin-bottom:20px;">
-            <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Anime</h3>
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
-            <input type="text" id="mod-nom-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Type</label>
-            <select id="mod-type-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-              <option value="anime">anime</option>
-              <option value="film">film</option>
-            </select>
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Statut</label>
-            <select id="mod-statut-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-              <option value="Terminé">Terminé</option>
-              <option value="En Cours">En Cours</option>
-              <option value="En Pause">En Pause</option>
-              <option value="A Regarder">A Regarder</option>
-              <option value="Abandon">Abandon</option>
-              <option value="Plus Jamais">Plus Jamais</option>
-            </select>
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
-            <input type="text" id="mod-note-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Url Cover (optionnel)</label>
-            <input type="text" id="mod-url-cover" placeholder="https://..." style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          </div>
-          <div style="margin-bottom:20px;">
-            <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Waifu associée</h3>
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
-            <input type="text" id="mod-nom-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-           
-            <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
-            <input type="text" id="mod-note-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          </div>
-          <div style="display:flex; justify-content:flex-end; gap:12px;">
-            <button type="button" onclick="document.getElementById('modify-modal').remove()" style="padding:8px 16px; font-size:14px; background:#ddd; color:#333; border:none; border-radius:6px; cursor:pointer;">Annuler</button>
-            <button type="submit" style="padding:8px 16px; font-size:14px; background:#7e57c2; color:white; border:none; border-radius:6px; cursor:pointer;">Sauvegarder</button>
-          </div>
-        </form>
-      </div>
-    `;
-    document.body.appendChild(modal);
-  }
-  // Pré-remplir les champs
-  if (animeData) {
-    document.getElementById('mod-nom-anime').value = animeData.nom || '';
-    document.getElementById('mod-type-anime').value = animeData.type || 'anime';
-    document.getElementById('mod-statut-anime').value = animeData.statut || 'En Cours';
-    document.getElementById('mod-note-anime').value = animeData.note || '';
-    document.getElementById('mod-url-cover').value = animeData.urlCover || '';
-  }
-  if (waifuData) {
-    document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
-    document.getElementById('mod-note-waifu').value = waifuData.note || '';
-  }
-  // Sauvegarde SANS RELOAD + NORMALISATION complète des statuts
-  document.getElementById('modify-form').onsubmit = (e) => {
-    e.preventDefault();
-    // Normalisation : minuscule, sans accent, espaces → tiret
-    function normalizeStatut(str) {
-      if (!str) return '';
-      return str
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // supprime accents (é → e)
-        .replace(/\s+/g, '-') // espaces → tiret
-        .replace(/[^a-z-]/g, ''); // garde seulement lettres et tiret
-    }
-    if (animeData) {
-      let animes = JSON.parse(localStorage.getItem('animes') || '[]');
-      const index = animes.findIndex(a => a.nom === animeData.nom);
-      if (index !== -1) {
-        animes[index].nom = document.getElementById('mod-nom-anime').value;
-        animes[index].type = document.getElementById('mod-type-anime').value;
-        // NORMALISATION : on stocke la version propre
-        const statutOriginal = document.getElementById('mod-statut-anime').value;
-        animes[index].statut = normalizeStatut(statutOriginal); // ← clé propre pour les compteurs
-        animes[index].note = document.getElementById('mod-note-anime').value;
-        const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
-        if (newCoverUrl) animes[index].urlCover = newCoverUrl;
-        localStorage.setItem('animes', JSON.stringify(animes));
-        // Mise à jour live de la page détail (affichage original avec accent/majuscule)
-        document.getElementById('detail-nom-anime').textContent = animes[index].nom || 'Nom inconnu';
-        document.getElementById('detail-type-anime').textContent = `Type : ${animes[index].type || 'Inconnu'}`;
-        document.getElementById('detail-statut-anime').textContent = `Statut : ${statutOriginal || 'Inconnu'}`; // ← valeur originale
-        document.getElementById('detail-note-anime').textContent = `Note : ${animes[index].note || 'NA'}`;
-        if (newCoverUrl) document.getElementById('detail-cover-anime').src = newCoverUrl;
-      }
-    }
-    if (waifuData) {
-      let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
-      const index = waifus.findIndex(w => w.nom === waifuData.nom);
-      if (index !== -1) {
-        waifus[index].nom = document.getElementById('mod-nom-waifu').value;
-        waifus[index].note = document.getElementById('mod-note-waifu').value;
-        localStorage.setItem('waifus', JSON.stringify(waifus));
-        document.getElementById('detail-nom-waifu').innerHTML = `<strong>${waifus[index].nom || 'Nom inconnu'}</strong>`;
-        document.getElementById('detail-note-waifu').textContent = `Note : ${waifus[index].note || 'NA'}`;
-      }
-    }
-    // Mise à jour des compteurs (index.html + anime-form.js)
-    if (typeof updateStats === 'function') {
-      updateStats();
-    }
-    if (typeof updateAllCounters === 'function') {
-      updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
-    }
-    modal.remove();
-  };
+// === FONCTION SOUS-MENU (à placer ici ou dans un fichier séparé) ===
+function renderSousMenu(nomAnime, parentContainer) {
+  // On crée un conteneur juste après les infos
+  let sousMenuContainer = document.getElementById('sous-menu-container');
+  if (sousMenuContainer) sousMenuContainer.remove(); // évite doublons
+
+  sousMenuContainer = document.createElement('div');
+  sousMenuContainer.id = 'sous-menu-container';
+  sousMenuContainer.style.marginTop = '30px';
+  sousMenuContainer.style.padding = '15px';
+  sousMenuContainer.style.background = '#f8f9fa';
+  sousMenuContainer.style.borderRadius = '8px';
+  sousMenuContainer.style.border = '1px solid #ddd';
+
+  // Barre d'outils fixe
+  const toolbar = document.createElement('div');
+  toolbar.style.display = 'flex';
+  toolbar.style.gap = '12px';
+  toolbar.style.marginBottom = '20px';
+  toolbar.style.flexWrap = 'wrap';
+
+  const btnTitre = document.createElement('button');
+  btnTitre.textContent = '+ Titre';
+  btnTitre.style.padding = '8px 16px';
+  btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre');
+
+  const btnAjout = document.createElement('button');
+  btnAjout.textContent = 'Ajouter entrée';
+  btnAjout.style.padding = '8px 16px';
+  btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree');
+
+  const btnSeparateur = document.createElement('button');
+  btnSeparateur.textContent = 'Séparateur';
+  btnSeparateur.style.padding = '8px 16px';
+  btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur');
+
+  toolbar.appendChild(btnTitre);
+  toolbar.appendChild(btnAjout);
+  toolbar.appendChild(btnSeparateur);
+  sousMenuContainer.appendChild(toolbar);
+
+  // Zone contenu
+  const content = document.createElement('div');
+  content.id = 'sous-menu-content';
+  sousMenuContainer.appendChild(content);
+
+  parentContainer.appendChild(sousMenuContainer);
+
+  // Charge et affiche les items existants
+  loadSousMenuItems(nomAnime, content);
 }
-// Suppression anime (supprime aussi waifu associée)
+
+// Ajoute un item (titre, entrée, séparateur)
+function addSousMenuItem(nomAnime, type) {
+  let sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
+  if (!sousMenus[nomAnime]) sousMenus[nomAnime] = [];
+
+  let item;
+  if (type === 'titre') {
+    const texte = prompt("Titre du groupe (ex: Trame principale) :");
+    if (!texte) return;
+    item = { type: 'titre', texte };
+  } else if (type === 'entree') {
+    const nom = prompt("Nom de l'œuvre :");
+    if (!nom) return;
+    const typeVal = prompt("Type (Anime, Film, OAV) :", "Anime");
+    if (!['Anime', 'Film', 'OAV'].includes(typeVal)) return alert("Type invalide.");
+    const statut = prompt("Statut (Terminé, En Cours, En Pause, A Regarder) :", "En Cours");
+    if (!['Terminé', 'En Cours', 'En Pause', 'A Regarder'].includes(statut)) return alert("Statut invalide.");
+    item = { type: 'entree', nom, type: typeVal, statut };
+  } else if (type === 'separateur') {
+    item = { type: 'separateur' };
+  }
+
+  sousMenus[nomAnime].push(item);
+  localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+
+  // Re-render le contenu
+  const content = document.getElementById('sous-menu-content');
+  if (content) loadSousMenuItems(nomAnime, content);
+}
+
+// Charge et affiche les items
+function loadSousMenuItems(nomAnime, container) {
+  container.innerHTML = '';
+  const sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
+  const items = sousMenus[nomAnime] || [];
+
+  items.forEach((item, index) => {
+    const ligne = document.createElement('div');
+    ligne.style.position = 'relative';
+    ligne.style.padding = '10px 0';
+    ligne.style.borderBottom = '1px solid #eee';
+
+    // Bouton X au hover
+    const x = document.createElement('span');
+    x.textContent = '×';
+    x.style.position = 'absolute';
+    x.style.right = '0';
+    x.style.top = '50%';
+    x.style.transform = 'translateY(-50%)';
+    x.style.color = 'red';
+    x.style.fontSize = '22px';
+    x.style.cursor = 'pointer';
+    x.style.opacity = '0';
+    x.style.transition = 'opacity 0.2s';
+    x.onclick = () => {
+      if (confirm('Supprimer cette ligne ?')) {
+        items.splice(index, 1);
+        sousMenus[nomAnime] = items;
+        localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+        loadSousMenuItems(nomAnime, container);
+      }
+    };
+
+    ligne.onmouseenter = () => x.style.opacity = '1';
+    ligne.onmouseleave = () => x.style.opacity = '0';
+
+    if (item.type === 'titre') {
+      ligne.innerHTML = `<strong style="font-size: 22px;">${item.texte}</strong>`;
+    } else if (item.type === 'entree') {
+      ligne.innerHTML = `${item.nom} - <em>${item.type}</em> - ${item.statut}`;
+    } else if (item.type === 'separateur') {
+      ligne.innerHTML = '<hr style="border: none; border-top: 4px solid #aaa; margin: 25px 0;">';
+    }
+
+    ligne.appendChild(x);
+    container.appendChild(ligne);
+  });
+}
+
+// === Appel au chargement initial + quand on navigue ===
+document.addEventListener('DOMContentLoaded', () => {
+  // On ré-appelle quand on clique sur un nav-btn (car les cartes sont rechargées)
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(() => {
+        const animeGrid = document.getElementById('anime-grid');
+        if (animeGrid) {
+          const cartes = animeGrid.querySelectorAll('.anime-card');
+          cartes.forEach(card => {
+            const nom = card.textContent.trim();
+            const sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
+            if (sousMenus[nom] && sousMenus[nom].length > 0) {
+              let star = card.querySelector('.sous-menu-star');
+              if (!star) {
+                star = document.createElement('span');
+                star.className = 'sous-menu-star';
+                star.textContent = '*';
+                star.style.position = 'absolute';
+                star.style.top = '5px';
+                star.style.right = '5px';
+                star.style.color = 'red';
+                star.style.fontSize = '24px';
+                star.style.fontWeight = 'bold';
+                star.style.zIndex = '10';
+                card.querySelector('.img-wrapper').style.position = 'relative';
+                card.querySelector('.img-wrapper').appendChild(star);
+              }
+            }
+          });
+        }
+      }, 300); // petit délai pour laisser le DOM se mettre à jour
+    });
+  });
+});
+
+// === Suppression automatique du sous-menu quand on supprime l'anime ===
 function deleteAnime(nomAnime) {
-  if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée sera aussi supprimée.')) return;
+  if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée et le sous-menu seront aussi supprimés.')) return;
+
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   animes = animes.filter(a => a.nom !== nomAnime);
   localStorage.setItem('animes', JSON.stringify(animes));
+
   let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
   waifus = waifus.filter(w => w.animeAssocie !== nomAnime);
   localStorage.setItem('waifus', JSON.stringify(waifus));
+
+  // Suppression du sous-menu
+  let sousMenus = JSON.parse(localStorage.getItem('sousMenus') || '{}');
+  delete sousMenus[nomAnime];
+  localStorage.setItem('sousMenus', JSON.stringify(sousMenus));
+
   location.reload();
 }
-// Suppression waifu (anime reste)
-function deleteWaifu(nomWaifu) {
-  if (!nomWaifu || !confirm('Supprimer cette waifu ?')) return;
-  let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
-  waifus = waifus.filter(w => w.nom !== nomWaifu);
-  localStorage.setItem('waifus', JSON.stringify(waifus));
-  location.reload();
-}
+
+// (le reste du fichier reste inchangé)
