@@ -42,16 +42,11 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Force la colonne gauche à être verticale et pleine largeur
+      // Force .detail-left à être une colonne verticale pleine largeur
       detailLeft.style.display = 'flex';
       detailLeft.style.flexDirection = 'column';
       detailLeft.style.alignItems = 'flex-start';
       detailLeft.style.width = '100%';
-
-      // SOUS-MENU : placé juste sous la cover (avant les infos)
-      if (animeData.hasSousMenu === true) {
-        renderSousMenu(animeData.nom, detailLeft);
-      }
 
       // Infos verticales (on remet directement les éléments existants)
       document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
@@ -67,12 +62,17 @@ function showDetailPage(item) {
       infoWrapper.style.gap = '16px';
       infoWrapper.style.maxWidth = '400px';
       infoWrapper.style.textAlign = 'left';
-      infoWrapper.style.marginTop = '20px'; // espace après sous-menu
+      infoWrapper.style.marginTop = '20px'; // espace après sous-menu si besoin
 
       infoWrapper.appendChild(document.getElementById('detail-nom-anime'));
       infoWrapper.appendChild(document.getElementById('detail-type-anime'));
       infoWrapper.appendChild(document.getElementById('detail-statut-anime'));
       infoWrapper.appendChild(document.getElementById('detail-note-anime'));
+
+      // SOUS-MENU : placé juste sous la cover (avant les infos)
+      if (animeData.hasSousMenu === true) {
+        renderSousMenu(animeData.nom, detailLeft);
+      }
 
       detailLeft.appendChild(infoWrapper);
     }
@@ -93,7 +93,7 @@ function showDetailPage(item) {
     document.getElementById('detail-note-waifu').textContent = '';
   }
 
-  // Boutons
+  // Boutons (remis en place et fonctionnels)
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
