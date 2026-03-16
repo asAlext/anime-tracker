@@ -42,13 +42,7 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Force la colonne gauche à être verticale (important pour que sous-menu reste sous la cover)
-      detailLeft.style.display = 'flex';
-      detailLeft.style.flexDirection = 'column';
-      detailLeft.style.alignItems = 'flex-start';
-      detailLeft.style.width = '100%';
-
-      // Reset ancien wrapper
+      // Reset seulement les infos dynamiques (pas toute la colonne)
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
 
@@ -77,16 +71,17 @@ function showDetailPage(item) {
       noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
       infoWrapper.appendChild(noteEl);
 
-      detailLeft.appendChild(infoWrapper);
+      // IMPORTANT : on ajoute les infos après la cover
+      detailLeft.insertBefore(infoWrapper, detailLeft.querySelector('#detail-nom-anime').nextSibling); // après la cover
 
-      // SOUS-MENU : placé juste sous la cover + infos (pleine largeur)
+      // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
       if (animeData.hasSousMenu === true) {
         renderSousMenu(animeData.nom, detailLeft);
       }
     }
   }
 
-  // Affichage waifu (inchangé)
+  // Affichage waifu
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -114,33 +109,35 @@ function renderSousMenu(nomAnime, parentContainer) {
 
   container = document.createElement('div');
   container.id = 'sous-menu-container';
-  container.style.marginTop = '25px';
+  container.style.marginTop = '25px';               // espace raisonnable sous cover/infos
   container.style.padding = '15px';
   container.style.background = '#f9f9f9';
   container.style.border = '1px solid #ddd';
   container.style.borderRadius = '8px';
-  container.style.width = '100%';           // pleine largeur
+  container.style.width = '100%';                    // pleine largeur
   container.style.boxSizing = 'border-box';
+  container.style.maxWidth = 'none';                 // force pleine largeur
 
   // Barre d'outils fixe
   const toolbar = document.createElement('div');
   toolbar.style.display = 'flex';
   toolbar.style.gap = '12px';
   toolbar.style.marginBottom = '20px';
+  toolbar.style.flexWrap = 'wrap';
 
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
-  btnTitre.style.padding = '10px 18px';
+  btnTitre.style.padding = '8px 16px';
   btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre', container);
 
   const btnAjout = document.createElement('button');
   btnAjout.textContent = 'Ajouter entrée';
-  btnAjout.style.padding = '10px 18px';
+  btnAjout.style.padding = '8px 16px';
   btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree', container);
 
   const btnSeparateur = document.createElement('button');
   btnSeparateur.textContent = 'Séparateur';
-  btnSeparateur.style.padding = '10px 18px';
+  btnSeparateur.style.padding = '8px 16px';
   btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur', container);
 
   toolbar.append(btnTitre, btnAjout, btnSeparateur);
@@ -150,9 +147,15 @@ function renderSousMenu(nomAnime, parentContainer) {
   content.id = 'sous-menu-content';
   container.appendChild(content);
 
-  parentContainer.appendChild(container);
+  // Placement : juste après la cover (avant les infos)
+  const cover = document.getElementById('detail-cover-anime');
+  if (cover && cover.parentNode) {
+    cover.parentNode.insertBefore(container, cover.nextSibling);
+  } else {
+    parentContainer.appendChild(container);
+  }
 
   loadSousMenuItems(nomAnime, content);
 }
 
-// (le reste de tes fonctions addSousMenuItem, loadSousMenuItems, deleteAnime reste exactement le même que dans ton dernier message)
+// (le reste de tes fonctions : addSousMenuItem, loadSousMenuItems, deleteAnime, etc. reste exactement le même que dans ton dernier message)
