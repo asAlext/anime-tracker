@@ -42,42 +42,57 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Force la colonne gauche à être verticale et pleine largeur
       detailLeft.style.display = 'flex';
       detailLeft.style.flexDirection = 'column';
       detailLeft.style.alignItems = 'flex-start';
       detailLeft.style.width = '100%';
 
-      // Infos verticales (remises à côté de la cover, avant sous-menu)
-      document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
-      document.getElementById('detail-type-anime').innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
-      document.getElementById('detail-statut-anime').innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
-      document.getElementById('detail-note-anime').innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
+      // Infos anime remises à côté de la cover (dans un flex row)
+      let row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '30px';
+      row.style.alignItems = 'flex-start';
 
+      // Cover anime
+      const coverContainer = document.createElement('div');
+      coverContainer.appendChild(imgAnime);
+      row.appendChild(coverContainer);
+
+      // Infos verticales (à côté de la cover)
       let infoWrapper = document.createElement('div');
-      infoWrapper.className = 'detail-anime-info';
       infoWrapper.style.display = 'flex';
       infoWrapper.style.flexDirection = 'column';
       infoWrapper.style.gap = '16px';
       infoWrapper.style.maxWidth = '400px';
       infoWrapper.style.textAlign = 'left';
-      infoWrapper.style.marginTop = '20px'; // espace après cover
 
-      infoWrapper.appendChild(document.getElementById('detail-nom-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-type-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-statut-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-note-anime'));
+      const nomEl = document.getElementById('detail-nom-anime');
+      nomEl.textContent = animeData.nom || 'Nom inconnu';
+      infoWrapper.appendChild(nomEl);
 
-      detailLeft.appendChild(infoWrapper);
+      const typeEl = document.getElementById('detail-type-anime');
+      typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
+      infoWrapper.appendChild(typeEl);
 
-      // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
+      const statutEl = document.getElementById('detail-statut-anime');
+      statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
+      infoWrapper.appendChild(statutEl);
+
+      const noteEl = document.getElementById('detail-note-anime');
+      noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
+      infoWrapper.appendChild(noteEl);
+
+      row.appendChild(infoWrapper);
+      detailLeft.appendChild(row);
+
+      // SOUS-MENU : placé juste sous la cover + infos (pleine largeur)
       if (animeData.hasSousMenu === true) {
         renderSousMenu(animeData.nom, detailLeft);
       }
     }
   }
 
-  // Affichage waifu (inchangé)
+  // Affichage waifu (inchangé – ne touche pas)
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -92,36 +107,30 @@ function showDetailPage(item) {
     document.getElementById('detail-note-waifu').textContent = '';
   }
 
-  // Boutons – FIXÉS en bas à droite quand on scroll
-  const buttons = document.querySelector('.detail-buttons');
-  if (buttons) {
-    buttons.style.position = 'fixed';
-    buttons.style.bottom = '20px';
-    buttons.style.right = '20px';
-    buttons.style.zIndex = '100';
-    buttons.style.background = 'rgba(255,255,255,0.95)';
-    buttons.style.padding = '10px';
-    buttons.style.borderRadius = '8px';
-    buttons.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-    buttons.style.display = 'flex';
-    buttons.style.gap = '12px';
+  // Boutons – rendus fixes (sticky)
+  const buttonsDiv = document.querySelector('.detail-buttons');
+  if (buttonsDiv) {
+    buttonsDiv.style.position = 'sticky';
+    buttonsDiv.style.top = '20px';
+    buttonsDiv.style.zIndex = '100';
+    buttonsDiv.style.background = '#fff';
+    buttonsDiv.style.padding = '10px';
+    buttonsDiv.style.borderRadius = '8px';
   }
 
-  // Écouteurs boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// === SOUS-MENU : rendu et gestion (inchangé, mais placement corrigé dans showDetailPage) ===
+// === SOUS-MENU : rendu et gestion (plein largeur sous la cover) ===
 function renderSousMenu(nomAnime, parentContainer) {
   let container = document.getElementById('sous-menu-container');
   if (container) container.remove();
-
   container = document.createElement('div');
   container.id = 'sous-menu-container';
   container.style.marginTop = '25px';
-  container.style.padding = '20px';
+  container.style.padding = '15px';
   container.style.background = '#f9f9f9';
   container.style.border = '1px solid #ddd';
   container.style.borderRadius = '8px';
@@ -133,6 +142,7 @@ function renderSousMenu(nomAnime, parentContainer) {
   toolbar.style.display = 'flex';
   toolbar.style.gap = '15px';
   toolbar.style.marginBottom = '25px';
+  toolbar.style.flexWrap = 'wrap';
 
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
@@ -160,4 +170,4 @@ function renderSousMenu(nomAnime, parentContainer) {
   loadSousMenuItems(nomAnime, content);
 }
 
-// (le reste de tes fonctions : addSousMenuItem, loadSousMenuItems, deleteAnime reste exactement le même)
+// (le reste de tes fonctions addSousMenuItem, loadSousMenuItems, deleteAnime reste inchangé)
