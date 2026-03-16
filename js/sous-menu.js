@@ -42,43 +42,26 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Force .detail-left à être une colonne verticale pleine largeur
+      // Force la colonne gauche à être verticale et pleine largeur
       detailLeft.style.display = 'flex';
       detailLeft.style.flexDirection = 'column';
       detailLeft.style.alignItems = 'flex-start';
       detailLeft.style.width = '100%';
 
-      // Infos verticales (on remet directement les éléments existants)
+      // Infos verticales (remise en place originale sans déplacement)
       document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
       document.getElementById('detail-type-anime').innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
       document.getElementById('detail-statut-anime').innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
       document.getElementById('detail-note-anime').innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
 
-      // Wrapper propre pour les infos (après sous-menu)
-      let infoWrapper = document.createElement('div');
-      infoWrapper.className = 'detail-anime-info';
-      infoWrapper.style.display = 'flex';
-      infoWrapper.style.flexDirection = 'column';
-      infoWrapper.style.gap = '16px';
-      infoWrapper.style.maxWidth = '400px';
-      infoWrapper.style.textAlign = 'left';
-      infoWrapper.style.marginTop = '20px'; // espace après sous-menu si besoin
-
-      infoWrapper.appendChild(document.getElementById('detail-nom-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-type-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-statut-anime'));
-      infoWrapper.appendChild(document.getElementById('detail-note-anime'));
-
-      // SOUS-MENU : placé juste sous la cover (avant les infos)
+      // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
       if (animeData.hasSousMenu === true) {
         renderSousMenu(animeData.nom, detailLeft);
       }
-
-      detailLeft.appendChild(infoWrapper);
     }
   }
 
-  // Affichage waifu (inchangé)
+  // Affichage waifu
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -93,7 +76,7 @@ function showDetailPage(item) {
     document.getElementById('detail-note-waifu').textContent = '';
   }
 
-  // Boutons (remis en place et fonctionnels)
+  // Boutons – remis en place fixe et fonctionnels
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
