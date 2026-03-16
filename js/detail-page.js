@@ -42,11 +42,23 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Reset seulement les infos dynamiques (pas toute la colonne)
+      // Force la colonne gauche à être verticale et pleine largeur
+      detailLeft.style.display = 'flex';
+      detailLeft.style.flexDirection = 'column';
+      detailLeft.style.alignItems = 'flex-start';
+      detailLeft.style.width = '100%';
+
+      // Reset ancien wrapper (si existant)
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
 
-      // Infos verticales (nom, type, statut, note)
+      // Infos verticales (nom, type, statut, note) – on les remet directement
+      document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
+      document.getElementById('detail-type-anime').innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
+      document.getElementById('detail-statut-anime').innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
+      document.getElementById('detail-note-anime').innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
+
+      // On ajoute un wrapper propre pour les infos
       let infoWrapper = document.createElement('div');
       infoWrapper.className = 'detail-anime-info';
       infoWrapper.style.display = 'flex';
@@ -55,24 +67,12 @@ function showDetailPage(item) {
       infoWrapper.style.maxWidth = '400px';
       infoWrapper.style.textAlign = 'left';
 
-      const nomEl = document.getElementById('detail-nom-anime');
-      nomEl.textContent = animeData.nom || 'Nom inconnu';
-      infoWrapper.appendChild(nomEl);
+      infoWrapper.appendChild(document.getElementById('detail-nom-anime'));
+      infoWrapper.appendChild(document.getElementById('detail-type-anime'));
+      infoWrapper.appendChild(document.getElementById('detail-statut-anime'));
+      infoWrapper.appendChild(document.getElementById('detail-note-anime'));
 
-      const typeEl = document.getElementById('detail-type-anime');
-      typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
-      infoWrapper.appendChild(typeEl);
-
-      const statutEl = document.getElementById('detail-statut-anime');
-      statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
-      infoWrapper.appendChild(statutEl);
-
-      const noteEl = document.getElementById('detail-note-anime');
-      noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
-      infoWrapper.appendChild(noteEl);
-
-      // IMPORTANT : on ajoute les infos après la cover
-      detailLeft.insertBefore(infoWrapper, detailLeft.querySelector('#detail-nom-anime').nextSibling); // après la cover
+      detailLeft.appendChild(infoWrapper);
 
       // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
       if (animeData.hasSousMenu === true) {
@@ -81,7 +81,7 @@ function showDetailPage(item) {
     }
   }
 
-  // Affichage waifu
+  // Affichage waifu (inchangé)
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -109,35 +109,33 @@ function renderSousMenu(nomAnime, parentContainer) {
 
   container = document.createElement('div');
   container.id = 'sous-menu-container';
-  container.style.marginTop = '25px';               // espace raisonnable sous cover/infos
-  container.style.padding = '15px';
+  container.style.marginTop = '25px';
+  container.style.padding = '20px';
   container.style.background = '#f9f9f9';
   container.style.border = '1px solid #ddd';
   container.style.borderRadius = '8px';
-  container.style.width = '100%';                    // pleine largeur
+  container.style.width = '100%';
   container.style.boxSizing = 'border-box';
-  container.style.maxWidth = 'none';                 // force pleine largeur
 
   // Barre d'outils fixe
   const toolbar = document.createElement('div');
   toolbar.style.display = 'flex';
-  toolbar.style.gap = '12px';
-  toolbar.style.marginBottom = '20px';
-  toolbar.style.flexWrap = 'wrap';
+  toolbar.style.gap = '15px';
+  toolbar.style.marginBottom = '25px';
 
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
-  btnTitre.style.padding = '8px 16px';
+  btnTitre.style.padding = '10px 18px';
   btnTitre.onclick = () => addSousMenuItem(nomAnime, 'titre', container);
 
   const btnAjout = document.createElement('button');
   btnAjout.textContent = 'Ajouter entrée';
-  btnAjout.style.padding = '8px 16px';
+  btnAjout.style.padding = '10px 18px';
   btnAjout.onclick = () => addSousMenuItem(nomAnime, 'entree', container);
 
   const btnSeparateur = document.createElement('button');
   btnSeparateur.textContent = 'Séparateur';
-  btnSeparateur.style.padding = '8px 16px';
+  btnSeparateur.style.padding = '10px 18px';
   btnSeparateur.onclick = () => addSousMenuItem(nomAnime, 'separateur', container);
 
   toolbar.append(btnTitre, btnAjout, btnSeparateur);
@@ -147,15 +145,8 @@ function renderSousMenu(nomAnime, parentContainer) {
   content.id = 'sous-menu-content';
   container.appendChild(content);
 
-  // Placement : juste après la cover (avant les infos)
-  const cover = document.getElementById('detail-cover-anime');
-  if (cover && cover.parentNode) {
-    cover.parentNode.insertBefore(container, cover.nextSibling);
-  } else {
-    parentContainer.appendChild(container);
-  }
-
+  parentContainer.appendChild(container);
   loadSousMenuItems(nomAnime, content);
 }
 
-// (le reste de tes fonctions : addSousMenuItem, loadSousMenuItems, deleteAnime, etc. reste exactement le même que dans ton dernier message)
+// (le reste de tes fonctions addSousMenuItem, loadSousMenuItems, deleteAnime reste exactement le même que dans ton dernier message)
