@@ -9,7 +9,7 @@ function showDetailPage(item) {
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
 
-  // Reset les champs
+  // Reset les champs (seulement les valeurs, pas les éléments eux-mêmes)
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
   document.getElementById('detail-type-anime').textContent = '';
@@ -48,17 +48,18 @@ function showDetailPage(item) {
       detailLeft.style.alignItems = 'flex-start';
       detailLeft.style.width = '100%';
 
-      // Reset ancien wrapper (si existant)
-      const existingInfo = detailLeft.querySelector('.detail-anime-info');
-      if (existingInfo) existingInfo.remove();
-
-      // Infos verticales (nom, type, statut, note) – on les remet directement
+      // Infos verticales (on remet directement les éléments existants)
       document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
       document.getElementById('detail-type-anime').innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
       document.getElementById('detail-statut-anime').innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
       document.getElementById('detail-note-anime').innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
 
-      // On ajoute un wrapper propre pour les infos
+      // SOUS-MENU : placé juste sous la cover (avant les infos pour coller au plus près)
+      if (animeData.hasSousMenu === true) {
+        renderSousMenu(animeData.nom, detailLeft);
+      }
+
+      // On ajoute les infos après le sous-menu (ou avant si tu préfères)
       let infoWrapper = document.createElement('div');
       infoWrapper.className = 'detail-anime-info';
       infoWrapper.style.display = 'flex';
@@ -66,6 +67,7 @@ function showDetailPage(item) {
       infoWrapper.style.gap = '16px';
       infoWrapper.style.maxWidth = '400px';
       infoWrapper.style.textAlign = 'left';
+      infoWrapper.style.marginTop = '20px'; // espace après sous-menu si besoin
 
       infoWrapper.appendChild(document.getElementById('detail-nom-anime'));
       infoWrapper.appendChild(document.getElementById('detail-type-anime'));
@@ -73,11 +75,6 @@ function showDetailPage(item) {
       infoWrapper.appendChild(document.getElementById('detail-note-anime'));
 
       detailLeft.appendChild(infoWrapper);
-
-      // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
-      if (animeData.hasSousMenu === true) {
-        renderSousMenu(animeData.nom, detailLeft);
-      }
     }
   }
 
@@ -109,8 +106,8 @@ function renderSousMenu(nomAnime, parentContainer) {
 
   container = document.createElement('div');
   container.id = 'sous-menu-container';
-  container.style.marginTop = '25px';
-  container.style.padding = '20px';
+  container.style.marginTop = '20px';
+  container.style.padding = '15px';
   container.style.background = '#f9f9f9';
   container.style.border = '1px solid #ddd';
   container.style.borderRadius = '8px';
@@ -120,8 +117,8 @@ function renderSousMenu(nomAnime, parentContainer) {
   // Barre d'outils fixe
   const toolbar = document.createElement('div');
   toolbar.style.display = 'flex';
-  toolbar.style.gap = '15px';
-  toolbar.style.marginBottom = '25px';
+  toolbar.style.gap = '12px';
+  toolbar.style.marginBottom = '20px';
 
   const btnTitre = document.createElement('button');
   btnTitre.textContent = '+ Titre';
@@ -149,4 +146,4 @@ function renderSousMenu(nomAnime, parentContainer) {
   loadSousMenuItems(nomAnime, content);
 }
 
-// (le reste de tes fonctions addSousMenuItem, loadSousMenuItems, deleteAnime reste exactement le même que dans ton dernier message)
+// (le reste de tes fonctions : addSousMenuItem, loadSousMenuItems, deleteAnime reste inchangé)
