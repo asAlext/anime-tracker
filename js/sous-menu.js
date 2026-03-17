@@ -42,19 +42,13 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // Force la colonne gauche à être verticale et pleine largeur
-      detailLeft.style.display = 'flex';
-      detailLeft.style.flexDirection = 'column';
-      detailLeft.style.alignItems = 'flex-start';
-      detailLeft.style.width = '100%';
-
-      // Infos verticales (remise en place originale sans déplacement)
+      // Infos verticales à leur place originale (à droite de la cover)
       document.getElementById('detail-nom-anime').textContent = animeData.nom || 'Nom inconnu';
       document.getElementById('detail-type-anime').innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
       document.getElementById('detail-statut-anime').innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
       document.getElementById('detail-note-anime').innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
 
-      // SOUS-MENU : placé juste sous la cover + infos, pleine largeur
+      // SOUS-MENU : placé juste sous la cover + infos (pas entre cover et infos)
       if (animeData.hasSousMenu === true) {
         renderSousMenu(animeData.nom, detailLeft);
       }
@@ -76,7 +70,7 @@ function showDetailPage(item) {
     document.getElementById('detail-note-waifu').textContent = '';
   }
 
-  // Boutons – remis en place fixe et fonctionnels
+  // Boutons – fixés en bas et fonctionnels
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
