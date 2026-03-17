@@ -38,8 +38,8 @@ function showDetailPage(item) {
     imgAnime.style.objectFit = 'cover';
     // SOUS-MENU : placé juste sous la cover (pleine largeur)
     if (animeData.hasSousMenu === true) {
-      SousMenuManager.renderSousMenu(animeData.nom);
-    }
+  SousMenuManager.renderSousMenu(animeData.nom);
+}
     // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
     // On crée un wrapper qui force la colonne + plus d'espace
     let infoWrapper = document.createElement('div');
