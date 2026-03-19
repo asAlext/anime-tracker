@@ -158,15 +158,14 @@ function openModifyModal(animeData, waifuData) {
   // Sauvegarde SANS RELOAD + NORMALISATION complète des statuts
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
-    // Normalisation : minuscule, sans accent, espaces → tiret
     function normalizeStatut(str) {
       if (!str) return '';
       return str
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // supprime accents (é → e)
-        .replace(/\s+/g, '-') // espaces → tiret
-        .replace(/[^a-z-]/g, ''); // garde seulement lettres et tiret
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z-]/g, '');
     }
     if (animeData) {
       let animes = JSON.parse(localStorage.getItem('animes') || '[]');
@@ -208,7 +207,6 @@ function openModifyModal(animeData, waifuData) {
     modal.remove();
   };
 }
-
 // Suppression anime (supprime aussi waifu associée)
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée sera aussi supprimée.')) return;
@@ -220,7 +218,6 @@ function deleteAnime(nomAnime) {
   localStorage.setItem('waifus', JSON.stringify(waifus));
   location.reload();
 }
-
 // Suppression waifu (anime reste)
 function deleteWaifu(nomWaifu) {
   if (!nomWaifu || !confirm('Supprimer cette waifu ?')) return;
