@@ -8,7 +8,6 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
-
   // Reset uniquement les valeurs (pas les éléments eux-mêmes)
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
@@ -18,7 +17,6 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
-
   let animeData = null;
   let waifuData = null;
   if (item.isAnime) {
@@ -30,7 +28,6 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
-
   // ====================== ANIME ======================
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -42,11 +39,54 @@ function showDetailPage(item) {
 
     const detailLeft = document.querySelector('.detail-left');
 
+    // ====================== BOUTONS DU SOUS-MENU JUSTE SOUS LA COVER ======================
+    if (animeData.hasSousMenu === true) {
+      const sousMenuToolbar = document.createElement('div');
+      sousMenuToolbar.style.display = 'flex';
+      sousMenuToolbar.style.gap = '12px';
+      sousMenuToolbar.style.marginTop = '20px';
+      sousMenuToolbar.style.marginBottom = '20px';
+      sousMenuToolbar.style.width = '100%';
+
+      const btnTitre = document.createElement('button');
+      btnTitre.textContent = '+ Titre';
+      btnTitre.style.padding = '10px 18px';
+      btnTitre.style.background = '#7e57c2';
+      btnTitre.style.color = 'white';
+      btnTitre.style.border = 'none';
+      btnTitre.style.borderRadius = '6px';
+      btnTitre.style.cursor = 'pointer';
+      btnTitre.onclick = () => SousMenuManager.addItem(animeData.nom, 'titre');
+
+      const btnEntree = document.createElement('button');
+      btnEntree.textContent = 'Ajouter entrée';
+      btnEntree.style.padding = '10px 18px';
+      btnEntree.style.background = '#7e57c2';
+      btnEntree.style.color = 'white';
+      btnEntree.style.border = 'none';
+      btnEntree.style.borderRadius = '6px';
+      btnEntree.style.cursor = 'pointer';
+      btnEntree.onclick = () => SousMenuManager.addItem(animeData.nom, 'entree');
+
+      const btnSep = document.createElement('button');
+      btnSep.textContent = 'Séparateur';
+      btnSep.style.padding = '10px 18px';
+      btnSep.style.background = '#7e57c2';
+      btnSep.style.color = 'white';
+      btnSep.style.border = 'none';
+      btnSep.style.borderRadius = '6px';
+      btnSep.style.cursor = 'pointer';
+      btnSep.onclick = () => SousMenuManager.addItem(animeData.nom, 'separateur');
+
+      sousMenuToolbar.append(btnTitre, btnEntree, btnSep);
+      detailLeft.appendChild(sousMenuToolbar);
+    }
+
     // Infos verticales – à droite de la cover (place originale, vertical)
     const infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
-    infoWrapper.style.gap = '22px'; // espacement augmenté
+    infoWrapper.style.gap = '22px';
     infoWrapper.style.maxWidth = '420px';
     infoWrapper.style.marginTop = '15px';
     infoWrapper.style.textAlign = 'left';
@@ -68,13 +108,7 @@ function showDetailPage(item) {
     infoWrapper.appendChild(noteEl);
 
     detailLeft.appendChild(infoWrapper);
-
-    // SOUS-MENU : juste sous la cover (pleine largeur)
-    if (animeData.hasSousMenu === true) {
-      SousMenuManager.renderSousMenu(animeData.nom);
-    }
   }
-
   // ====================== WAIFU ======================
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
@@ -89,13 +123,11 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
-
   // Boutons – fixés en bas et fonctionnels
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
-
 // =============================================
 // Modal Modifier (inchangé – fonctionne déjà)
 // =============================================
@@ -117,20 +149,20 @@ function openModifyModal(animeData, waifuData) {
     modal.innerHTML = `
       <div style="background:#fff; padding:20px; border-radius:12px; width:400px; max-width:92%; box-shadow:0 6px 30px rgba(0,0,0,0.25);">
         <h2 style="margin:0 0 16px; font-size:22px; text-align:center; color:#333;">Modifier</h2>
-      
+     
         <form id="modify-form">
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Anime</h3>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Type</label>
             <select id="mod-type-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="anime">anime</option>
               <option value="film">film</option>
             </select>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Statut</label>
             <select id="mod-statut-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="Terminé">Terminé</option>
@@ -140,19 +172,19 @@ function openModifyModal(animeData, waifuData) {
               <option value="Abandon">Abandon</option>
               <option value="Plus Jamais">Plus Jamais</option>
             </select>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Url Cover (optionnel)</label>
             <input type="text" id="mod-url-cover" placeholder="https://..." style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Waifu associée</h3>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
