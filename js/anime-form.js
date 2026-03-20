@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       grid.appendChild(card);
       updateCounter(statut);
+      const hasSousMenu = document.getElementById('sous-menu-anime').checked;
       saveAnime({ nom, type, statut: statutNormalise, note, urlCover });
       formAjout.reset();
     });
