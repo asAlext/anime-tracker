@@ -8,8 +8,7 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
-
-  // Reset uniquement les valeurs (pas les éléments eux-mêmes)
+  // Reset les champs
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
   document.getElementById('detail-type-anime').textContent = '';
@@ -18,7 +17,6 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
-
   let animeData = null;
   let waifuData = null;
   if (item.isAnime) {
@@ -30,8 +28,7 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
-
-  // ====================== ANIME ======================
+  // Affichage anime – taille fixe stricte (inchangée)
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
     const imgAnime = document.getElementById('detail-cover-anime');
@@ -41,9 +38,8 @@ function showDetailPage(item) {
     imgAnime.style.objectFit = 'cover';
 
     const detailLeft = document.querySelector('.detail-left');
-
-    // ====================== TEXTAREA SOUS LA COVER ======================
     if (detailLeft) {
+      // ====================== TEXTAREA JUSTE SOUS LA COVER ======================
       const textareaContainer = document.createElement('div');
       textareaContainer.style.marginTop = '30px';
       textareaContainer.style.width = '100%';
@@ -80,10 +76,11 @@ function showDetailPage(item) {
       });
 
       textareaContainer.appendChild(textarea);
-      detailLeft.appendChild(textareaContainer);
+      // Insertion juste après la cover (avant les infos)
+      detailLeft.insertBefore(textareaContainer, detailLeft.querySelector('div[style*="flexDirection: column"]') || null);
     }
 
-    // Infos verticales – à droite de la cover (place originale, vertical)
+    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
     let infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
@@ -110,7 +107,7 @@ function showDetailPage(item) {
       detailLeftInfo.appendChild(infoWrapper);
     }
   }
-  // ====================== WAIFU ======================
+  // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
