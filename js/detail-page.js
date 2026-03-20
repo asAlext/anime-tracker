@@ -69,46 +69,6 @@ function showDetailPage(item) {
       detailLeft.appendChild(infoWrapper);
     }
   }
-      // SOUS-MENU : gros textarea simple + 2 raccourcis (N/ et ---)
-    if (animeData.hasSousMenu === true) {
-      const sousMenuDiv = document.createElement('div');
-      sousMenuDiv.style.marginTop = '30px';
-      sousMenuDiv.style.width = '100%';
-
-      const textarea = document.createElement('textarea');
-      textarea.style.width = '100%';
-      textarea.style.minHeight = '200px';
-      textarea.style.padding = '12px';
-      textarea.style.fontSize = '16px';
-      textarea.style.border = '1px solid #ccc';
-      textarea.style.borderRadius = '6px';
-      textarea.style.resize = 'vertical';
-      textarea.placeholder = 'Écris ici librement...\nExemples:\nN/Stay Night Unlimited Blade Works\nN/Zero\n---\nN/Grand Order First Order - Film - Terminé';
-
-      // Charger le texte sauvegardé
-      const key = 'sousMenu_' + animeData.nom;
-      textarea.value = localStorage.getItem(key) || '';
-
-      // Sauvegarde automatique à chaque modification
-      textarea.oninput = () => {
-        let text = textarea.value;
-
-        // Raccourci N/ → nom en gras (remplace - par espaces)
-        text = text.replace(/^N\/(.+)$/gm, (match, nom) => {
-          let cleanNom = nom.trim().replace(/-/g, ' ');
-          return `**${cleanNom}**`;
-        });
-
-        // Raccourci --- → grosse ligne de texte
-        text = text.replace(/^---$/gm, '─────────────────────────────');
-
-        // Sauvegarde
-        localStorage.setItem(key, text);
-      };
-
-      sousMenuDiv.appendChild(textarea);
-      detailLeft.appendChild(sousMenuDiv);
-    }
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
