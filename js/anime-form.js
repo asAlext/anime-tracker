@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const statut = document.getElementById('statut-anime').value;
       const note = document.getElementById('note-anime').value.trim() || 'NA';
       let urlCover = document.getElementById('poster-anime').value.trim();
-
       messageError.textContent = '';
       if (!nom || !type || !statut) {
         messageError.textContent = 'Nom, Type et Statut sont obligatoires';
@@ -59,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
           urlCover = `https://placehold.co/220x350?text=${encodeURIComponent(nom)}`;
         }
       }
-
       // NORMALISATION du statut à l'ajout
       const statutNormalise = statut
         .toLowerCase()
@@ -67,10 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/\s+/g, '-')
         .replace(/[^a-z-]/g, '');
-
-      // === AJOUT DU FLAG SOUS-MENU ===
-      const hasSousMenu = document.getElementById('sous-menu-anime').checked;
-
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
@@ -87,18 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       grid.appendChild(card);
       updateCounter(statut);
-
-      // On passe le flag hasSousMenu au saveAnime
-      saveAnime({ nom, type, statut: statutNormalise, note, urlCover, hasSousMenu });
-
+      saveAnime({ nom, type, statut: statutNormalise, note, urlCover });
       formAjout.reset();
     });
   }
 
-  // Chargement + recherche/tri (le reste est inchangé)
+  // Chargement + recherche/tri
   function loadAnimes(filter = '', trieNomVal = '', trieTypeVal = '', trieStatutVal = '', trieNoteVal = '') {
     let animes = JSON.parse(localStorage.getItem('animes') || '[]');
 
+    // Normalisation pour filtre statut
     function normalizeStatut(str) {
       if (!str) return '';
       return str
@@ -109,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/[^a-z-]/g, '');
     }
 
+    // Appliquer les filtres
     if (filter) {
       animes = animes.filter(anime => anime.nom.toLowerCase().includes(filter.toLowerCase()));
     }
@@ -124,16 +117,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const normalizedFilter = normalizeStatut(trieStatutVal);
       animes = animes.filter(anime => normalizeStatut(anime.statut) === normalizedFilter);
     }
+
+    // TRI PAR NOTE – "NA" = 0 + gestion des virgules françaises
     if (trieNoteVal === 'asc' || trieNoteVal === 'desc') {
       animes.sort((a, b) => {
+        // Remplace virgule par point et traite "NA" comme 0
         let noteA = a.note === 'NA' ? 0 : parseFloat((a.note || '0').replace(',', '.'));
         let noteB = b.note === 'NA' ? 0 : parseFloat((b.note || '0').replace(',', '.'));
+        // Si parseFloat échoue (texte invalide), on met 0
         if (isNaN(noteA)) noteA = 0;
         if (isNaN(noteB)) noteB = 0;
+
         return trieNoteVal === 'asc' ? noteA - noteB : noteB - noteA;
       });
     }
 
+    // Affichage des cartes (filtrées)
     grid.innerHTML = '';
     animes.forEach(anime => {
       const card = document.createElement('div');
@@ -153,11 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
+    // COMPTEURS : toujours la liste complète
     const allAnimes = JSON.parse(localStorage.getItem('animes') || '[]');
     updateAllCounters(allAnimes);
   }
 
-  // Fonctions compteurs (inchangées)
+  // Fonctions compteurs
   function updateCounter(statut) {
     const key = statut.toLowerCase().replace(/\s+/g, '-');
     const countId = 'count-' + key;
@@ -205,14 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAllCounters(animes);
   }
 
-  // Écouteurs recherche/tri (inchangés)
+  // Écouteurs recherche/tri
   if (rechercheInput) rechercheInput.addEventListener('input', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieNom) trieNom.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieType) trieType.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieStatut) trieStatut.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
   if (trieNote) trieNote.addEventListener('change', () => loadAnimes(rechercheInput.value, trieNom.value, trieType.value, trieStatut.value, trieNote.value));
 
-  // Fonction export / import JSON (inchangées)
+  // Fonction export JSON
   function exportJSON(key = 'animes') {
     const data = JSON.parse(localStorage.getItem(key) || '[]');
     if (data.length === 0) {
@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     URL.revokeObjectURL(url);
   }
 
+  // Fonction import JSON
   function importJSON(key = 'animes') {
     const fileInput = document.getElementById(`import-${key}`);
     const file = fileInput.files[0];
