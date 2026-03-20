@@ -8,6 +8,7 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
+
   // Reset uniquement les valeurs (pas les éléments eux-mêmes)
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
@@ -17,6 +18,7 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
+
   let animeData = null;
   let waifuData = null;
   if (item.isAnime) {
@@ -28,6 +30,7 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
+
   // ====================== ANIME ======================
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -41,44 +44,51 @@ function showDetailPage(item) {
 
     // ====================== TEXTAREA SOUS-MENU (présent sur TOUTES les pages détail) ======================
     if (detailLeft) {
-      const textareaContainer = document.createElement('div');
-      textareaContainer.style.marginTop = '30px';
-      textareaContainer.style.width = '100%';
+      // Vérifie si le textarea existe déjà (évite la multiplication)
+      let textareaContainer = document.getElementById('sousmenu-textarea-container');
+      if (!textareaContainer) {
+        textareaContainer = document.createElement('div');
+        textareaContainer.id = 'sousmenu-textarea-container';
+        textareaContainer.style.marginTop = '30px';
+        textareaContainer.style.width = '100%';
+        textareaContainer.style.order = '1'; // force le placement juste après la cover
 
-      const textarea = document.createElement('textarea');
-      textarea.style.width = '100%';
-      textarea.style.minHeight = '200px';
-      textarea.style.padding = '15px';
-      textarea.style.fontSize = '16px';
-      textarea.style.border = '1px solid #ccc';
-      textarea.style.borderRadius = '8px';
-      textarea.style.resize = 'vertical';
-      textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
+        const textarea = document.createElement('textarea');
+        textarea.id = 'sousmenu-textarea';
+        textarea.style.width = '100%';
+        textarea.style.minHeight = '200px';
+        textarea.style.padding = '15px';
+        textarea.style.fontSize = '16px';
+        textarea.style.border = '1px solid #ccc';
+        textarea.style.borderRadius = '8px';
+        textarea.style.resize = 'vertical';
+        textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
 
-      // Chargement du texte sauvegardé (clé unique par anime)
-      const savedKey = `sousmenu_${animeData.nom}`;
-      const savedText = localStorage.getItem(savedKey);
-      if (savedText) textarea.value = savedText;
+        // Chargement du texte sauvegardé
+        const savedKey = `sousmenu_${animeData.nom}`;
+        const savedText = localStorage.getItem(savedKey);
+        if (savedText) textarea.value = savedText;
 
-      // Transformation automatique des raccourcis + sauvegarde live
-      textarea.addEventListener('input', () => {
-        let text = textarea.value;
+        // Transformation automatique + sauvegarde live
+        textarea.addEventListener('input', () => {
+          let text = textarea.value;
 
-        // N/Stray-Night → **Stray Night** (tirets → espaces + gras)
-        text = text.replace(/^N\/(.*)$/gm, (match, name) => {
-          const cleanName = name.trim().replace(/-/g, ' ');
-          return `**${cleanName}**`;
+          // N/Stray-Night → **Stray Night** (tirets → espaces + gras)
+          text = text.replace(/^N\/(.*)$/gm, (match, name) => {
+            const cleanName = name.trim().replace(/-/g, ' ');
+            return `**${cleanName}**`;
+          });
+
+          // --- → ligne de séparation texte
+          text = text.replace(/^---$/gm, '─────────────────────────────');
+
+          textarea.value = text;
+          localStorage.setItem(savedKey, text);
         });
 
-        // --- → ligne de séparation texte
-        text = text.replace(/^---$/gm, '─────────────────────────────');
-
-        textarea.value = text;
-        localStorage.setItem(savedKey, text);
-      });
-
-      textareaContainer.appendChild(textarea);
-      detailLeft.appendChild(textareaContainer);
+        textareaContainer.appendChild(textarea);
+        detailLeft.insertBefore(textareaContainer, detailLeft.firstChild.nextSibling); // juste après la cover
+      }
     }
 
     // Infos verticales – à droite de la cover (place originale, vertical)
