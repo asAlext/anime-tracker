@@ -37,48 +37,45 @@ function showDetailPage(item) {
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
 
-    const detailLeft = document.querySelector('.detail-left');
-    if (detailLeft) {
-      // ====================== TEXTAREA JUSTE SOUS LA COVER ======================
-      const textareaContainer = document.createElement('div');
-      textareaContainer.style.marginTop = '30px';
-      textareaContainer.style.width = '100%';
+    // ====================== TEXTAREA JUSTE SOUS LA COVER ======================
+    const textareaContainer = document.createElement('div');
+    textareaContainer.style.marginTop = '30px';
+    textareaContainer.style.width = '100%';
 
-      const textarea = document.createElement('textarea');
-      textarea.style.width = '100%';
-      textarea.style.minHeight = '220px';
-      textarea.style.padding = '15px';
-      textarea.style.fontSize = '16px';
-      textarea.style.border = '1px solid #ccc';
-      textarea.style.borderRadius = '8px';
-      textarea.style.resize = 'vertical';
-      textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
+    const textarea = document.createElement('textarea');
+    textarea.style.width = '100%';
+    textarea.style.minHeight = '220px';
+    textarea.style.padding = '15px';
+    textarea.style.fontSize = '16px';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '8px';
+    textarea.style.resize = 'vertical';
+    textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
 
-      // Chargement du texte sauvegardé
-      const savedText = localStorage.getItem(`sousmenu_${animeData.nom}`);
-      if (savedText) textarea.value = savedText;
+    // Chargement du texte sauvegardé
+    const savedText = localStorage.getItem(`sousmenu_${animeData.nom}`);
+    if (savedText) textarea.value = savedText;
 
-      // Transformation automatique + sauvegarde
-      textarea.addEventListener('input', () => {
-        let text = textarea.value;
+    // Transformation automatique + sauvegarde
+    textarea.addEventListener('input', () => {
+      let text = textarea.value;
 
-        // N/ → nom en gras (remplace - par espaces)
-        text = text.replace(/^N\/(.*)$/gm, (match, name) => {
-          const cleanName = name.trim().replace(/-/g, ' ');
-          return `**${cleanName}**`;
-        });
-
-        // --- → grosse ligne de séparation texte
-        text = text.replace(/^---$/gm, '─────────────────────────────');
-
-        textarea.value = text;
-        localStorage.setItem(`sousmenu_${animeData.nom}`, text);
+      // N/ → nom en gras (remplace - par espaces)
+      text = text.replace(/^N\/(.*)$/gm, (match, name) => {
+        const cleanName = name.trim().replace(/-/g, ' ');
+        return `**${cleanName}**`;
       });
 
-      textareaContainer.appendChild(textarea);
-      // Insertion juste après la cover (avant les infos)
-      detailLeft.insertBefore(textareaContainer, detailLeft.querySelector('div[style*="flexDirection: column"]') || null);
-    }
+      // --- → grosse ligne de séparation texte
+      text = text.replace(/^---$/gm, '─────────────────────────────');
+
+      textarea.value = text;
+      localStorage.setItem(`sousmenu_${animeData.nom}`, text);
+    });
+
+    textareaContainer.appendChild(textarea);
+    // Insertion FORCÉE juste après la cover
+    imgAnime.after(textareaContainer);
 
     // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
     let infoWrapper = document.createElement('div');
@@ -100,11 +97,11 @@ function showDetailPage(item) {
     noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
 
-    const detailLeftInfo = document.querySelector('.detail-left');
-    if (detailLeftInfo) {
-      const existingInfo = detailLeftInfo.querySelector('.detail-anime-info');
+    const detailLeft = document.querySelector('.detail-left');
+    if (detailLeft) {
+      const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
-      detailLeftInfo.appendChild(infoWrapper);
+      detailLeft.appendChild(infoWrapper);
     }
   }
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
