@@ -36,87 +36,87 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
-    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
-    // On crée un wrapper qui force la colonne + plus d'espace
-    let infoWrapper = document.createElement('div');
-    infoWrapper.style.display = 'flex';
-    infoWrapper.style.flexDirection = 'column';
-    infoWrapper.style.gap = '16px'; // ← ESPACEMENT AUGMENTÉ (8 → 16px)
-    infoWrapper.style.maxWidth = '400px';
-    infoWrapper.style.textAlign = 'left';
-    const nomEl = document.getElementById('detail-nom-anime');
-    nomEl.textContent = animeData.nom || 'Nom inconnu';
-    infoWrapper.appendChild(nomEl);
-    const typeEl = document.getElementById('detail-type-anime');
-    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`; // ← GRAS
-    infoWrapper.appendChild(typeEl);
-    const statutEl = document.getElementById('detail-statut-anime');
-    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`; // ← GRAS
-    infoWrapper.appendChild(statutEl);
-    const noteEl = document.getElementById('detail-note-anime');
-    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`; // ← GRAS
-    infoWrapper.appendChild(noteEl);
-    // On vide l’ancien conteneur et on ajoute le wrapper vertical
+
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
+      // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
+      // On crée un wrapper qui force la colonne + plus d'espace
+      let infoWrapper = document.createElement('div');
+      infoWrapper.style.display = 'flex';
+      infoWrapper.style.flexDirection = 'column';
+      infoWrapper.style.gap = '16px'; // ← ESPACEMENT AUGMENTÉ (8 → 16px)
+      infoWrapper.style.maxWidth = '400px';
+      infoWrapper.style.textAlign = 'left';
+      const nomEl = document.getElementById('detail-nom-anime');
+      nomEl.textContent = animeData.nom || 'Nom inconnu';
+      infoWrapper.appendChild(nomEl);
+      const typeEl = document.getElementById('detail-type-anime');
+      typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`; // ← GRAS
+      infoWrapper.appendChild(typeEl);
+      const statutEl = document.getElementById('detail-statut-anime');
+      statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`; // ← GRAS
+      infoWrapper.appendChild(statutEl);
+      const noteEl = document.getElementById('detail-note-anime');
+      noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`; // ← GRAS
+      infoWrapper.appendChild(noteEl);
+      // On vide l’ancien conteneur et on ajoute le wrapper vertical
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
       if (existingInfo) existingInfo.remove();
       detailLeft.appendChild(infoWrapper);
-    }
 
-    // ====================== SOUS-MENU : juste sous la cover ======================
-    if (animeData.hasSousMenu === true) {
-      // Barre d'outils (3 boutons)
-      const toolbar = document.createElement('div');
-      toolbar.style.display = 'flex';
-      toolbar.style.gap = '12px';
-      toolbar.style.margin = '25px 0';
-      toolbar.style.width = '100%';
+      // ====================== SOUS-MENU : juste sous la cover ======================
+      if (animeData.hasSousMenu === true) {
+        // Barre d'outils (3 boutons)
+        const toolbar = document.createElement('div');
+        toolbar.style.display = 'flex';
+        toolbar.style.gap = '12px';
+        toolbar.style.margin = '25px 0';
+        toolbar.style.width = '100%';
 
-      const btnTitre = document.createElement('button');
-      btnTitre.textContent = '+ Titre';
-      btnTitre.style.padding = '10px 18px';
-      btnTitre.style.background = '#7e57c2';
-      btnTitre.style.color = 'white';
-      btnTitre.style.border = 'none';
-      btnTitre.style.borderRadius = '6px';
-      btnTitre.style.cursor = 'pointer';
-      btnTitre.onclick = () => addSousMenuLine(animeData.nom, 'titre');
+        const btnTitre = document.createElement('button');
+        btnTitre.textContent = '+ Titre';
+        btnTitre.style.padding = '10px 18px';
+        btnTitre.style.background = '#7e57c2';
+        btnTitre.style.color = 'white';
+        btnTitre.style.border = 'none';
+        btnTitre.style.borderRadius = '6px';
+        btnTitre.style.cursor = 'pointer';
+        btnTitre.onclick = () => addSousMenuLine(animeData.nom, 'titre');
 
-      const btnEntree = document.createElement('button');
-      btnEntree.textContent = 'Ajouter entrée';
-      btnEntree.style.padding = '10px 18px';
-      btnEntree.style.background = '#7e57c2';
-      btnEntree.style.color = 'white';
-      btnEntree.style.border = 'none';
-      btnEntree.style.borderRadius = '6px';
-      btnEntree.style.cursor = 'pointer';
-      btnEntree.onclick = () => addSousMenuLine(animeData.nom, 'entree');
+        const btnEntree = document.createElement('button');
+        btnEntree.textContent = 'Ajouter entrée';
+        btnEntree.style.padding = '10px 18px';
+        btnEntree.style.background = '#7e57c2';
+        btnEntree.style.color = 'white';
+        btnEntree.style.border = 'none';
+        btnEntree.style.borderRadius = '6px';
+        btnEntree.style.cursor = 'pointer';
+        btnEntree.onclick = () => addSousMenuLine(animeData.nom, 'entree');
 
-      const btnSep = document.createElement('button');
-      btnSep.textContent = 'Séparateur (50px)';
-      btnSep.style.padding = '10px 18px';
-      btnSep.style.background = '#7e57c2';
-      btnSep.style.color = 'white';
-      btnSep.style.border = 'none';
-      btnSep.style.borderRadius = '6px';
-      btnSep.style.cursor = 'pointer';
-      btnSep.onclick = () => addSousMenuLine(animeData.nom, 'separateur');
+        const btnSep = document.createElement('button');
+        btnSep.textContent = 'Séparateur (50px)';
+        btnSep.style.padding = '10px 18px';
+        btnSep.style.background = '#7e57c2';
+        btnSep.style.color = 'white';
+        btnSep.style.border = 'none';
+        btnSep.style.borderRadius = '6px';
+        btnSep.style.cursor = 'pointer';
+        btnSep.onclick = () => addSousMenuLine(animeData.nom, 'separateur');
 
-      toolbar.append(btnTitre, btnEntree, btnSep);
-      detailLeft.appendChild(toolbar);
+        toolbar.append(btnTitre, btnEntree, btnSep);
+        detailLeft.appendChild(toolbar);
 
-      // Zone où s'affichent les lignes
-      const sousMenuContent = document.createElement('div');
-      sousMenuContent.id = 'sous-menu-content-' + animeData.nom.replace(/\s+/g, '-');
-      sousMenuContent.style.width = '100%';
-      detailLeft.appendChild(sousMenuContent);
+        // Zone où s'affichent les lignes (juste après les boutons)
+        const sousMenuContent = document.createElement('div');
+        sousMenuContent.id = 'sous-menu-content';
+        sousMenuContent.style.width = '100%';
+        detailLeft.appendChild(sousMenuContent);
 
-      // Charge les lignes existantes
-      loadSousMenuLines(animeData.nom, sousMenuContent);
+        // Charge les lignes existantes
+        loadSousMenuLines(animeData.nom, sousMenuContent);
+      }
     }
   }
-
   // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
@@ -137,7 +137,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 }
 
-// === FONCTIONS SOUS-MENU (tout en bas, pas de fichier séparé) ===
+// === FONCTIONS SOUS-MENU (tout en bas, intégré) ===
 
 // Ajoute une ligne (titre, entrée, séparateur 50px)
 function addSousMenuLine(nomAnime, type) {
@@ -155,7 +155,7 @@ function addSousMenuLine(nomAnime, type) {
   animes[index].sousMenu.push(item);
   localStorage.setItem('animes', JSON.stringify(animes));
 
-  const content = document.getElementById('sous-menu-content-' + nomAnime.replace(/\s+/g, '-'));
+  const content = document.getElementById('sous-menu-content');
   if (content) loadSousMenuLines(nomAnime, content);
 }
 
