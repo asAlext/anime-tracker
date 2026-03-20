@@ -36,6 +36,9 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
+    if (animeData.hasSousMenu === true) {
+  SousMenuManager.renderSousMenu(animeData.nom);
+}
 
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
