@@ -41,83 +41,87 @@ function showDetailPage(item) {
     imgAnime.style.objectFit = 'cover';
 
     const detailLeft = document.querySelector('.detail-left');
-
-    // ====================== TEXTAREA SOUS-MENU (présent sur TOUTES les pages détail) ======================
     if (detailLeft) {
-      // Vérifie si le textarea existe déjà (évite la multiplication)
+      // ====================== TEXTAREA SOUS-MENU (sous la cover, pleine largeur) ======================
+      // Supprime l’ancien textarea s’il existe (évite multiplication)
       let textareaContainer = document.getElementById('sousmenu-textarea-container');
-      if (!textareaContainer) {
-        textareaContainer = document.createElement('div');
-        textareaContainer.id = 'sousmenu-textarea-container';
-        textareaContainer.style.marginTop = '30px';
-        textareaContainer.style.width = '100%';
-        textareaContainer.style.order = '1'; // force le placement juste après la cover
+      if (textareaContainer) textareaContainer.remove();
 
-        const textarea = document.createElement('textarea');
-        textarea.id = 'sousmenu-textarea';
-        textarea.style.width = '100%';
-        textarea.style.minHeight = '200px';
-        textarea.style.padding = '15px';
-        textarea.style.fontSize = '16px';
-        textarea.style.border = '1px solid #ccc';
-        textarea.style.borderRadius = '8px';
-        textarea.style.resize = 'vertical';
-        textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
+      textareaContainer = document.createElement('div');
+      textareaContainer.id = 'sousmenu-textarea-container';
+      textareaContainer.style.marginTop = '30px';
+      textareaContainer.style.width = '100%';
 
-        // Chargement du texte sauvegardé
-        const savedKey = `sousmenu_${animeData.nom}`;
-        const savedText = localStorage.getItem(savedKey);
-        if (savedText) textarea.value = savedText;
+      const textarea = document.createElement('textarea');
+      textarea.id = 'sousmenu-textarea';
+      textarea.style.width = '100%';
+      textarea.style.minHeight = '200px';
+      textarea.style.padding = '15px';
+      textarea.style.fontSize = '16px';
+      textarea.style.border = '1px solid #ccc';
+      textarea.style.borderRadius = '8px';
+      textarea.style.resize = 'vertical';
+      textarea.placeholder = 'Écris ici tes saisons, films, OAV... (N/ pour nom en gras, --- pour séparateur)';
 
-        // Transformation automatique + sauvegarde live
-        textarea.addEventListener('input', () => {
-          let text = textarea.value;
+      // Chargement du texte sauvegardé
+      const savedKey = `sousmenu_${animeData.nom}`;
+      const savedText = localStorage.getItem(savedKey);
+      if (savedText) textarea.value = savedText;
 
-          // N/Stray-Night → **Stray Night** (tirets → espaces + gras)
-          text = text.replace(/^N\/(.*)$/gm, (match, name) => {
-            const cleanName = name.trim().replace(/-/g, ' ');
-            return `**${cleanName}**`;
-          });
+      // Transformation automatique + sauvegarde live
+      textarea.addEventListener('input', () => {
+        let text = textarea.value;
 
-          // --- → ligne de séparation texte
-          text = text.replace(/^---$/gm, '─────────────────────────────');
-
-          textarea.value = text;
-          localStorage.setItem(savedKey, text);
+        // N/Stray-Night → **Stray Night** (tirets → espaces + gras)
+        text = text.replace(/^N\/(.*)$/gm, (match, name) => {
+          const cleanName = name.trim().replace(/-/g, ' ');
+          return `**${cleanName}**`;
         });
 
-        textareaContainer.appendChild(textarea);
-        detailLeft.insertBefore(textareaContainer, detailLeft.firstChild.nextSibling); // juste après la cover
-      }
+        // --- → ligne de séparation texte
+        text = text.replace(/^---$/gm, '─────────────────────────────');
+
+        textarea.value = text;
+        localStorage.setItem(savedKey, text);
+      });
+
+      textareaContainer.appendChild(textarea);
+      detailLeft.insertBefore(textareaContainer, detailLeft.querySelector('.detail-anime-info') || detailLeft.firstChild.nextSibling);
+
+      // ====================== INFOS VERTICALES (à droite de la cover) ======================
+      // Supprime l’ancien wrapper infos s’il existe (évite décalage)
+      const oldWrapper = detailLeft.querySelector('.detail-anime-info');
+      if (oldWrapper) oldWrapper.remove();
+
+      const infoWrapper = document.createElement('div');
+      infoWrapper.className = 'detail-anime-info';
+      infoWrapper.style.display = 'flex';
+      infoWrapper.style.flexDirection = 'column';
+      infoWrapper.style.gap = '22px';
+      infoWrapper.style.maxWidth = '420px';
+      infoWrapper.style.marginTop = '15px';
+      infoWrapper.style.textAlign = 'left';
+
+      const nomEl = document.getElementById('detail-nom-anime');
+      nomEl.textContent = animeData.nom || 'Nom inconnu';
+      infoWrapper.appendChild(nomEl);
+
+      const typeEl = document.getElementById('detail-type-anime');
+      typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
+      infoWrapper.appendChild(typeEl);
+
+      const statutEl = document.getElementById('detail-statut-anime');
+      statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
+      infoWrapper.appendChild(statutEl);
+
+      const noteEl = document.getElementById('detail-note-anime');
+      noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
+      infoWrapper.appendChild(noteEl);
+
+      detailLeft.appendChild(infoWrapper);
     }
-
-    // Infos verticales – à droite de la cover (place originale, vertical)
-    const infoWrapper = document.createElement('div');
-    infoWrapper.style.display = 'flex';
-    infoWrapper.style.flexDirection = 'column';
-    infoWrapper.style.gap = '22px';
-    infoWrapper.style.maxWidth = '420px';
-    infoWrapper.style.marginTop = '15px';
-    infoWrapper.style.textAlign = 'left';
-
-    const nomEl = document.getElementById('detail-nom-anime');
-    nomEl.textContent = animeData.nom || 'Nom inconnu';
-    infoWrapper.appendChild(nomEl);
-
-    const typeEl = document.getElementById('detail-type-anime');
-    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
-    infoWrapper.appendChild(typeEl);
-
-    const statutEl = document.getElementById('detail-statut-anime');
-    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
-    infoWrapper.appendChild(statutEl);
-
-    const noteEl = document.getElementById('detail-note-anime');
-    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
-    infoWrapper.appendChild(noteEl);
-
-    detailLeft.appendChild(infoWrapper);
   }
+
   // ====================== WAIFU ======================
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
@@ -132,6 +136,7 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
+
   // Boutons – fixés en bas et fonctionnels
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
