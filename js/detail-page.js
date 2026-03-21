@@ -36,38 +36,32 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
-
+    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
+    // On crée un wrapper qui force la colonne + plus d'espace
+    let infoWrapper = document.createElement('div');
+    infoWrapper.className = 'detail-anime-info';   // ← AJOUTÉ (seule correction)
+    infoWrapper.style.display = 'flex';
+    infoWrapper.style.flexDirection = 'column';
+    infoWrapper.style.gap = '16px';
+    infoWrapper.style.maxWidth = '400px';
+    infoWrapper.style.textAlign = 'left';
+    const nomEl = document.getElementById('detail-nom-anime');
+    nomEl.textContent = animeData.nom || 'Nom inconnu';
+    infoWrapper.appendChild(nomEl);
+    const typeEl = document.getElementById('detail-type-anime');
+    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
+    infoWrapper.appendChild(typeEl);
+    const statutEl = document.getElementById('detail-statut-anime');
+    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
+    infoWrapper.appendChild(statutEl);
+    const noteEl = document.getElementById('detail-note-anime');
+    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
+    infoWrapper.appendChild(noteEl);
+    // On vide l’ancien conteneur et on ajoute le wrapper vertical
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
-      // SUPPRESSION DE TOUS LES ANCIENS WRAPPERS POUR ÉVITER LE DÉCALAGE
-      const oldWrappers = detailLeft.querySelectorAll('.detail-anime-info');
-      oldWrappers.forEach(wrapper => wrapper.remove());
-
-      // Création d’un seul wrapper propre
-      let infoWrapper = document.createElement('div');
-      infoWrapper.className = 'detail-anime-info';  // ← Classe fixe pour le retrouver et le supprimer
-      infoWrapper.style.display = 'flex';
-      infoWrapper.style.flexDirection = 'column';
-      infoWrapper.style.gap = '16px';
-      infoWrapper.style.maxWidth = '400px';
-      infoWrapper.style.textAlign = 'left';
-
-      const nomEl = document.getElementById('detail-nom-anime');
-      nomEl.textContent = animeData.nom || 'Nom inconnu';
-      infoWrapper.appendChild(nomEl);
-
-      const typeEl = document.getElementById('detail-type-anime');
-      typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
-      infoWrapper.appendChild(typeEl);
-
-      const statutEl = document.getElementById('detail-statut-anime');
-      statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
-      infoWrapper.appendChild(statutEl);
-
-      const noteEl = document.getElementById('detail-note-anime');
-      noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
-      infoWrapper.appendChild(noteEl);
-
+      const existingInfo = detailLeft.querySelector('.detail-anime-info');
+      if (existingInfo) existingInfo.remove();
       detailLeft.appendChild(infoWrapper);
     }
   }
@@ -178,8 +172,8 @@ function openModifyModal(animeData, waifuData) {
       return str
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, '-')
+        .replace(/[\u0300-\u036f]/g, "") 
+        .replace(/\s+/g, '-') 
         .replace(/[^a-z-]/g, '');
     }
     if (animeData) {
