@@ -8,7 +8,7 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
-  // Reset uniquement les valeurs (pas les éléments eux-mêmes)
+  // Reset les champs
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
   document.getElementById('detail-type-anime').textContent = '';
@@ -83,12 +83,12 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-  // Ajout du bouton Infos (à gauche de Modifier, visible sur tous les animes)
+  // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const btnInfos = document.createElement('button');
   btnInfos.textContent = 'Infos';
   btnInfos.id = 'btn-infos';
   btnInfos.style.padding = '8px 16px';
-  btnInfos.style.marginRight = '10px'; // espace à droite pour séparer des autres boutons
+  btnInfos.style.marginRight = '10px'; // espace à droite pour séparer de Modifier
   btnInfos.style.background = '#7e57c2';
   btnInfos.style.color = 'white';
   btnInfos.style.border = 'none';
@@ -103,6 +103,7 @@ function showDetailPage(item) {
   if (buttonsContainer) {
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
+}
 // Modal Modifier – sauvegarde sans reload + NORMALISATION complète des statuts
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
