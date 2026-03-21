@@ -84,23 +84,29 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
   // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
-  const btnInfos = document.createElement('button');
-  btnInfos.textContent = 'Infos';
-  btnInfos.id = 'btn-infos';
-  btnInfos.style.padding = '8px 16px';
-  btnInfos.style.marginRight = '10px'; // espace à droite pour séparer de Modifier
-  btnInfos.style.background = '#7e57c2';
-  btnInfos.style.color = 'white';
-  btnInfos.style.border = 'none';
-  btnInfos.style.borderRadius = '6px';
-  btnInfos.style.cursor = 'pointer';
-  btnInfos.onclick = () => {
-    document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-    document.getElementById('page-infos').style.display = 'block';
-  };
-
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
+    // Supprime les anciens boutons "Infos" pour éviter la multiplication
+    const oldInfos = buttonsContainer.querySelectorAll('#btn-infos');
+    oldInfos.forEach(btn => btn.remove());
+
+    // Ajoute le bouton Infos (un seul !)
+    const btnInfos = document.createElement('button');
+    btnInfos.textContent = 'Infos';
+    btnInfos.id = 'btn-infos';
+    btnInfos.style.padding = '8px 16px';
+    btnInfos.style.marginRight = '10px'; // espace à droite pour séparer de Modifier
+    btnInfos.style.background = '#7e57c2';
+    btnInfos.style.color = 'white';
+    btnInfos.style.border = 'none';
+    btnInfos.style.borderRadius = '6px';
+    btnInfos.style.cursor = 'pointer';
+    btnInfos.onclick = () => {
+      document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+      document.getElementById('page-infos').style.display = 'block';
+    };
+
+    // Insère le bouton juste avant "Modifier"
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
 }
@@ -123,20 +129,20 @@ function openModifyModal(animeData, waifuData) {
     modal.innerHTML = `
       <div style="background:#fff; padding:20px; border-radius:12px; width:400px; max-width:92%; box-shadow:0 6px 30px rgba(0,0,0,0.25);">
         <h2 style="margin:0 0 16px; font-size:22px; text-align:center; color:#333;">Modifier</h2>
-      
+     
         <form id="modify-form">
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Anime</h3>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Type</label>
             <select id="mod-type-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="anime">anime</option>
               <option value="film">film</option>
             </select>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Statut</label>
             <select id="mod-statut-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="Terminé">Terminé</option>
@@ -146,19 +152,19 @@ function openModifyModal(animeData, waifuData) {
               <option value="Abandon">Abandon</option>
               <option value="Plus Jamais">Plus Jamais</option>
             </select>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Url Cover (optionnel)</label>
             <input type="text" id="mod-url-cover" placeholder="https://..." style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Waifu associée</h3>
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-          
+         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
