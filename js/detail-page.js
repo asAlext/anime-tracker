@@ -41,26 +41,28 @@ function showDetailPage(item) {
     let infoWrapper = document.createElement('div');
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
-    infoWrapper.style.gap = '16px'; // ← ESPACEMENT AUGMENTÉ (8 → 16px)
+    infoWrapper.style.gap = '16px';
     infoWrapper.style.maxWidth = '400px';
     infoWrapper.style.textAlign = 'left';
+    infoWrapper.className = 'detail-anime-info';   // ← AJOUTÉ pour fixer le bug de décalage
+
     const nomEl = document.getElementById('detail-nom-anime');
     nomEl.textContent = animeData.nom || 'Nom inconnu';
     infoWrapper.appendChild(nomEl);
     const typeEl = document.getElementById('detail-type-anime');
-    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`; // ← GRAS
+    typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
     infoWrapper.appendChild(typeEl);
     const statutEl = document.getElementById('detail-statut-anime');
-    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`; // ← GRAS
+    statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
     infoWrapper.appendChild(statutEl);
     const noteEl = document.getElementById('detail-note-anime');
-    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`; // ← GRAS
+    noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
     // On vide l’ancien conteneur et on ajoute le wrapper vertical
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
-      if (existingInfo) existingInfo.remove();
+      if (existingInfo) existingInfo.remove();   // ← Maintenant ça marche à chaque fois
       detailLeft.appendChild(infoWrapper);
     }
   }
@@ -85,28 +87,26 @@ function showDetailPage(item) {
 
   // ────────────────────────────────────────────────────────────────
   // AJOUT DU BOUTON "INFOS" – juste à gauche du bouton Modifier
+  // Couleur EXACTEMENT identique aux autres boutons (même style light que Modifier/Supprimer)
   // ────────────────────────────────────────────────────────────────
   const modifierBtn = document.getElementById('btn-modifier');
   if (modifierBtn && !document.getElementById('btn-infos')) {
     const infosBtn = document.createElement('button');
     infosBtn.id = 'btn-infos';
     infosBtn.textContent = 'Infos';
-    infosBtn.style.marginRight = '10px';           // espace à droite pour séparer du bouton Modifier
+    infosBtn.style.marginRight = '10px';
     infosBtn.style.padding = '8px 16px';
-    infosBtn.style.backgroundColor = '#6c757d';    // gris bootstrap-like
-    infosBtn.style.color = 'white';
-    infosBtn.style.border = 'none';
+    infosBtn.style.backgroundColor = '#f8f9fa';     // ← Couleur identique aux autres boutons (light)
+    infosBtn.style.color = '#212529';
+    infosBtn.style.border = '1px solid #6c757d';
     infosBtn.style.borderRadius = '6px';
     infosBtn.style.cursor = 'pointer';
     infosBtn.style.fontSize = '14px';
+    infosBtn.style.fontWeight = '500';
 
     infosBtn.onclick = () => {
-      // On garde l'objet item pour pouvoir l'utiliser sur la page Infos
       localStorage.setItem('tempDetailItem', JSON.stringify(item));
-
-      // Switch de page (même système que le reste de ton code)
       document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-      
       const infosPage = document.getElementById('page-infos');
       if (infosPage) {
         infosPage.style.display = 'block';
@@ -115,7 +115,6 @@ function showDetailPage(item) {
       }
     };
 
-    // Insertion juste avant le bouton Modifier (donc à gauche)
     modifierBtn.parentNode.insertBefore(infosBtn, modifierBtn);
   }
 }
@@ -202,15 +201,14 @@ function openModifyModal(animeData, waifuData) {
   // Sauvegarde SANS RELOAD + NORMALISATION complète des statuts
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
-    // Normalisation : minuscule, sans accent, espaces → tiret
     function normalizeStatut(str) {
       if (!str) return '';
       return str
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // supprime accents (é → e)
-        .replace(/\s+/g, '-') // espaces → tiret
-        .replace(/[^a-z-]/g, ''); // garde seulement lettres et tiret
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z-]/g, '');
     }
     if (animeData) {
       let animes = JSON.parse(localStorage.getItem('animes') || '[]');
@@ -218,17 +216,15 @@ function openModifyModal(animeData, waifuData) {
       if (index !== -1) {
         animes[index].nom = document.getElementById('mod-nom-anime').value;
         animes[index].type = document.getElementById('mod-type-anime').value;
-        // NORMALISATION : on stocke la version propre
         const statutOriginal = document.getElementById('mod-statut-anime').value;
-        animes[index].statut = normalizeStatut(statutOriginal); // ← clé propre pour les compteurs
+        animes[index].statut = normalizeStatut(statutOriginal);
         animes[index].note = document.getElementById('mod-note-anime').value;
         const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
         localStorage.setItem('animes', JSON.stringify(animes));
-        // Mise à jour live de la page détail (affichage original avec accent/majuscule)
         document.getElementById('detail-nom-anime').textContent = animes[index].nom || 'Nom inconnu';
         document.getElementById('detail-type-anime').textContent = `Type : ${animes[index].type || 'Inconnu'}`;
-        document.getElementById('detail-statut-anime').textContent = `Statut : ${statutOriginal || 'Inconnu'}`; // ← valeur originale
+        document.getElementById('detail-statut-anime').textContent = `Statut : ${statutOriginal || 'Inconnu'}`;
         document.getElementById('detail-note-anime').textContent = `Note : ${animes[index].note || 'NA'}`;
         if (newCoverUrl) document.getElementById('detail-cover-anime').src = newCoverUrl;
       }
@@ -244,13 +240,8 @@ function openModifyModal(animeData, waifuData) {
         document.getElementById('detail-note-waifu').textContent = `Note : ${waifus[index].note || 'NA'}`;
       }
     }
-    // Mise à jour des compteurs (index.html + anime-form.js)
-    if (typeof updateStats === 'function') {
-      updateStats();
-    }
-    if (typeof updateAllCounters === 'function') {
-      updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
-    }
+    if (typeof updateStats === 'function') updateStats();
+    if (typeof updateAllCounters === 'function') updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
     modal.remove();
   };
 }
