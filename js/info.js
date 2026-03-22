@@ -1,29 +1,20 @@
-// info.js – Gestion de la page Infos
-
-let currentAnimeNom = null; // On garde le nom de l'anime actuel pour savoir où sauvegarder
+// info.js – Gestion de la page Infos (pour l’instant : juste les 4 boutons)
 
 function showInfosPage(animeData) {
+  // On garde le nom de l’anime pour plus tard (sauvegarde)
   currentAnimeNom = animeData.nom;
 
-  // Affiche la page Infos
+  // Affiche la page
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById('page-infos').style.display = 'block';
 
-  // Affiche la cover
+  // Affiche la cover (même que dans la page détail)
   const coverEl = document.getElementById('infos-cover-anime');
   coverEl.src = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
 
-  // Charge et affiche les lignes existantes (on fera ça après)
-  loadInfosContent();
+  // Pour l’instant : on ne fait rien d’autre
+  console.log('Page Infos affichée pour l’anime :', animeData.nom);
 }
 
-// Charger les lignes sauvegardées (à implémenter après)
-function loadInfosContent() {
-  // On remplira cette fonction plus tard
-}
-
-// Retour vers la page détail
-document.getElementById('btn-retour-detail').onclick = () => {
-  document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-  document.getElementById('page-detail').style.display = 'block';
-};
+// Les 4 boutons existent déjà dans ton HTML (#btn-retour-detail, #btn-ajout-titre, #btn-ajout-ligne, #btn-separateur)
+// On les laisse pour l’instant sans onclick
