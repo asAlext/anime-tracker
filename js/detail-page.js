@@ -8,6 +8,7 @@ function showDetailPage(item) {
   // Switch page active
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   detailPage.style.display = 'block';
+
   // Reset les champs
   document.getElementById('detail-cover-anime').src = '';
   document.getElementById('detail-nom-anime').textContent = '';
@@ -17,6 +18,7 @@ function showDetailPage(item) {
   document.getElementById('detail-cover-waifu').src = '';
   document.getElementById('detail-nom-waifu').textContent = '';
   document.getElementById('detail-note-waifu').textContent = '';
+
   let animeData = null;
   let waifuData = null;
   if (item.isAnime) {
@@ -28,7 +30,8 @@ function showDetailPage(item) {
     const animes = JSON.parse(localStorage.getItem('animes') || '[]');
     animeData = animes.find(a => a.nom === waifuData.animeAssocie);
   }
-  // Affichage anime – taille fixe stricte (inchangée)
+
+  // Affichage anime
   if (animeData) {
     const coverUrl = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
     const imgAnime = document.getElementById('detail-cover-anime');
@@ -36,28 +39,31 @@ function showDetailPage(item) {
     imgAnime.style.width = '420px';
     imgAnime.style.height = '590px';
     imgAnime.style.objectFit = 'cover';
-    // === INFOS VERTICALES (Nom → Type → Statut → Note) ===
-    // On crée un wrapper qui force la colonne + plus d'espace
+
     let infoWrapper = document.createElement('div');
-    infoWrapper.className = 'detail-anime-info'; // ← AJOUTÉ (seule correction)
+    infoWrapper.className = 'detail-anime-info';
     infoWrapper.style.display = 'flex';
     infoWrapper.style.flexDirection = 'column';
     infoWrapper.style.gap = '16px';
     infoWrapper.style.maxWidth = '400px';
     infoWrapper.style.textAlign = 'left';
+
     const nomEl = document.getElementById('detail-nom-anime');
     nomEl.textContent = animeData.nom || 'Nom inconnu';
     infoWrapper.appendChild(nomEl);
+
     const typeEl = document.getElementById('detail-type-anime');
     typeEl.innerHTML = `<strong>Type :</strong> ${animeData.type || 'Inconnu'}`;
     infoWrapper.appendChild(typeEl);
+
     const statutEl = document.getElementById('detail-statut-anime');
     statutEl.innerHTML = `<strong>Statut :</strong> ${animeData.statut || 'Inconnu'}`;
     infoWrapper.appendChild(statutEl);
+
     const noteEl = document.getElementById('detail-note-anime');
     noteEl.innerHTML = `<strong>Note :</strong> ${animeData.note || 'NA'}`;
     infoWrapper.appendChild(noteEl);
-    // On vide l’ancien conteneur et on ajoute le wrapper vertical
+
     const detailLeft = document.querySelector('.detail-left');
     if (detailLeft) {
       const existingInfo = detailLeft.querySelector('.detail-anime-info');
@@ -65,7 +71,8 @@ function showDetailPage(item) {
       detailLeft.appendChild(infoWrapper);
     }
   }
-  // Affichage waifu – taille fixe stricte (inchangée) + nom en gras
+
+  // Affichage waifu
   if (waifuData) {
     const coverUrl = waifuData.urlCover || 'https://placehold.co/260x365?text=Cover+Waifu';
     const imgWaifu = document.getElementById('detail-cover-waifu');
@@ -79,18 +86,17 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
-// Boutons
+
+  // Boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-    // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
+  // Bouton Infos
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
-    // Supprime les anciens boutons "Infos" pour éviter la duplication
     buttonsContainer.querySelectorAll('#btn-infos').forEach(btn => btn.remove());
 
-    // Crée et ajoute le nouveau bouton Infos (un seul)
     const btnInfos = document.createElement('button');
     btnInfos.textContent = 'Infos';
     btnInfos.id = 'btn-infos';
@@ -102,17 +108,14 @@ function showDetailPage(item) {
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
     btnInfos.onclick = () => {
-      // Appel direct à la fonction de info.js (sans redéfinir localement)
-      if (typeof window.showInfosPage === 'function') {
-        window.showInfosPage(animeData);
-      } else {
-        console.error('showInfosPage n’est pas définie – vérifie que info.js est chargé dans index.html');
-      }
+      document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+      document.getElementById('page-infos').style.display = 'block';
     };
-
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
-// Modal Modifier – sauvegarde sans reload + NORMALISATION complète des statuts
+}
+
+// Modal Modifier (inchangé, je le remets complet pour éviter les erreurs de fermeture)
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -131,20 +134,16 @@ function openModifyModal(animeData, waifuData) {
     modal.innerHTML = `
       <div style="background:#fff; padding:20px; border-radius:12px; width:400px; max-width:92%; box-shadow:0 6px 30px rgba(0,0,0,0.25);">
         <h2 style="margin:0 0 16px; font-size:22px; text-align:center; color:#333;">Modifier</h2>
-     
         <form id="modify-form">
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Anime</h3>
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Type</label>
             <select id="mod-type-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="anime">anime</option>
               <option value="film">film</option>
             </select>
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Statut</label>
             <select id="mod-statut-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
               <option value="Terminé">Terminé</option>
@@ -154,19 +153,15 @@ function openModifyModal(animeData, waifuData) {
               <option value="Abandon">Abandon</option>
               <option value="Plus Jamais">Plus Jamais</option>
             </select>
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-anime" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Url Cover (optionnel)</label>
             <input type="text" id="mod-url-cover" placeholder="https://..." style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
           <div style="margin-bottom:20px;">
             <h3 style="margin:0 0 10px; font-size:17px; color:#555;">Waifu associée</h3>
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Nom</label>
             <input type="text" id="mod-nom-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
-         
             <label style="display:block; margin-bottom:4px; font-weight:bold; color:#444; font-size:14px;">Note</label>
             <input type="text" id="mod-note-waifu" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
           </div>
@@ -191,10 +186,9 @@ function openModifyModal(animeData, waifuData) {
     document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
   }
-  // Sauvegarde SANS RELOAD + NORMALISATION complète des statuts
+  // Sauvegarde
   document.getElementById('modify-form').onsubmit = (e) => {
     e.preventDefault();
-    // Normalisation : minuscule, sans accent, espaces → tiret
     function normalizeStatut(str) {
       if (!str) return '';
       return str
@@ -234,16 +228,13 @@ function openModifyModal(animeData, waifuData) {
         document.getElementById('detail-note-waifu').textContent = `Note : ${waifus[index].note || 'NA'}`;
       }
     }
-    if (typeof updateStats === 'function') {
-      updateStats();
-    }
-    if (typeof updateAllCounters === 'function') {
-      updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
-    }
+    if (typeof updateStats === 'function') updateStats();
+    if (typeof updateAllCounters === 'function') updateAllCounters(JSON.parse(localStorage.getItem('animes') || '[]'));
     modal.remove();
   };
 }
-// Suppression anime (supprime aussi waifu associée)
+
+// Suppression anime + waifu (inchangé)
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée sera aussi supprimée.')) return;
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
@@ -254,7 +245,7 @@ function deleteAnime(nomAnime) {
   localStorage.setItem('waifus', JSON.stringify(waifus));
   location.reload();
 }
-// Suppression waifu (anime reste)
+
 function deleteWaifu(nomWaifu) {
   if (!nomWaifu || !confirm('Supprimer cette waifu ?')) return;
   let waifus = JSON.parse(localStorage.getItem('waifus') || '[]');
