@@ -84,7 +84,7 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-  // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
+    // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
     // Supprime les anciens boutons "Infos" pour éviter la duplication
@@ -102,11 +102,11 @@ function showDetailPage(item) {
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
     btnInfos.onclick = () => {
-      // Appel correct à la fonction de info.js (ne pas redéfinir ici)
+      // Appel direct à la fonction de info.js (sans redéfinir localement)
       if (typeof window.showInfosPage === 'function') {
         window.showInfosPage(animeData);
       } else {
-        console.error('La fonction showInfosPage n’est pas définie – vérifie que info.js est chargé');
+        console.error('showInfosPage n’est pas définie – vérifie que info.js est chargé dans index.html');
       }
     };
 
