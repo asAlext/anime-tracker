@@ -101,10 +101,9 @@ function showDetailPage(item) {
     btnInfos.style.border = 'none';
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
-    btnInfos.onclick = () => {
-      document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-      document.getElementById('page-infos').style.display = 'block';
-    };
+   btnInfos.onclick = () => {
+  showInfosPage(animeData);
+};
 
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
@@ -239,6 +238,14 @@ function openModifyModal(animeData, waifuData) {
     }
     modal.remove();
   };
+}
+// Appel à info.js
+function showInfosPage(animeData) {
+  if (typeof showInfosPage === 'function') {
+    showInfosPage(animeData);
+  } else {
+    console.error('showInfosPage non définie – vérifie info.js');
+  }
 }
 // Suppression anime (supprime aussi waifu associée)
 function deleteAnime(nomAnime) {
