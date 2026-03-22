@@ -87,7 +87,7 @@ function showDetailPage(item) {
   // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
-    // Supprime TOUS les anciens boutons "Infos" (évite la duplication)
+    // Supprime les anciens boutons "Infos" pour éviter la duplication
     buttonsContainer.querySelectorAll('#btn-infos').forEach(btn => btn.remove());
 
     // Crée et ajoute le nouveau bouton Infos (un seul)
@@ -101,13 +101,17 @@ function showDetailPage(item) {
     btnInfos.style.border = 'none';
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
-   btnInfos.onclick = () => {
-  showInfosPage(animeData);
-};
+    btnInfos.onclick = () => {
+      // Appel correct à la fonction de info.js (ne pas redéfinir ici)
+      if (typeof window.showInfosPage === 'function') {
+        window.showInfosPage(animeData);
+      } else {
+        console.error('La fonction showInfosPage n’est pas définie – vérifie que info.js est chargé');
+      }
+    };
 
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
-}
 // Modal Modifier – sauvegarde sans reload + NORMALISATION complète des statuts
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
@@ -238,14 +242,6 @@ function openModifyModal(animeData, waifuData) {
     }
     modal.remove();
   };
-}
-// Appel à info.js
-function showInfosPage(animeData) {
-  if (typeof showInfosPage === 'function') {
-    showInfosPage(animeData);
-  } else {
-    console.error('showInfosPage non définie – vérifie info.js');
-  }
 }
 // Suppression anime (supprime aussi waifu associée)
 function deleteAnime(nomAnime) {
