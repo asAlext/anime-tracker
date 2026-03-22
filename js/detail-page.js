@@ -79,29 +79,33 @@ function showDetailPage(item) {
     document.getElementById('detail-nom-waifu').textContent = 'Aucune waifu associée';
     document.getElementById('detail-note-waifu').textContent = '';
   }
-  // Boutons
+// Boutons
   document.getElementById('btn-modifier').onclick = () => openModifyModal(animeData, waifuData);
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-  // ====================== AJOUT DU BOUTON "INFOS" (juste à gauche de Modifier) ======================
-  const btnInfos = document.createElement('button');
-  btnInfos.textContent = 'Infos';
-  btnInfos.id = 'btn-infos';
-  btnInfos.style.padding = '8px 16px';
-  btnInfos.style.marginRight = '10px';
-  btnInfos.style.background = '#7e57c2';
-  btnInfos.style.color = 'white';
-  btnInfos.style.border = 'none';
-  btnInfos.style.borderRadius = '6px';
-  btnInfos.style.cursor = 'pointer';
-  btnInfos.onclick = () => {
-    document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-    document.getElementById('page-infos').style.display = 'block';
-  };
-
+  // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
+    // Supprime TOUS les anciens boutons "Infos" (évite la duplication)
+    buttonsContainer.querySelectorAll('#btn-infos').forEach(btn => btn.remove());
+
+    // Crée et ajoute le nouveau bouton Infos (un seul)
+    const btnInfos = document.createElement('button');
+    btnInfos.textContent = 'Infos';
+    btnInfos.id = 'btn-infos';
+    btnInfos.style.padding = '8px 16px';
+    btnInfos.style.marginRight = '10px';
+    btnInfos.style.background = '#7e57c2';
+    btnInfos.style.color = 'white';
+    btnInfos.style.border = 'none';
+    btnInfos.style.borderRadius = '6px';
+    btnInfos.style.cursor = 'pointer';
+    btnInfos.onclick = () => {
+      document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
+      document.getElementById('page-infos').style.display = 'block';
+    };
+
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
 }
