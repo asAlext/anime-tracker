@@ -1,8 +1,8 @@
-// info.js – Boutons fonctionnels + cover au bon endroit
+// info.js – Retour fonctionnel + cover OK
 function showInfosPage(animeData) {
   console.log("showInfosPage appelé avec :", animeData);
 
-  // Switch vers la page Infos
+  // Afficher la page Infos
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById('page-infos').style.display = 'block';
 
@@ -16,25 +16,16 @@ function showInfosPage(animeData) {
     cover.style.marginTop = '80px';
   }
 
- // === BOUTONS FONCTIONNELS ===
+  // ====================== BOUTONS ======================
 
-  // Bouton Retour → doit vraiment revenir sur la page détail
-  const btnRetour = document.getElementById('btn-retour');
-  if (btnRetour) {
-    btnRetour.onclick = () => {
-      document.getElementById('page-infos').style.display = 'none';
-      document.getElementById('page-detail').style.display = 'block';
-      console.log("Retour vers page détail");
-    };
-  }
+  // Bouton Retour → revient sur la page détail
+  document.getElementById('btn-retour').onclick = () => {
+    document.getElementById('page-infos').style.display = 'none';
+    document.getElementById('page-detail').style.display = 'block';
+  };
 
-  // Les 3 autres boutons (on les garde en alerte pour l’instant)
-  const btnTitre = document.getElementById('btn-titre');
-  if (btnTitre) btnTitre.onclick = () => alert("Titre → à venir (on ajoutera un gros textarea)");
-
-  const btnPlus1 = document.getElementById('btn-plus1');
-  if (btnPlus1) btnPlus1.onclick = () => alert("+1 → à venir (nom + type + statut)");
-
-  const btnSeparateur = document.getElementById('btn-separateur');
-  if (btnSeparateur) btnSeparateur.onclick = () => alert("Séparateur → à venir");
+  // Les 3 autres boutons (on les laisse en test pour l’instant)
+  document.getElementById('btn-titre').onclick = () => alert("→ Fonction Titre (à coder ensuite)");
+  document.getElementById('btn-plus1').onclick = () => alert("→ Fonction +1 (nom + type + statut)");
+  document.getElementById('btn-separateur').onclick = () => alert("→ Fonction Séparateur (à coder ensuite)");
 }
