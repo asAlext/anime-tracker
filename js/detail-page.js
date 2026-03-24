@@ -92,9 +92,10 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-  // Bouton Infos
+    // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
+    // Supprime les anciens si doublon
     buttonsContainer.querySelectorAll('#btn-infos').forEach(btn => btn.remove());
 
     const btnInfos = document.createElement('button');
@@ -107,14 +108,19 @@ function showDetailPage(item) {
     btnInfos.style.border = 'none';
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
-    btnInfos.onclick = () => {
-      document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-      document.getElementById('page-infos').style.display = 'block';
+
+    // Appel DIRECT et simple
+    btnInfos.onclick = function() {
+      console.log("Bouton Infos cliqué - animeData =", animeData);   // ← pour debug
+      if (animeData) {
+        showInfosPage(animeData);
+      } else {
+        console.error("animeData est undefined !");
+      }
     };
+
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
-}
-
 // Modal Modifier (inchangé, je le remets complet pour éviter les erreurs de fermeture)
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
