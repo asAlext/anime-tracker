@@ -16,26 +16,25 @@ function showInfosPage(animeData) {
     cover.style.marginTop = '80px';
   }
 
-  // === BOUTONS (on leur donne leur fonction) ===
+ // === BOUTONS FONCTIONNELS ===
 
-  // Bouton Retour
-  document.getElementById('btn-retour').onclick = () => {
-    document.getElementById('page-infos').style.display = 'none';
-    document.getElementById('page-detail').style.display = 'block';
-  };
+  // Bouton Retour → doit vraiment revenir sur la page détail
+  const btnRetour = document.getElementById('btn-retour');
+  if (btnRetour) {
+    btnRetour.onclick = () => {
+      document.getElementById('page-infos').style.display = 'none';
+      document.getElementById('page-detail').style.display = 'block';
+      console.log("Retour vers page détail");
+    };
+  }
 
-  // Bouton Titre (à coder plus tard)
-  document.getElementById('btn-titre').onclick = () => {
-    alert("Fonction Titre → à venir (on ajoutera un gros textarea)");
-  };
+  // Les 3 autres boutons (on les garde en alerte pour l’instant)
+  const btnTitre = document.getElementById('btn-titre');
+  if (btnTitre) btnTitre.onclick = () => alert("Titre → à venir (on ajoutera un gros textarea)");
 
-  // Bouton +1 (à coder plus tard)
-  document.getElementById('btn-plus1').onclick = () => {
-    alert("Fonction +1 → à venir (nom + type + statut)");
-  };
+  const btnPlus1 = document.getElementById('btn-plus1');
+  if (btnPlus1) btnPlus1.onclick = () => alert("+1 → à venir (nom + type + statut)");
 
-  // Bouton Séparateur (à coder plus tard)
-  document.getElementById('btn-separateur').onclick = () => {
-    alert("Fonction Séparateur → à venir");
-  };
+  const btnSeparateur = document.getElementById('btn-separateur');
+  if (btnSeparateur) btnSeparateur.onclick = () => alert("Séparateur → à venir");
 }
