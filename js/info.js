@@ -1,4 +1,4 @@
-// info.js – Cover au même endroit que la page détail
+// info.js – Boutons fonctionnels + cover au bon endroit
 function showInfosPage(animeData) {
   console.log("showInfosPage appelé avec :", animeData);
 
@@ -6,23 +6,36 @@ function showInfosPage(animeData) {
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById('page-infos').style.display = 'block';
 
-  // === COVER (exactement même taille + position que page détail) ===
+  // Cover (on ne touche plus jamais à ça)
   const cover = document.getElementById('infos-cover-anime');
   if (cover) {
     cover.src = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
-    
-    // Taille fixe identique à la page détail
     cover.style.width = '420px';
     cover.style.height = '590px';
     cover.style.objectFit = 'cover';
-    
-    // Décalage vers le bas pour être au même niveau que dans la page détail
-    cover.style.marginTop = '80px';   // ← c’est ce qui corrige le "trop haut"
+    cover.style.marginTop = '80px';
   }
 
-  // On garde le rectangle blanc caché pour l’instant
-  const contentBox = document.getElementById('infos-content');
-  if (contentBox) contentBox.style.display = 'none';
+  // === BOUTONS (on leur donne leur fonction) ===
 
-  console.log("Cover placée correctement");
+  // Bouton Retour
+  document.getElementById('btn-retour').onclick = () => {
+    document.getElementById('page-infos').style.display = 'none';
+    document.getElementById('page-detail').style.display = 'block';
+  };
+
+  // Bouton Titre (à coder plus tard)
+  document.getElementById('btn-titre').onclick = () => {
+    alert("Fonction Titre → à venir (on ajoutera un gros textarea)");
+  };
+
+  // Bouton +1 (à coder plus tard)
+  document.getElementById('btn-plus1').onclick = () => {
+    alert("Fonction +1 → à venir (nom + type + statut)");
+  };
+
+  // Bouton Séparateur (à coder plus tard)
+  document.getElementById('btn-separateur').onclick = () => {
+    alert("Fonction Séparateur → à venir");
+  };
 }
