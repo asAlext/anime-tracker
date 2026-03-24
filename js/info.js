@@ -1,14 +1,13 @@
-// info.js – Boutons fonctionnels à droite de la cover (jusqu'au bord)
+// info.js – Boutons existants rendus fonctionnels (aucun bouton ajouté)
 
 function showInfosPage(animeData) {
   console.log("showInfosPage appelé avec :", animeData);
 
   // Switch vers la page Infos
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-  const pageInfos = document.getElementById('page-infos');
-  pageInfos.style.display = 'block';
+  document.getElementById('page-infos').style.display = 'block';
 
-  // Cover à gauche (exactement comme avant, ne pas toucher)
+  // Cover (même taille et position que page détail)
   const cover = document.getElementById('infos-cover-anime');
   if (cover) {
     cover.src = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -18,87 +17,65 @@ function showInfosPage(animeData) {
     cover.style.marginTop = '80px';
   }
 
-  // === ZONE À DROITE DE LA COVER (jusqu'au bord) ===
-  let rightZone = document.getElementById('infos-right-zone');
-  if (!rightZone) {
-    // Création unique de la zone droite
-    rightZone = document.createElement('div');
-    rightZone.id = 'infos-right-zone';
-    rightZone.style.flex = '1';
-    rightZone.style.paddingLeft = '40px';
-    rightZone.style.display = 'flex';
-    rightZone.style.flexDirection = 'column';
-    rightZone.style.gap = '20px';
+  // Zone de contenu à droite (jusqu'au bord)
+  const rightZone = document.getElementById('infos-right-zone');
+  if (rightZone) rightZone.style.display = 'flex';
 
-    // Toolbar des 4 boutons (en haut à droite)
-    const toolbar = document.createElement('div');
-    toolbar.style.display = 'flex';
-    toolbar.style.gap = '15px';
-    toolbar.style.flexWrap = 'wrap';
+  // === RENDRE TES 4 BOUTONS FONCTIONNELS ===
+  const btnRetour = document.getElementById('btn-retour');
+  const btnTitre = document.getElementById('btn-titre');
+  const btnPlus = document.getElementById('btn-plus');
+  const btnSeparateur = document.getElementById('btn-separateur');
 
-    const btnRetour = document.createElement('button');
-    btnRetour.textContent = 'Retour';
-    btnRetour.style.padding = '10px 20px';
+  if (btnRetour) {
     btnRetour.onclick = () => {
-      pageInfos.style.display = 'none';
+      document.getElementById('page-infos').style.display = 'none';
       document.getElementById('page-detail').style.display = 'block';
     };
+  }
 
-    const btnTitre = document.createElement('button');
-    btnTitre.textContent = 'Titre';
-    btnTitre.style.padding = '10px 20px';
-    btnTitre.onclick = () => addInfoLine(animeData.nom, 'titre', rightZone);
+  if (btnTitre) {
+    btnTitre.onclick = () => addInfoLine(animeData.nom, 'titre');
+  }
 
-    const btnPlus = document.createElement('button');
-    btnPlus.textContent = '+1';
-    btnPlus.style.padding = '10px 20px';
-    btnPlus.onclick = () => addInfoLine(animeData.nom, 'entree', rightZone);
+  if (btnPlus) {
+    btnPlus.onclick = () => addInfoLine(animeData.nom, 'entree');
+  }
 
-    const btnSeparateur = document.createElement('button');
-    btnSeparateur.textContent = 'Séparateur';
-    btnSeparateur.style.padding = '10px 20px';
-    btnSeparateur.onclick = () => addInfoLine(animeData.nom, 'separateur', rightZone);
-
-    toolbar.append(btnRetour, btnTitre, btnPlus, btnSeparateur);
-    rightZone.appendChild(toolbar);
-
-    // Zone où les lignes (titre / +1 / séparateur) s’ajoutent
-    const contentArea = document.createElement('div');
-    contentArea.id = 'infos-content-area';
-    rightZone.appendChild(contentArea);
-
-    // Ajout de la zone droite dans la page
-    pageInfos.querySelector('.detail-content').style.display = 'flex';
-    pageInfos.querySelector('.detail-content').appendChild(rightZone);
+  if (btnSeparateur) {
+    btnSeparateur.onclick = () => addInfoLine(animeData.nom, 'separateur');
   }
 
   // Chargement des lignes déjà sauvegardées
-  loadInfoLines(animeData.nom, document.getElementById('infos-content-area'));
+  loadInfoLines(animeData.nom);
 }
 
-// Ajoute une ligne (titre, entrée ou séparateur)
-function addInfoLine(nomAnime, type, container) {
-  const lines = JSON.parse(localStorage.getItem('animeInfos') || '{}');
-  if (!lines[nomAnime]) lines[nomAnime] = [];
+// Fonction pour ajouter une ligne (Titre, +1 ou Séparateur)
+function addInfoLine(nomAnime, type) {
+  let infos = JSON.parse(localStorage.getItem('animeInfos') || '{}');
+  if (!infos[nomAnime]) infos[nomAnime] = [];
 
   if (type === 'titre') {
-    lines[nomAnime].push({ type: 'titre', texte: 'Nouveau titre' });
+    infos[nomAnime].push({ type: 'titre', texte: 'Nouveau titre' });
   } else if (type === 'entree') {
-    lines[nomAnime].push({ type: 'entree', nom: '', type: 'Anime', statut: 'En Cours' });
+    infos[nomAnime].push({ type: 'entree', nom: '', typeEntree: 'Anime', statut: 'En Cours' });
   } else if (type === 'separateur') {
-    lines[nomAnime].push({ type: 'separateur' });
+    infos[nomAnime].push({ type: 'separateur' });
   }
 
-  localStorage.setItem('animeInfos', JSON.stringify(lines));
-  loadInfoLines(nomAnime, container);
+  localStorage.setItem('animeInfos', JSON.stringify(infos));
+  loadInfoLines(nomAnime);
 }
 
-// Charge et affiche toutes les lignes
-function loadInfoLines(nomAnime, container) {
+// Chargement et affichage des lignes
+function loadInfoLines(nomAnime) {
+  const container = document.getElementById('infos-content-area');
+  if (!container) return;
   container.innerHTML = '';
-  const lines = JSON.parse(localStorage.getItem('animeInfos') || '{}')[nomAnime] || [];
 
-  lines.forEach((item, index) => {
+  const infos = JSON.parse(localStorage.getItem('animeInfos') || '{}')[nomAnime] || [];
+
+  infos.forEach((item, index) => {
     const ligne = document.createElement('div');
     ligne.style.display = 'flex';
     ligne.style.alignItems = 'center';
@@ -125,51 +102,50 @@ function loadInfoLines(nomAnime, container) {
       nomInput.onchange = () => { item.nom = nomInput.value; saveInfoLines(nomAnime); };
 
       const typeSelect = document.createElement('select');
-      ['Anime', 'Film', 'OVA'].forEach(val => {
+      ['Anime', 'Film', 'OVA'].forEach(v => {
         const opt = document.createElement('option');
-        opt.value = val;
-        opt.textContent = val;
-        if (val === item.type) opt.selected = true;
+        opt.value = v;
+        opt.textContent = v;
+        if (v === item.typeEntree) opt.selected = true;
         typeSelect.appendChild(opt);
       });
-      typeSelect.onchange = () => { item.type = typeSelect.value; saveInfoLines(nomAnime); };
+      typeSelect.onchange = () => { item.typeEntree = typeSelect.value; saveInfoLines(nomAnime); };
 
       const statutSelect = document.createElement('select');
-      ['Terminé', 'En Cours', 'En Pause', 'A Regarder'].forEach(val => {
+      ['Terminé', 'En Cours', 'En Pause', 'A Regarder'].forEach(v => {
         const opt = document.createElement('option');
-        opt.value = val;
-        opt.textContent = val;
-        if (val === item.statut) opt.selected = true;
+        opt.value = v;
+        opt.textContent = v;
+        if (v === item.statut) opt.selected = true;
         statutSelect.appendChild(opt);
       });
       statutSelect.onchange = () => { item.statut = statutSelect.value; saveInfoLines(nomAnime); };
 
       ligne.append(nomInput, typeSelect, statutSelect);
     } else if (item.type === 'separateur') {
-      ligne.innerHTML = '<hr style="flex:1; border:none; border-top:8px solid #ccc; margin:30px 0;">';
+      ligne.innerHTML = '<hr style="flex:1; border:none; border-top:6px solid #ccc; margin:25px 0;">';
     }
 
     // Bouton supprimer (X)
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '×';
-    deleteBtn.style.fontSize = '24px';
-    deleteBtn.style.color = '#ff4444';
-    deleteBtn.style.border = 'none';
-    deleteBtn.style.background = 'transparent';
-    deleteBtn.style.cursor = 'pointer';
-    deleteBtn.onclick = () => {
-      lines.splice(index, 1);
-      localStorage.setItem('animeInfos', JSON.stringify(lines));
-      loadInfoLines(nomAnime, container);
+    const x = document.createElement('button');
+    x.textContent = '×';
+    x.style.fontSize = '26px';
+    x.style.color = '#ff4444';
+    x.style.border = 'none';
+    x.style.background = 'transparent';
+    x.style.cursor = 'pointer';
+    x.onclick = () => {
+      infos.splice(index, 1);
+      localStorage.setItem('animeInfos', JSON.stringify(infos));
+      loadInfoLines(nomAnime);
     };
-    ligne.appendChild(deleteBtn);
+    ligne.appendChild(x);
 
     container.appendChild(ligne);
   });
 }
 
 function saveInfoLines(nomAnime) {
-  // Sauvegarde automatique après modification
-  const lines = JSON.parse(localStorage.getItem('animeInfos') || '{}');
-  localStorage.setItem('animeInfos', JSON.stringify(lines));
+  const infos = JSON.parse(localStorage.getItem('animeInfos') || '{}');
+  localStorage.setItem('animeInfos', JSON.stringify(infos));
 }
