@@ -92,10 +92,9 @@ function showDetailPage(item) {
   document.getElementById('btn-supprimer-anime').onclick = () => deleteAnime(animeData?.nom);
   document.getElementById('btn-supprimer-waifu').onclick = () => deleteWaifu(waifuData?.nom);
 
-    // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
+  // ====================== AJOUT DU BOUTON INFOS (à gauche de Modifier) ======================
   const buttonsContainer = document.querySelector('.detail-buttons');
   if (buttonsContainer) {
-    // Supprime les anciens si doublon
     buttonsContainer.querySelectorAll('#btn-infos').forEach(btn => btn.remove());
 
     const btnInfos = document.createElement('button');
@@ -109,9 +108,8 @@ function showDetailPage(item) {
     btnInfos.style.borderRadius = '6px';
     btnInfos.style.cursor = 'pointer';
 
-    // Appel DIRECT et simple
     btnInfos.onclick = function() {
-      console.log("Bouton Infos cliqué - animeData =", animeData);   // ← pour debug
+      console.log("Bouton Infos cliqué - animeData =", animeData);
       if (animeData) {
         showInfosPage(animeData);
       } else {
@@ -121,7 +119,9 @@ function showDetailPage(item) {
 
     buttonsContainer.insertBefore(btnInfos, document.getElementById('btn-modifier'));
   }
-// Modal Modifier (inchangé, je le remets complet pour éviter les erreurs de fermeture)
+}   // ← FERMETURE CORRECTE DE showDetailPage
+
+// Modal Modifier
 function openModifyModal(animeData, waifuData) {
   let modal = document.getElementById('modify-modal');
   if (!modal) {
@@ -240,7 +240,7 @@ function openModifyModal(animeData, waifuData) {
   };
 }
 
-// Suppression anime + waifu (inchangé)
+// Suppression anime + waifu
 function deleteAnime(nomAnime) {
   if (!nomAnime || !confirm('Supprimer cet anime ? La waifu associée sera aussi supprimée.')) return;
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
