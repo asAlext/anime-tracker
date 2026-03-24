@@ -1,12 +1,13 @@
-// info.js – Version debug pour fixer le bouton Retour
+// info.js – Version debug pour que Retour fonctionne
 function showInfosPage(animeData) {
-  console.log("=== showInfosPage appelé ===", animeData);
+  console.log("%cshowInfosPage appelé avec :", "color: green; font-weight: bold", animeData);
 
   // Switch page
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
-  document.getElementById('page-infos').style.display = 'block';
+  const infosPage = document.getElementById('page-infos');
+  if (infosPage) infosPage.style.display = 'block';
 
-  // Cover
+  // Cover (ne jamais toucher)
   const cover = document.getElementById('infos-cover-anime');
   if (cover) {
     cover.src = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -16,26 +17,26 @@ function showInfosPage(animeData) {
     cover.style.marginTop = '80px';
   }
 
-  // ====================== BOUTONS ======================
+  // ====================== BOUTON RETOUR ======================
   const btnRetour = document.getElementById('btn-retour');
   if (btnRetour) {
+    console.log("✅ Bouton Retour trouvé, onclick attaché");
     btnRetour.onclick = () => {
-      console.log("Bouton Retour cliqué !");
+      console.log("🔄 Clic sur Retour détecté");
       document.getElementById('page-infos').style.display = 'none';
       document.getElementById('page-detail').style.display = 'block';
     };
-    console.log("Bouton Retour trouvé et attaché");
   } else {
-    console.error("ERREUR : bouton #btn-retour non trouvé dans le HTML !");
+    console.error("❌ Bouton #btn-retour NON TROUVÉ dans le HTML !");
   }
 
-  // Boutons de test
-  ['btn-titre', 'btn-plus1', 'btn-separateur'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.onclick = () => alert(`Bouton ${id} cliqué (à coder)`);
-    } else {
-      console.error(`Bouton #${id} non trouvé !`);
-    }
-  });
+  // Les autres boutons (alert pour tester)
+  const btnTitre = document.getElementById('btn-titre');
+  if (btnTitre) btnTitre.onclick = () => alert("Fonction Titre → à venir");
+
+  const btnPlus1 = document.getElementById('btn-plus1');
+  if (btnPlus1) btnPlus1.onclick = () => alert("Fonction +1 → à venir");
+
+  const btnSeparateur = document.getElementById('btn-separateur');
+  if (btnSeparateur) btnSeparateur.onclick = () => alert("Fonction Séparateur → à venir");
 }
