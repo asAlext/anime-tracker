@@ -1,4 +1,4 @@
-// info.js – Version corrigée selon tes retours
+// info.js – Version finale selon tes demandes précises
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -18,16 +18,23 @@ function showInfosPage(animeData) {
   }
 
   loadInfosContent();
+
+  // Bouton Retour
+  document.getElementById('btn-retour').onclick = () => {
+    document.getElementById('page-infos').style.display = 'none';
+    document.getElementById('page-detail').style.display = 'block';
+  };
 }
 
-// ==================== ZONE JAUNE ====================
-
+// ====================== ZONE JAUNE ======================
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
-  container.style.marginTop = '40px';     // descend un peu
-  container.style.marginLeft = '40px';    // va plus à droite
-  container.style.width = 'calc(100% - 500px)'; // prend presque toute la largeur restante
+
+  // Style de la zone jaune (descendue + élargie)
+  container.style.marginTop = '120px';      // descend un peu pour ne plus chevaucher les boutons
+  container.style.marginLeft = '60px';
+  container.style.width = 'calc(100% - 520px)';
 
   if (!currentAnimeNom) return;
 
@@ -35,17 +42,15 @@ function loadInfosContent() {
   const data = allInfos[currentAnimeNom] || [];
 
   data.forEach((item, index) => {
-    let ligne;
+    let ligne = document.createElement('div');
 
     if (item.type === 'titre') {
-      ligne = document.createElement('div');
       ligne.className = 'info-ligne titre-ligne';
       ligne.innerHTML = `
         <textarea class="info-titre" placeholder="Titre libre...">${item.texte || ''}</textarea>
         <span class="delete-x">×</span>
       `;
     } else if (item.type === 'entree') {
-      ligne = document.createElement('div');
       ligne.className = 'info-ligne entree-ligne';
       ligne.innerHTML = `
         <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom">
@@ -63,27 +68,24 @@ function loadInfosContent() {
         <span class="delete-x">×</span>
       `;
     } else if (item.type === 'separateur') {
-      ligne = document.createElement('div');
       ligne.className = 'info-separateur';
-      ligne.innerHTML = '<div style="height: 45px;"></div>'; // espace vide plus grand
+      ligne.innerHTML = '<div style="height: 60px;"></div>'; // espace plus grand et discret
     }
 
-    if (ligne) {
-      container.appendChild(ligne);
+    container.appendChild(ligne);
 
-      // X visible uniquement au survol
-      const x = ligne.querySelector('.delete-x');
-      if (x) {
-        x.style.opacity = '0';
-        x.style.transition = 'opacity 0.2s';
-        ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
-        ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
-        x.onclick = (e) => {
-          e.stopPropagation();
-          ligne.remove();
-          saveInfosContent();
-        };
-      }
+    // X visible uniquement au survol
+    const x = ligne.querySelector('.delete-x');
+    if (x) {
+      x.style.opacity = '0';
+      x.style.transition = 'opacity 0.2s';
+      ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
+      ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
+      x.onclick = (e) => {
+        e.stopPropagation();
+        ligne.remove();
+        saveInfosContent();
+      };
     }
   });
 }
@@ -151,7 +153,7 @@ document.getElementById('btn-separateur').onclick = () => {
   const container = document.getElementById('infos-content');
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
-  sep.innerHTML = '<div style="height: 50px;"></div>';
+  sep.innerHTML = '<div style="height: 60px;"></div>';
   container.appendChild(sep);
   saveInfosContent();
 };
