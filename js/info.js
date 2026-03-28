@@ -30,10 +30,13 @@ function showInfosPage(animeData) {
   document.getElementById('btn-separateur').onclick = () => addSeparateur();
 }
 
-// ====================== ZONE JAUNE ======================
+// ====================== FONCTIONS ======================
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
+  container.style.marginTop = '100px';
+  container.style.marginLeft = '40px';
+  container.style.width = 'calc(100% - 500px)';
 
   if (!currentAnimeNom) return;
 
@@ -52,8 +55,8 @@ function loadInfosContent() {
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
       ligne.innerHTML = `
-        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom">
-        <select class="info-type">
+        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right: 15px;">
+        <select class="info-type" style="margin-right: 15px;">
           <option value="Anime" ${item.typeVal === 'Anime' ? 'selected' : ''}>Anime</option>
           <option value="Film" ${item.typeVal === 'Film' ? 'selected' : ''}>Film</option>
           <option value="OVA" ${item.typeVal === 'OVA' ? 'selected' : ''}>OVA</option>
@@ -114,12 +117,12 @@ function saveInfosContent() {
   localStorage.setItem('animeInfos', JSON.stringify(allInfos));
 }
 
-// Ajout des lignes
+// Ajout des boutons
 function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
-  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..."></textarea><span class="delete-x">×</span>`;
+  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea><span class="delete-x">×</span>`;
   container.appendChild(ligne);
   saveInfosContent();
 }
@@ -129,8 +132,8 @@ function addEntree() {
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne entree-ligne';
   ligne.innerHTML = `
-    <input type="text" class="info-nom" placeholder="Nom" style="margin-right: 15px;">
-    <select class="info-type" style="margin-right: 15px;">
+    <input type="text" class="info-nom" placeholder="Nom" style="margin-right:20px;">
+    <select class="info-type" style="margin-right:20px;">
       <option value="Anime">Anime</option>
       <option value="Film">Film</option>
       <option value="OVA">OVA</option>
