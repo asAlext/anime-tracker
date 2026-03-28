@@ -1,4 +1,4 @@
-// info.js – Corrections finales selon tes demandes
+// info.js – Corrections finales (zone infos intacte)
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -19,7 +19,7 @@ function showInfosPage(animeData) {
 
   loadInfosContent();
 
-  // Bouton Retour
+  // Bouton Retour (fonctionne)
   document.getElementById('btn-retour').onclick = () => {
     document.getElementById('page-infos').style.display = 'none';
     document.getElementById('page-detail').style.display = 'block';
@@ -30,8 +30,7 @@ function showInfosPage(animeData) {
   document.getElementById('btn-separateur').onclick = () => addSeparateur();
 }
 
-// ====================== ZONE INFOS ======================
-
+// ====================== ZONE JAUNE ======================
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
@@ -41,7 +40,7 @@ function loadInfosContent() {
   const allInfos = JSON.parse(localStorage.getItem('animeInfos') || '{}');
   const data = allInfos[currentAnimeNom] || [];
 
-  data.forEach((item, index) => {
+  data.forEach((item) => {
     let ligne = document.createElement('div');
 
     if (item.type === 'titre') {
@@ -69,23 +68,18 @@ function loadInfosContent() {
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
-      ligne.innerHTML = '<div style="height: 55px; width: 100%;"></div>';
+      ligne.innerHTML = '<div style="height: 60px;"></div>';
     }
 
     container.appendChild(ligne);
 
-    // X visible uniquement au survol + fonctionne
+    // X invisible sauf au survol
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
       x.style.transition = 'opacity 0.2s';
-      x.style.cursor = 'pointer';
-      x.style.fontSize = '22px';
-      x.style.color = '#ff4444';
-
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
-
       x.onclick = (e) => {
         e.stopPropagation();
         ligne.remove();
@@ -120,8 +114,7 @@ function saveInfosContent() {
   localStorage.setItem('animeInfos', JSON.stringify(allInfos));
 }
 
-// ====================== AJOUT ======================
-
+// Ajout des lignes
 function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
@@ -158,7 +151,7 @@ function addSeparateur() {
   const container = document.getElementById('infos-content');
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
-  sep.innerHTML = '<div style="height: 55px; width: 100%;"></div>';
+  sep.innerHTML = '<div style="height: 60px;"></div>';
   container.appendChild(sep);
   saveInfosContent();
 }
