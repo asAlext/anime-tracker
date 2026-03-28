@@ -1,4 +1,4 @@
-// info.js – Version finale selon tes demandes précises
+// info.js – Version finale selon tes dernières demandes
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -24,17 +24,21 @@ function showInfosPage(animeData) {
     document.getElementById('page-infos').style.display = 'none';
     document.getElementById('page-detail').style.display = 'block';
   };
+
+  // Les autres boutons
+  document.getElementById('btn-titre').onclick = () => addTitre();
+  document.getElementById('btn-plus1').onclick = () => addEntree();
+  document.getElementById('btn-separateur').onclick = () => addSeparateur();
 }
 
-// ====================== ZONE JAUNE ======================
+// ====================== FONCTIONS ======================
+
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
-
-  // Style de la zone jaune (descendue + élargie)
-  container.style.marginTop = '120px';      // descend un peu pour ne plus chevaucher les boutons
-  container.style.marginLeft = '60px';
-  container.style.width = 'calc(100% - 520px)';
+  container.style.marginTop = '100px';     // descend la zone
+  container.style.marginLeft = '40px';
+  container.style.width = 'calc(100% - 500px)';
 
   if (!currentAnimeNom) return;
 
@@ -69,7 +73,7 @@ function loadInfosContent() {
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
-      ligne.innerHTML = '<div style="height: 60px;"></div>'; // espace plus grand et discret
+      ligne.innerHTML = '<div style="height: 60px;"></div>'; // espace plus grand
     }
 
     container.appendChild(ligne);
@@ -90,7 +94,6 @@ function loadInfosContent() {
   });
 }
 
-// Sauvegarde automatique
 function saveInfosContent() {
   if (!currentAnimeNom) return;
   const container = document.getElementById('infos-content');
@@ -116,17 +119,17 @@ function saveInfosContent() {
   localStorage.setItem('animeInfos', JSON.stringify(allInfos));
 }
 
-// Boutons
-document.getElementById('btn-titre').onclick = () => {
+// Ajout des boutons
+function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
   ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..."></textarea><span class="delete-x">×</span>`;
   container.appendChild(ligne);
   saveInfosContent();
-};
+}
 
-document.getElementById('btn-plus1').onclick = () => {
+function addEntree() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne entree-ligne';
@@ -147,13 +150,13 @@ document.getElementById('btn-plus1').onclick = () => {
   `;
   container.appendChild(ligne);
   saveInfosContent();
-};
+}
 
-document.getElementById('btn-separateur').onclick = () => {
+function addSeparateur() {
   const container = document.getElementById('infos-content');
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
   sep.innerHTML = '<div style="height: 60px;"></div>';
   container.appendChild(sep);
   saveInfosContent();
-};
+}
