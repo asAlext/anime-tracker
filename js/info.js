@@ -1,4 +1,4 @@
-// info.js – Version finale selon tes dernières demandes
+// info.js – Corrections finales selon tes demandes
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -25,20 +25,16 @@ function showInfosPage(animeData) {
     document.getElementById('page-detail').style.display = 'block';
   };
 
-  // Les autres boutons
   document.getElementById('btn-titre').onclick = () => addTitre();
   document.getElementById('btn-plus1').onclick = () => addEntree();
   document.getElementById('btn-separateur').onclick = () => addSeparateur();
 }
 
-// ====================== FONCTIONS ======================
+// ====================== ZONE INFOS ======================
 
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
-  container.style.marginTop = '100px';     // descend la zone
-  container.style.marginLeft = '40px';
-  container.style.width = 'calc(100% - 500px)';
 
   if (!currentAnimeNom) return;
 
@@ -73,18 +69,23 @@ function loadInfosContent() {
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
-      ligne.innerHTML = '<div style="height: 60px;"></div>'; // espace plus grand
+      ligne.innerHTML = '<div style="height: 55px; width: 100%;"></div>';
     }
 
     container.appendChild(ligne);
 
-    // X visible uniquement au survol
+    // X visible uniquement au survol + fonctionne
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
       x.style.transition = 'opacity 0.2s';
+      x.style.cursor = 'pointer';
+      x.style.fontSize = '22px';
+      x.style.color = '#ff4444';
+
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
+
       x.onclick = (e) => {
         e.stopPropagation();
         ligne.remove();
@@ -119,7 +120,8 @@ function saveInfosContent() {
   localStorage.setItem('animeInfos', JSON.stringify(allInfos));
 }
 
-// Ajout des boutons
+// ====================== AJOUT ======================
+
 function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
@@ -156,7 +158,7 @@ function addSeparateur() {
   const container = document.getElementById('infos-content');
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
-  sep.innerHTML = '<div style="height: 60px;"></div>';
+  sep.innerHTML = '<div style="height: 55px; width: 100%;"></div>';
   container.appendChild(sep);
   saveInfosContent();
 }
