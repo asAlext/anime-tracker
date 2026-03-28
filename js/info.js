@@ -1,4 +1,4 @@
-// info.js – Corrections finales (zone infos intacte)
+// info.js – Version corrigée à partir de ton dernier script
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -19,7 +19,7 @@ function showInfosPage(animeData) {
 
   loadInfosContent();
 
-  // Bouton Retour (fonctionne)
+  // Bouton Retour
   document.getElementById('btn-retour').onclick = () => {
     document.getElementById('page-infos').style.display = 'none';
     document.getElementById('page-detail').style.display = 'block';
@@ -129,8 +129,8 @@ function addEntree() {
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne entree-ligne';
   ligne.innerHTML = `
-    <input type="text" class="info-nom" placeholder="Nom">
-    <select class="info-type">
+    <input type="text" class="info-nom" placeholder="Nom" style="margin-right: 15px;">
+    <select class="info-type" style="margin-right: 15px;">
       <option value="Anime">Anime</option>
       <option value="Film">Film</option>
       <option value="OVA">OVA</option>
