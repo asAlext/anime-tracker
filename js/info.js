@@ -76,7 +76,7 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
 
-    // Attachement du X - version simplifiée et plus fiable
+    // X invisible sauf au survol + clic fiable
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
@@ -86,16 +86,14 @@ function loadInfosContent() {
       x.style.color = '#ff4444';
       x.style.marginLeft = '15px';
 
-      // Hover
-      ligne.onmouseenter = () => x.style.opacity = '1';
-      ligne.onmouseleave = () => x.style.opacity = '0';
+      ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
+      ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
 
-      // Click
-      x.onclick = function(e) {
+      x.addEventListener('click', function(e) {
         e.stopPropagation();
         ligne.remove();
         saveInfosContent();
-      };
+      });
     }
   });
 }
