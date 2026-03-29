@@ -1,12 +1,13 @@
-// info.js – Correction des X (seulement ce qui était demandé)
+// info.js – Correction définitive des X
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
   currentAnimeNom = animeData.nom;
+
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById('page-infos').style.display = 'block';
 
-  // Cover (ne jamais toucher)
+  // Cover
   const cover = document.getElementById('infos-cover-anime');
   if (cover) {
     cover.src = animeData.urlCover || 'https://placehold.co/420x590?text=Cover+Anime';
@@ -18,7 +19,7 @@ function showInfosPage(animeData) {
 
   loadInfosContent();
 
-  // Bouton Retour
+  // Boutons principaux
   document.getElementById('btn-retour').onclick = () => {
     document.getElementById('page-infos').style.display = 'none';
     document.getElementById('page-detail').style.display = 'block';
@@ -29,13 +30,10 @@ function showInfosPage(animeData) {
   document.getElementById('btn-separateur').onclick = () => addSeparateur();
 }
 
-// ====================== FONCTIONS ======================
+// Chargement + attachement correct des X
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
-  container.style.marginTop = '100px';
-  container.style.marginLeft = '40px';
-  container.style.width = 'calc(100% - 500px)';
 
   if (!currentAnimeNom) return;
 
@@ -76,21 +74,25 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
 
-    // X invisible sauf au survol + fonctionne correctement
+    // Attachement du X (version fiable)
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
       x.style.transition = 'opacity 0.2s';
       x.style.cursor = 'pointer';
+      x.style.fontSize = '20px';
+      x.style.color = '#ff4444';
+
+      // Mouse events
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
 
-      // Important : on attache l'événement après avoir ajouté la ligne au DOM
-      x.onclick = (e) => {
+      // Click pour supprimer
+      x.addEventListener('click', (e) => {
         e.stopPropagation();
         ligne.remove();
         saveInfosContent();
-      };
+      });
     }
   });
 }
