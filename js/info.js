@@ -114,58 +114,44 @@ function attachDeleteHandler(ligne) {
 }
 
 function saveInfosContent() {
-  console.log("🚀 saveInfosContent a été appelée !");
-
-  if (!currentAnimeNom) {
-    console.log("❌ currentAnimeNom est vide");
-    return;
-  }
+  if (!currentAnimeNom) return;
 
   const container = document.getElementById('infos-content');
-  console.log("Nombre total d'éléments dans le container :", container.children.length);
-
   const data = [];
 
-  // Parcours plus fiable : on vérifie les classes sur chaque enfant
-  Array.from(container.children).forEach((el, i) => {
-    console.log(`Ligne ${i} → classes: "${el.className}"`);
-
+  Array.from(container.children).forEach(el => {
     if (el.classList.contains('titre-ligne')) {
       const textarea = el.querySelector('textarea');
-      data.push({ type: 'titre', texte: textarea ? textarea.value : '' });
-      console.log("→ Titre sauvegardé");
+      data.push({ 
+        type: 'titre', 
+        texte: textarea ? textarea.value.trim() : '' 
+      });
     } 
     else if (el.classList.contains('entree-ligne')) {
-      const nom = el.querySelector('.info-nom');
-      const type = el.querySelector('.info-type');
-      const statut = el.querySelector('.info-statut');
+      const nomInput = el.querySelector('.info-nom');
+      const typeSelect = el.querySelector('.info-type');
+      const statutSelect = el.querySelector('.info-statut');
 
       data.push({
         type: 'entree',
-        nom: nom ? nom.value : '',
-        typeVal: type ? type.value : 'Anime',
-        statut: statut ? statut.value : 'Terminé'
+        nom: nomInput ? nomInput.value.trim() : '',
+        typeVal: typeSelect ? typeSelect.value : 'Anime',
+        statut: statutSelect ? statutSelect.value : 'Terminé'
       });
-      console.log("→ +1 sauvegardé");
     } 
     else if (el.classList.contains('info-separateur')) {
       data.push({ type: 'separateur' });
-      console.log("→ Séparateur sauvegardé");
     }
   });
 
-  console.log("Données finales à sauvegarder :", data.length, "lignes");
-
-  // Sauvegarde dans le JSON principal
+  // Sauvegarde dans le JSON principal des animes
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
   
   if (index !== -1) {
     animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
-    console.log("✅ Sauvegarde réussie dans 'animes' (" + data.length + " lignes)");
-  } else {
-    console.log("❌ Anime non trouvé dans le tableau");
+    console.log(`✅ Sauvegarde réussie : ${data.length} lignes pour ${currentAnimeNom}`);
   }
 }
 
