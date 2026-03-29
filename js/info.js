@@ -40,8 +40,10 @@ function loadInfosContent() {
 
   if (!currentAnimeNom) return;
 
-  const allInfos = JSON.parse(localStorage.getItem('animeInfos') || '{}');
-  const data = allInfos[currentAnimeNom] || [];
+  // Chargement depuis le JSON principal 'animes'
+  let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+  const anime = animes.find(a => a.nom === currentAnimeNom);
+  const data = anime && anime.customInfos ? anime.customInfos : [];
 
   data.forEach((item) => {
     let ligne = document.createElement('div');
@@ -76,7 +78,7 @@ function loadInfosContent() {
     }
 
     container.appendChild(ligne);
-    attachDeleteHandler(ligne);   // ← Appel de la fonction commune
+    attachDeleteHandler(ligne);
   });
 }
 
@@ -113,6 +115,7 @@ function attachDeleteHandler(ligne) {
 
 function saveInfosContent() {
   if (!currentAnimeNom) return;
+
   const container = document.getElementById('infos-content');
   const data = [];
 
@@ -131,10 +134,14 @@ function saveInfosContent() {
     }
   });
 
-  let allInfos = JSON.parse(localStorage.getItem('animeInfos') || '{}');
-  allInfos[currentAnimeNom] = data;
-  localStorage.setItem('animeInfos', JSON.stringify(allInfos));
-}
+  // === RAJOUT : Sauvegarde dans le JSON principal des animes ===
+  let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+  const index = animes.findIndex(a => a.nom === currentAnimeNom);
+  
+  if (index !== -1) {
+    animes[index].customInfos = data;   // ← On ajoute les infos ici
+    localStorage.setItem('animes', JSON.stringify(animes));
+  }
 
 // ====================== AJOUT DES NOUVELLES LIGNES ======================
 
