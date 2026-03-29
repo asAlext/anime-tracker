@@ -114,55 +114,47 @@ function attachDeleteHandler(ligne) {
 }
 
 function saveInfosContent() {
-  if (!currentAnimeNom) return;
+  console.log("🚀 saveInfosContent a été appelée !");
+
+  if (!currentAnimeNom) {
+    console.log("❌ currentAnimeNom est vide");
+    return;
+  }
 
   const container = document.getElementById('infos-content');
+  console.log("Nombre d'éléments dans le container :", container.children.length);
+
   const data = [];
 
-  console.log("=== Sauvegarde en cours - Nombre d'enfants :", container.children.length);
-
-  Array.from(container.children).forEach((el, index) => {
-    console.log(`Ligne ${index} - classes:`, el.className);
+  Array.from(container.children).forEach((el, i) => {
+    console.log(`Ligne ${i} → classe: ${el.className}`);
 
     if (el.classList.contains('titre-ligne')) {
-      const textarea = el.querySelector('textarea');
+      const txt = el.querySelector('textarea') ? el.querySelector('textarea').value : '';
+      data.push({ type: 'titre', texte: txt });
+    } else if (el.classList.contains('entree-ligne')) {
       data.push({ 
-        type: 'titre', 
-        texte: textarea ? textarea.value : '' 
+        type: 'entree', 
+        nom: el.querySelector('.info-nom') ? el.querySelector('.info-nom').value : '',
+        typeVal: el.querySelector('.info-type') ? el.querySelector('.info-type').value : 'Anime',
+        statut: el.querySelector('.info-statut') ? el.querySelector('.info-statut').value : 'Terminé'
       });
-      console.log("→ Titre détecté");
-    } 
-    else if (el.classList.contains('entree-ligne')) {
-      const nom = el.querySelector('.info-nom');
-      const type = el.querySelector('.info-type');
-      const statut = el.querySelector('.info-statut');
-      
-      data.push({
-        type: 'entree',
-        nom: nom ? nom.value : '',
-        typeVal: type ? type.value : 'Anime',
-        statut: statut ? statut.value : 'Terminé'
-      });
-      console.log("→ +1 détecté");
-    } 
-    else if (el.classList.contains('info-separateur')) {
+    } else if (el.classList.contains('info-separateur')) {
       data.push({ type: 'separateur' });
-      console.log("→ Séparateur détecté");
     }
   });
 
-  console.log("Données finales à sauvegarder :", data);
+  console.log("Données qui vont être sauvegardées :", data);
 
-  // Sauvegarde dans le JSON principal
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
-  
+
   if (index !== -1) {
     animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
-    console.log("✅ Sauvegarde réussie dans 'animes'");
+    console.log("✅ Sauvegarde effectuée dans 'animes'");
   } else {
-    console.log("❌ Anime non trouvé dans le tableau animes");
+    console.log("❌ Anime non trouvé");
   }
 }
 
