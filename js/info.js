@@ -30,6 +30,7 @@ function showInfosPage(animeData) {
 }
 
 // ====================== FONCTIONS ======================
+
 function loadInfosContent() {
   const container = document.getElementById('infos-content');
   container.innerHTML = '';
@@ -75,35 +76,38 @@ function loadInfosContent() {
     }
 
     container.appendChild(ligne);
+    attachDeleteHandler(ligne);   // ← Appel de la fonction commune
+  });
+}
 
-    // === PARTIE CORRIGÉE : Gestion du bouton X ===
-    const x = ligne.querySelector('.delete-x');
-    if (x) {
-      // Style du X
-      x.style.opacity = '0';
-      x.style.transition = 'opacity 0.2s ease';
-      x.style.cursor = 'pointer';
-      x.style.fontSize = '24px';
-      x.style.color = '#000';
-      x.style.marginLeft = '15px';
-      x.style.userSelect = 'none';
+// Nouvelle fonction réutilisable pour gérer le X (hover + suppression)
+function attachDeleteHandler(ligne) {
+  const x = ligne.querySelector('.delete-x');
+  if (!x) return;
 
-      // Afficher le X uniquement au survol de la ligne entière
-      ligne.addEventListener('mouseenter', () => {
-        x.style.opacity = '1';
-      });
+  // Style du X
+  x.style.opacity = '0';
+  x.style.transition = 'opacity 0.2s ease';
+  x.style.cursor = 'pointer';
+  x.style.fontSize = '24px';
+  x.style.color = '#000';
+  x.style.marginLeft = '15px';
+  x.style.userSelect = 'none';
 
-      ligne.addEventListener('mouseleave', () => {
-        x.style.opacity = '0';
-      });
+  // Afficher le X uniquement au survol de la ligne entière
+  ligne.addEventListener('mouseenter', () => {
+    x.style.opacity = '1';
+  });
 
-      // Suppression de la ligne au clic sur X
-      x.addEventListener('click', function(e) {
-        e.stopPropagation();        // Empêche tout autre clic sur la ligne
-        ligne.remove();             // Supprime la ligne du DOM
-        saveInfosContent();         // Sauvegarde (ta fonction existante)
-      });
-    }
+  ligne.addEventListener('mouseleave', () => {
+    x.style.opacity = '0';
+  });
+
+  // Suppression de la ligne au clic sur X
+  x.addEventListener('click', function(e) {
+    e.stopPropagation();
+    ligne.remove();
+    saveInfosContent();         // Sauvegarde après suppression
   });
 }
 
@@ -132,13 +136,16 @@ function saveInfosContent() {
   localStorage.setItem('animeInfos', JSON.stringify(allInfos));
 }
 
-// Ajout des boutons
+// ====================== AJOUT DES NOUVELLES LIGNES ======================
+
 function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
   ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea><span class="delete-x">×</span>`;
+  
   container.appendChild(ligne);
+  attachDeleteHandler(ligne);   // ← Important : on attache le X sur la nouvelle ligne
   saveInfosContent();
 }
 
@@ -162,7 +169,9 @@ function addEntree() {
     </select>
     <span class="delete-x">×</span>
   `;
+  
   container.appendChild(ligne);
+  attachDeleteHandler(ligne);   // ← Important
   saveInfosContent();
 }
 
@@ -171,6 +180,8 @@ function addSeparateur() {
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
   sep.innerHTML = `<div style="height: 60px;"></div><span class="delete-x">×</span>`;
+  
   container.appendChild(sep);
+  attachDeleteHandler(sep);     // ← Important
   saveInfosContent();
 }
