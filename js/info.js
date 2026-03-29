@@ -1,4 +1,4 @@
-// info.js – Version sans aucun bouton X
+// info.js – Ajout du X invisible au survol (uniquement cette modification)
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -49,6 +49,7 @@ function loadInfosContent() {
       ligne.className = 'info-ligne titre-ligne';
       ligne.innerHTML = `
         <textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;">${item.texte || ''}</textarea>
+        <span class="delete-x">×</span>
       `;
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
@@ -66,6 +67,7 @@ function loadInfosContent() {
           <option value="En Pause" ${item.statut === 'En Pause' ? 'selected' : ''}>En Pause</option>
           <option value="A Regarder" ${item.statut === 'A Regarder' ? 'selected' : ''}>A Regarder</option>
         </select>
+        <span class="delete-x">×</span>
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
@@ -73,6 +75,25 @@ function loadInfosContent() {
     }
 
     container.appendChild(ligne);
+
+    // X invisible sauf au survol
+    const x = ligne.querySelector('.delete-x');
+    if (x) {
+      x.style.opacity = '0';
+      x.style.transition = 'opacity 0.2s';
+      x.style.cursor = 'pointer';
+      x.style.fontSize = '22px';
+      x.style.color = '#ff4444';
+
+      ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
+      ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
+
+      x.onclick = (e) => {
+        e.stopPropagation();
+        ligne.remove();
+        saveInfosContent();
+      };
+    }
   });
 }
 
@@ -106,7 +127,7 @@ function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
-  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea>`;
+  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea><span class="delete-x">×</span>`;
   container.appendChild(ligne);
   saveInfosContent();
 }
@@ -129,6 +150,7 @@ function addEntree() {
       <option value="En Pause">En Pause</option>
       <option value="A Regarder">A Regarder</option>
     </select>
+    <span class="delete-x">×</span>
   `;
   container.appendChild(ligne);
   saveInfosContent();
