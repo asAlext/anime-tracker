@@ -139,9 +139,10 @@ function saveInfosContent() {
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
   
   if (index !== -1) {
-    animes[index].customInfos = data;   // ← On ajoute les infos ici
+    animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
   }
+}
 
 // ====================== AJOUT DES NOUVELLES LIGNES ======================
 
