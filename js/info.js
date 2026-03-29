@@ -1,4 +1,4 @@
-// info.js – Version corrigée à partir de ton dernier script
+// info.js – Corrections demandées uniquement
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -55,8 +55,8 @@ function loadInfosContent() {
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
       ligne.innerHTML = `
-        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right: 15px;">
-        <select class="info-type" style="margin-right: 15px;">
+        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right:30px;">
+        <select class="info-type" style="margin-right:30px;">
           <option value="Anime" ${item.typeVal === 'Anime' ? 'selected' : ''}>Anime</option>
           <option value="Film" ${item.typeVal === 'Film' ? 'selected' : ''}>Film</option>
           <option value="OVA" ${item.typeVal === 'OVA' ? 'selected' : ''}>OVA</option>
@@ -122,7 +122,7 @@ function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
-  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea><span class="delete-x">×</span>`;
+  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold; width:100%;"></textarea><span class="delete-x">×</span>`;
   container.appendChild(ligne);
   saveInfosContent();
 }
@@ -132,8 +132,8 @@ function addEntree() {
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne entree-ligne';
   ligne.innerHTML = `
-    <input type="text" class="info-nom" placeholder="Nom" style="margin-right:20px;">
-    <select class="info-type" style="margin-right:20px;">
+    <input type="text" class="info-nom" placeholder="Nom" style="margin-right:40px; width:220px;">
+    <select class="info-type" style="margin-right:40px;">
       <option value="Anime">Anime</option>
       <option value="Film">Film</option>
       <option value="OVA">OVA</option>
