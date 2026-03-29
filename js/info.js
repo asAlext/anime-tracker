@@ -114,31 +114,30 @@ function attachDeleteHandler(ligne) {
 }
 
 function saveInfosContent() {
-  console.log("🚀 saveInfosContent a été appelée !");
-
-  if (!currentAnimeNom) {
-    console.log("❌ currentAnimeNom est vide");
-    return;
-  }
+  if (!currentAnimeNom) return;
 
   const container = document.getElementById('infos-content');
-  console.log("Nombre d'éléments dans le container :", container.children.length);
-
   const data = [];
 
-  Array.from(container.children).forEach((el, i) => {
-    console.log(`Ligne ${i} → classe: ${el.className}`);
-
+  // Version plus robuste : on parcourt tous les éléments enfants directement
+  Array.from(container.children).forEach(el => {
     if (el.classList.contains('titre-ligne')) {
-      const txt = el.querySelector('textarea') ? el.querySelector('textarea').value : '';
-      data.push({ type: 'titre', texte: txt });
+      const textarea = el.querySelector('textarea');
+      data.push({ 
+        type: 'titre', 
+        texte: textarea ? textarea.value : '' 
+      });
     } 
     else if (el.classList.contains('entree-ligne')) {
+      const nomInput = el.querySelector('.info-nom');
+      const typeSelect = el.querySelector('.info-type');
+      const statutSelect = el.querySelector('.info-statut');
+
       data.push({
         type: 'entree',
-        nom: el.querySelector('.info-nom') ? el.querySelector('.info-nom').value : '',
-        typeVal: el.querySelector('.info-type') ? el.querySelector('.info-type').value : 'Anime',
-        statut: el.querySelector('.info-statut') ? el.querySelector('.info-statut').value : 'Terminé'
+        nom: nomInput ? nomInput.value : '',
+        typeVal: typeSelect ? typeSelect.value : 'Anime',
+        statut: statutSelect ? statutSelect.value : 'Terminé'
       });
     } 
     else if (el.classList.contains('info-separateur')) {
@@ -146,18 +145,14 @@ function saveInfosContent() {
     }
   });
 
-  console.log("Données qui vont être sauvegardées :", data);
-
-  // Sauvegarde dans le JSON principal
+  // Sauvegarde dans le JSON principal des animes
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
   
   if (index !== -1) {
     animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
-    console.log("✅ Sauvegarde effectuée dans 'animes'");
-  } else {
-    console.log("❌ Anime non trouvé");
+    console.log(`✅ ${data.length} lignes sauvegardées pour ${currentAnimeNom}`);
   }
 }
 
