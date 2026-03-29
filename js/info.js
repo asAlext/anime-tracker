@@ -1,9 +1,8 @@
-// info.js – Corrections demandées uniquement
+// info.js – Version corrigée UNIQUEMENT sur tes demandes
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
   currentAnimeNom = animeData.nom;
-
   document.querySelectorAll('.page').forEach(page => page.style.display = 'none');
   document.getElementById('page-infos').style.display = 'block';
 
@@ -49,19 +48,20 @@ function loadInfosContent() {
     if (item.type === 'titre') {
       ligne.className = 'info-ligne titre-ligne';
       ligne.innerHTML = `
-        <textarea class="info-titre" placeholder="Titre libre...">${item.texte || ''}</textarea>
+        <textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;">${item.texte || ''}</textarea>
         <span class="delete-x">×</span>
       `;
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
+      ligne.style.marginBottom = '25px'; // plus d'espace entre les lignes +1
       ligne.innerHTML = `
-        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right:30px;">
-        <select class="info-type" style="margin-right:30px;">
+        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right:35px; border:none;">
+        <select class="info-type" style="margin-right:35px; border:none;">
           <option value="Anime" ${item.typeVal === 'Anime' ? 'selected' : ''}>Anime</option>
           <option value="Film" ${item.typeVal === 'Film' ? 'selected' : ''}>Film</option>
           <option value="OVA" ${item.typeVal === 'OVA' ? 'selected' : ''}>OVA</option>
         </select>
-        <select class="info-statut">
+        <select class="info-statut" style="border:none;">
           <option value="Terminé" ${item.statut === 'Terminé' ? 'selected' : ''}>Terminé</option>
           <option value="En Cours" ${item.statut === 'En Cours' ? 'selected' : ''}>En Cours</option>
           <option value="En Pause" ${item.statut === 'En Pause' ? 'selected' : ''}>En Pause</option>
@@ -76,7 +76,7 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
 
-    // X invisible sauf au survol
+    // X invisible sauf au survol + fonctionne
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
@@ -122,7 +122,7 @@ function addTitre() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne titre-ligne';
-  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold; width:100%;"></textarea><span class="delete-x">×</span>`;
+  ligne.innerHTML = `<textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;"></textarea><span class="delete-x">×</span>`;
   container.appendChild(ligne);
   saveInfosContent();
 }
@@ -131,14 +131,15 @@ function addEntree() {
   const container = document.getElementById('infos-content');
   const ligne = document.createElement('div');
   ligne.className = 'info-ligne entree-ligne';
+  ligne.style.marginBottom = '25px';
   ligne.innerHTML = `
-    <input type="text" class="info-nom" placeholder="Nom" style="margin-right:40px; width:220px;">
-    <select class="info-type" style="margin-right:40px;">
+    <input type="text" class="info-nom" placeholder="Nom" style="margin-right:35px; border:none;">
+    <select class="info-type" style="margin-right:35px; border:none;">
       <option value="Anime">Anime</option>
       <option value="Film">Film</option>
       <option value="OVA">OVA</option>
     </select>
-    <select class="info-statut">
+    <select class="info-statut" style="border:none;">
       <option value="Terminé">Terminé</option>
       <option value="En Cours">En Cours</option>
       <option value="En Pause">En Pause</option>
