@@ -84,6 +84,7 @@ function loadInfosContent() {
       x.style.cursor = 'pointer';
       x.style.fontSize = '22px';
       x.style.color = '#ff4444';
+      x.style.marginLeft = '15px';
 
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
