@@ -132,23 +132,26 @@ function saveInfosContent() {
     if (el.classList.contains('titre-ligne')) {
       const txt = el.querySelector('textarea') ? el.querySelector('textarea').value : '';
       data.push({ type: 'titre', texte: txt });
-    } else if (el.classList.contains('entree-ligne')) {
-      data.push({ 
-        type: 'entree', 
+    } 
+    else if (el.classList.contains('entree-ligne')) {
+      data.push({
+        type: 'entree',
         nom: el.querySelector('.info-nom') ? el.querySelector('.info-nom').value : '',
         typeVal: el.querySelector('.info-type') ? el.querySelector('.info-type').value : 'Anime',
         statut: el.querySelector('.info-statut') ? el.querySelector('.info-statut').value : 'Terminé'
       });
-    } else if (el.classList.contains('info-separateur')) {
+    } 
+    else if (el.classList.contains('info-separateur')) {
       data.push({ type: 'separateur' });
     }
   });
 
   console.log("Données qui vont être sauvegardées :", data);
 
+  // Sauvegarde dans le JSON principal
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
-
+  
   if (index !== -1) {
     animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
