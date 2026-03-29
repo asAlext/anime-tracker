@@ -40,7 +40,6 @@ function loadInfosContent() {
 
   if (!currentAnimeNom) return;
 
-  // Chargement depuis le JSON principal 'animes'
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const anime = animes.find(a => a.nom === currentAnimeNom);
   const data = anime && anime.customInfos ? anime.customInfos : [];
@@ -79,9 +78,15 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
     attachDeleteHandler(ligne);
+
+    // === AJOUT IMPORTANT : sauvegarde automatique quand on tape ===
+    const inputs = ligne.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('input', saveInfosContent);
+      input.addEventListener('change', saveInfosContent);
+    });
   });
 }
-
 // Nouvelle fonction réutilisable pour gérer le X (hover + suppression)
 function attachDeleteHandler(ligne) {
   const x = ligne.querySelector('.delete-x');
