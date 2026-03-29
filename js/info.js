@@ -49,7 +49,7 @@ function loadInfosContent() {
       ligne.className = 'info-ligne titre-ligne';
       ligne.innerHTML = `
         <textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;">${item.texte || ''}</textarea>
-        <span class="delete-x" style="opacity:0; transition:opacity 0.2s; cursor:pointer; font-size:22px; color:#ff4444; margin-left:15px;">×</span>
+        <span class="delete-x">×</span>
       `;
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
@@ -67,22 +67,31 @@ function loadInfosContent() {
           <option value="En Pause" ${item.statut === 'En Pause' ? 'selected' : ''}>En Pause</option>
           <option value="A Regarder" ${item.statut === 'A Regarder' ? 'selected' : ''}>A Regarder</option>
         </select>
-        <span class="delete-x" style="opacity:0; transition:opacity 0.2s; cursor:pointer; font-size:22px; color:#ff4444; margin-left:15px;">×</span>
+        <span class="delete-x">×</span>
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
-      ligne.innerHTML = `<div style="height: 60px;"></div><span class="delete-x" style="opacity:0; transition:opacity 0.2s; cursor:pointer; font-size:22px; color:#ff4444; margin-left:15px;">×</span>`;
+      ligne.innerHTML = `<div style="height: 60px;"></div><span class="delete-x">×</span>`;
     }
 
     container.appendChild(ligne);
 
-    // X invisible sauf au survol + fonctionne
+    // Correction : attachement fiable du X
     const x = ligne.querySelector('.delete-x');
     if (x) {
+      x.style.opacity = '0';
+      x.style.transition = 'opacity 0.2s';
+      x.style.cursor = 'pointer';
+      x.style.fontSize = '22px';
+      x.style.color = '#ff4444';
+      x.style.marginLeft = '15px';
+
+      // Mouse hover
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
 
-      x.addEventListener('click', (e) => {
+      // Click pour supprimer (version plus fiable)
+      x.addEventListener('click', function(e) {
         e.stopPropagation();
         ligne.remove();
         saveInfosContent();
