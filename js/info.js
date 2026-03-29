@@ -71,7 +71,7 @@ function loadInfosContent() {
       `;
     } else if (item.type === 'separateur') {
       ligne.className = 'info-separateur';
-      ligne.innerHTML = '<div style="height: 60px;"></div>';
+      ligne.innerHTML = `<div style="height: 60px;"></div><span class="delete-x">×</span>`;
     }
 
     container.appendChild(ligne);
@@ -160,7 +160,7 @@ function addSeparateur() {
   const container = document.getElementById('infos-content');
   const sep = document.createElement('div');
   sep.className = 'info-separateur';
-  sep.innerHTML = '<div style="height: 60px;"></div>';
+  sep.innerHTML = `<div style="height: 60px;"></div><span class="delete-x">×</span>`;
   container.appendChild(sep);
   saveInfosContent();
 }
