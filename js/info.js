@@ -119,22 +119,34 @@ function saveInfosContent() {
   const container = document.getElementById('infos-content');
   const data = [];
 
-  container.querySelectorAll('.info-ligne, .info-separateur').forEach(el => {
+  // On parcourt TOUS les enfants du container dans l'ordre
+  container.querySelectorAll('div').forEach(el => {
     if (el.classList.contains('titre-ligne')) {
-      data.push({ type: 'titre', texte: el.querySelector('textarea').value });
-    } else if (el.classList.contains('entree-ligne')) {
-      data.push({
-        type: 'entree',
-        nom: el.querySelector('.info-nom').value,
-        typeVal: el.querySelector('.info-type').value,
-        statut: el.querySelector('.info-statut').value
-      });
-    } else if (el.classList.contains('info-separateur')) {
+      const textarea = el.querySelector('textarea');
+      if (textarea) {
+        data.push({ type: 'titre', texte: textarea.value });
+      }
+    } 
+    else if (el.classList.contains('entree-ligne')) {
+      const nom = el.querySelector('.info-nom');
+      const type = el.querySelector('.info-type');
+      const statut = el.querySelector('.info-statut');
+      
+      if (nom && type && statut) {
+        data.push({
+          type: 'entree',
+          nom: nom.value,
+          typeVal: type.value,
+          statut: statut.value
+        });
+      }
+    } 
+    else if (el.classList.contains('info-separateur')) {
       data.push({ type: 'separateur' });
     }
   });
 
-  // === RAJOUT : Sauvegarde dans le JSON principal des animes ===
+  // Sauvegarde dans le JSON principal 'animes'
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
   
