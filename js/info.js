@@ -1,4 +1,4 @@
-// info.js – Version corrigée UNIQUEMENT sur tes demandes
+// info.js – Correction des X (seulement ce qui était demandé)
 let currentAnimeNom = null;
 
 function showInfosPage(animeData) {
@@ -53,7 +53,7 @@ function loadInfosContent() {
       `;
     } else if (item.type === 'entree') {
       ligne.className = 'info-ligne entree-ligne';
-      ligne.style.marginBottom = '25px'; // plus d'espace entre les lignes +1
+      ligne.style.marginBottom = '25px';
       ligne.innerHTML = `
         <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right:35px; border:none;">
         <select class="info-type" style="margin-right:35px; border:none;">
@@ -76,13 +76,16 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
 
-    // X invisible sauf au survol + fonctionne
+    // X invisible sauf au survol + fonctionne correctement
     const x = ligne.querySelector('.delete-x');
     if (x) {
       x.style.opacity = '0';
       x.style.transition = 'opacity 0.2s';
+      x.style.cursor = 'pointer';
       ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
       ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
+
+      // Important : on attache l'événement après avoir ajouté la ligne au DOM
       x.onclick = (e) => {
         e.stopPropagation();
         ligne.remove();
