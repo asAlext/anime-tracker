@@ -31,55 +31,55 @@ function showInfosPage(animeData) {
 
 // ====================== FONCTIONS ======================
 
-function loadInfosContent() {
-  const container = document.getElementById('infos-content');
-  container.innerHTML = '';
-  container.style.marginTop = '100px';
-  container.style.marginLeft = '40px';
-  container.style.width = 'calc(100% - 500px)';
-
+function saveInfosContent() {
   if (!currentAnimeNom) return;
 
-  // Chargement depuis le JSON principal 'animes'
-  let animes = JSON.parse(localStorage.getItem('animes') || '[]');
-  const anime = animes.find(a => a.nom === currentAnimeNom);
-  const data = anime && anime.customInfos ? anime.customInfos : [];
+  const container = document.getElementById('infos-content');
+  const data = [];
 
-  data.forEach((item) => {
-    let ligne = document.createElement('div');
+  Array.from(container.children).forEach(el => {
+    if (el.classList.contains('titre-ligne')) {
+      const textarea = el.querySelector('textarea');
+      data.push({ 
+        type: 'titre', 
+        texte: textarea ? textarea.value.trim() : '' 
+      });
+    } 
+    else if (el.classList.contains('entree-ligne')) {
+      const nomInput = el.querySelector('.info-nom');
+      const typeSelect = el.querySelector('.info-type');
+      const statutSelect = el.querySelector('.info-statut');
 
-    if (item.type === 'titre') {
-      ligne.className = 'info-ligne titre-ligne';
-      ligne.innerHTML = `
-        <textarea class="info-titre" placeholder="Titre libre..." style="border:none; font-weight:bold;">${item.texte || ''}</textarea>
-        <span class="delete-x">×</span>
-      `;
-    } else if (item.type === 'entree') {
-      ligne.className = 'info-ligne entree-ligne';
-      ligne.style.marginBottom = '25px';
-      ligne.innerHTML = `
-        <input type="text" class="info-nom" value="${item.nom || ''}" placeholder="Nom" style="margin-right:35px; border:none;">
-        <select class="info-type" style="margin-right:35px; border:none;">
-          <option value="Anime" ${item.typeVal === 'Anime' ? 'selected' : ''}>Anime</option>
-          <option value="Film" ${item.typeVal === 'Film' ? 'selected' : ''}>Film</option>
-          <option value="OVA" ${item.typeVal === 'OVA' ? 'selected' : ''}>OVA</option>
-        </select>
-        <select class="info-statut" style="border:none;">
-          <option value="Terminé" ${item.statut === 'Terminé' ? 'selected' : ''}>Terminé</option>
-          <option value="En Cours" ${item.statut === 'En Cours' ? 'selected' : ''}>En Cours</option>
-          <option value="En Pause" ${item.statut === 'En Pause' ? 'selected' : ''}>En Pause</option>
-          <option value="A Regarder" ${item.statut === 'A Regarder' ? 'selected' : ''}>A Regarder</option>
-        </select>
-        <span class="delete-x">×</span>
-      `;
-    } else if (item.type === 'separateur') {
-      ligne.className = 'info-separateur';
-      ligne.innerHTML = `<div style="height: 60px;"></div><span class="delete-x">×</span>`;
+      data.push({
+        type: 'entree',
+        nom: nomInput ? nomInput.value.trim() : '',
+        typeVal: typeSelect ? typeSelect.value : 'Anime',
+        statut: statutSelect ? statutSelect.value : 'A Regarder'
+      });
+    } 
+    else if (el.classList.contains('info-separateur')) {
+      data.push({ type: 'separateur' });
     }
-
-    container.appendChild(ligne);
-    attachDeleteHandler(ligne);
   });
+
+  // ====================== SAUVEGARDE OPTIMISÉE ======================
+  let animes = JSON.parse(localStorage.getItem('animes') || '[]');
+  const index = animes.findIndex(a => a.nom === currentAnimeNom);
+  
+  if (index !== -1) {
+    animes[index].customInfos = data;
+
+    // Sauvegarde propre et optimisée
+    try {
+      localStorage.setItem('animes', JSON.stringify(animes));
+      console.log(`✅ Sauvegarde réussie : ${data.length} lignes pour "${currentAnimeNom}"`);
+    } catch (e) {
+      console.error("❌ Erreur de sauvegarde localStorage (quota dépassé ?) :", e);
+      alert("Impossible de sauvegarder : espace de stockage insuffisant.");
+    }
+  } else {
+    console.warn(`Anime "${currentAnimeNom}" non trouvé pour la sauvegarde.`);
+  }
 }
 
 // Nouvelle fonction réutilisable pour gérer le X (hover + suppression)
