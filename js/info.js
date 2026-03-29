@@ -76,23 +76,32 @@ function loadInfosContent() {
 
     container.appendChild(ligne);
 
-    // X invisible sauf au survol + clic fiable
+    // === PARTIE CORRIGÉE : Gestion du bouton X ===
     const x = ligne.querySelector('.delete-x');
     if (x) {
+      // Style du X
       x.style.opacity = '0';
-      x.style.transition = 'opacity 0.2s';
+      x.style.transition = 'opacity 0.2s ease';
       x.style.cursor = 'pointer';
-      x.style.fontSize = '22px';
-      x.style.color = '#ff4444';
+      x.style.fontSize = '24px';
+      x.style.color = '#000';
       x.style.marginLeft = '15px';
+      x.style.userSelect = 'none';
 
-      ligne.addEventListener('mouseenter', () => x.style.opacity = '1');
-      ligne.addEventListener('mouseleave', () => x.style.opacity = '0');
+      // Afficher le X uniquement au survol de la ligne entière
+      ligne.addEventListener('mouseenter', () => {
+        x.style.opacity = '1';
+      });
 
+      ligne.addEventListener('mouseleave', () => {
+        x.style.opacity = '0';
+      });
+
+      // Suppression de la ligne au clic sur X
       x.addEventListener('click', function(e) {
-        e.stopPropagation();
-        ligne.remove();
-        saveInfosContent();
+        e.stopPropagation();        // Empêche tout autre clic sur la ligne
+        ligne.remove();             // Supprime la ligne du DOM
+        saveInfosContent();         // Sauvegarde (ta fonction existante)
       });
     }
   });
