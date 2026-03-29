@@ -119,40 +119,50 @@ function saveInfosContent() {
   const container = document.getElementById('infos-content');
   const data = [];
 
-  // On parcourt TOUS les enfants du container dans l'ordre
-  container.querySelectorAll('div').forEach(el => {
+  console.log("=== Sauvegarde en cours - Nombre d'enfants :", container.children.length);
+
+  Array.from(container.children).forEach((el, index) => {
+    console.log(`Ligne ${index} - classes:`, el.className);
+
     if (el.classList.contains('titre-ligne')) {
       const textarea = el.querySelector('textarea');
-      if (textarea) {
-        data.push({ type: 'titre', texte: textarea.value });
-      }
+      data.push({ 
+        type: 'titre', 
+        texte: textarea ? textarea.value : '' 
+      });
+      console.log("→ Titre détecté");
     } 
     else if (el.classList.contains('entree-ligne')) {
       const nom = el.querySelector('.info-nom');
       const type = el.querySelector('.info-type');
       const statut = el.querySelector('.info-statut');
       
-      if (nom && type && statut) {
-        data.push({
-          type: 'entree',
-          nom: nom.value,
-          typeVal: type.value,
-          statut: statut.value
-        });
-      }
+      data.push({
+        type: 'entree',
+        nom: nom ? nom.value : '',
+        typeVal: type ? type.value : 'Anime',
+        statut: statut ? statut.value : 'Terminé'
+      });
+      console.log("→ +1 détecté");
     } 
     else if (el.classList.contains('info-separateur')) {
       data.push({ type: 'separateur' });
+      console.log("→ Séparateur détecté");
     }
   });
 
-  // Sauvegarde dans le JSON principal 'animes'
+  console.log("Données finales à sauvegarder :", data);
+
+  // Sauvegarde dans le JSON principal
   let animes = JSON.parse(localStorage.getItem('animes') || '[]');
   const index = animes.findIndex(a => a.nom === currentAnimeNom);
   
   if (index !== -1) {
     animes[index].customInfos = data;
     localStorage.setItem('animes', JSON.stringify(animes));
+    console.log("✅ Sauvegarde réussie dans 'animes'");
+  } else {
+    console.log("❌ Anime non trouvé dans le tableau animes");
   }
 }
 
