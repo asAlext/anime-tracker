@@ -191,12 +191,12 @@ if (animeData) {
 
   // Mapping du statut normalisé vers la valeur affichée dans le select
   const statutMap = {
-    'termine': 'Terminé',
-    'en-cours': 'En Cours',
-    'en-pause': 'En Pause',
-    'a-regarder': 'A Regarder',
-    'abandon': 'Abandon',
-    'plus-jamais': 'Plus Jamais'
+    'Termine': 'Terminé',
+    'En Cours': 'En Cours',
+    'En Pause': 'En Pause',
+    'A Regarder': 'A Regarder',
+    'Abandon': 'Abandon',
+    'Plus Jamais': 'Plus Jamais'
   };
 
   statutSelect.value = statutMap[currentStatut.toLowerCase()] || currentStatut || 'En Cours';
