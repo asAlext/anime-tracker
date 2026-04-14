@@ -170,12 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateAllCounters(animes) {
     const counts = {
-      termine: 0,
-      'en-cours': 0,
-      'en-pause': 0,
-      'a-regarder': 0,
-      abandon: 0,
-      'plus-jamais': 0
+      Termine: 0,
+      'En Cours': 0,
+      'En Pause': 0,
+      'A Regarder': 0,
+      Abandon: 0,
+      'Plus Jamais': 0
     };
     animes.forEach(anime => {
       const key = anime.statut.toLowerCase().replace(/\s+/g, '-');
