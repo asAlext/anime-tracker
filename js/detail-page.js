@@ -181,13 +181,30 @@ function openModifyModal(animeData, waifuData) {
     document.body.appendChild(modal);
   }
   // Pré-remplir les champs
-  if (animeData) {
-    document.getElementById('mod-nom-anime').value = animeData.nom || '';
-    document.getElementById('mod-type-anime').value = animeData.type || 'anime';
-    document.getElementById('mod-statut-anime').value = animeData.statut || 'En Cours';
-    document.getElementById('mod-note-anime').value = animeData.note || '';
-    document.getElementById('mod-url-cover').value = animeData.urlCover || '';
-  }
+if (animeData) {
+  document.getElementById('mod-nom-anime').value = animeData.nom || '';
+  document.getElementById('mod-type-anime').value = animeData.type || 'anime';
+  
+  // === CORRECTION DU STATUT ===
+  const statutSelect = document.getElementById('mod-statut-anime');
+  const currentStatut = animeData.statut || '';
+
+  // Mapping du statut normalisé vers la valeur affichée dans le select
+  const statutMap = {
+    'termine': 'Terminé',
+    'en-cours': 'En Cours',
+    'en-pause': 'En Pause',
+    'a-regarder': 'A Regarder',
+    'abandon': 'Abandon',
+    'plus-jamais': 'Plus Jamais'
+  };
+
+  statutSelect.value = statutMap[currentStatut.toLowerCase()] || currentStatut || 'En Cours';
+  // =================================================
+
+  document.getElementById('mod-note-anime').value = animeData.note || '';
+  document.getElementById('mod-url-cover').value = animeData.urlCover || '';
+}
   if (waifuData) {
     document.getElementById('mod-nom-waifu').value = waifuData.nom || '';
     document.getElementById('mod-note-waifu').value = waifuData.note || '';
@@ -211,7 +228,8 @@ function openModifyModal(animeData, waifuData) {
         animes[index].nom = document.getElementById('mod-nom-anime').value;
         animes[index].type = document.getElementById('mod-type-anime').value;
         const statutOriginal = document.getElementById('mod-statut-anime').value;
-        animes[index].statut = normalizeStatut(statutOriginal);
+       animes[index].statut = normalizeStatut(statutOriginal);   // on garde la version normalisée
+const statutOriginalDisplay = statutOriginal;             // on garde la version affichée pour l'UI
         animes[index].note = document.getElementById('mod-note-anime').value;
         const newCoverUrl = document.getElementById('mod-url-cover').value.trim();
         if (newCoverUrl) animes[index].urlCover = newCoverUrl;
