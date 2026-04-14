@@ -37,28 +37,28 @@
       <!-- Ligne 1 : Compteurs -->
       <div class="stats-line">
         <div class="stat-box">
-          <span class="stat-label">Terminé</span>
-          <span class="stat-count" id="count-termine">0</span>
+          <span class="stat-label">Termine</span>
+          <span class="stat-count" id="count-Termine">0</span>
         </div>
         <div class="stat-box">
           <span class="stat-label">En Cours</span>
-          <span class="stat-count" id="count-en-cours">0</span>
+          <span class="stat-count" id="count-En Cours">0</span>
         </div>
         <div class="stat-box">
           <span class="stat-label">En Pause</span>
-          <span class="stat-count" id="count-en-pause">0</span>
+          <span class="stat-count" id="count-En Pause">0</span>
         </div>
         <div class="stat-box">
           <span class="stat-label">A Regarder</span>
-          <span class="stat-count" id="count-a-regarder">0</span>
+          <span class="stat-count" id="count-A Regarder">0</span>
         </div>
         <div class="stat-box">
           <span class="stat-label">Abandon</span>
-          <span class="stat-count" id="count-abandon">0</span>
+          <span class="stat-count" id="count-Abandon">0</span>
         </div>
         <div class="stat-box">
           <span class="stat-label">Plus Jamais</span>
-          <span class="stat-count" id="count-plus-jamais">0</span>
+          <span class="stat-count" id="count-Plus Jamais">0</span>
         </div>
       </div>
       <!-- Ligne 2 : Recherche & tris -->
@@ -76,12 +76,12 @@
         </select>
         <select id="trie-statut">
           <option value="">Trier par statut</option>
-          <option value="termine">Terminé</option>
-          <option value="en-cours">En Cours</option>
-          <option value="en-pause">En Pause</option>
-          <option value="a-regarder">A Regarder</option>
-          <option value="abandon">Abandon</option>
-          <option value="plus-jamais">Plus Jamais</option>
+          <option value="Termine">Termine</option>
+          <option value="En Cours">En Cours</option>
+          <option value="En Pause">En Pause</option>
+          <option value="A Regarder">A Regarder</option>
+          <option value="Abandon">Abandon</option>
+          <option value="Plus Jamais">Plus Jamais</option>
         </select>
         <select id="trie-note">
           <option value="">Trier par note</option>
@@ -104,12 +104,12 @@
             <label>Statut</label>
             <select id="statut-anime" required>
               <option value="">Choisir</option>
-              <option value="termine">Terminé</option>
-              <option value="en-cours">En Cours</option>
-              <option value="en-pause">En Pause</option>
-              <option value="a-regarder">A Regarder</option>
-              <option value="abandon">Abandon</option>
-              <option value="plus-jamais">Plus Jamais</option>
+              <option value="Termine">Termine</option>
+              <option value="En Cours">En Cours</option>
+              <option value="En Pause">En Pause</option>
+              <option value="A Regarder">A Regarder</option>
+              <option value="Abandon">Abandon</option>
+              <option value="Plus Jamais">Plus Jamais</option>
             </select>
             <label>Note (ex: 9.5 ou NA)</label>
             <input type="text" id="note-anime">
@@ -218,12 +218,12 @@
     function updateStats() {
       const animes = JSON.parse(localStorage.getItem('animes') || '[]');
       const counts = {
-        termine: 0,
-        'en-cours': 0,
-        'en-pause': 0,
-        'a-regarder': 0,
-        abandon: 0,
-        'plus-jamais': 0
+        Termine: 0,
+        'En Cours': 0,
+        'En Pause': 0,
+        'A Regarder': 0,
+        Abandon: 0,
+        'Plus Pamais': 0
       };
 
       animes.forEach(anime => {
@@ -231,20 +231,20 @@
         statut = statut.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // supprime accents (é → e)
         statut = statut.replace(/\s+/g, '-'); // espaces → tiret
 
-        if (statut === 'termine') counts.termine++;
-        else if (statut === 'en-cours') counts['en-cours']++;
-        else if (statut === 'en-pause') counts['en-pause']++;
-        else if (statut === 'a-regarder') counts['a-regarder']++;
-        else if (statut === 'abandon') counts.abandon++;
-        else if (statut === 'plus-jamais') counts['plus-jamais']++;
+        if (statut === 'Termine') counts.Termine++;
+        else if (statut === 'En Cours') counts['En Cours']++;
+        else if (statut === 'En Pause') counts['En Pause']++;
+        else if (statut === 'A Regarder') counts['A Regarder']++;
+        else if (statut === 'Abandon') counts.Abandon++;
+        else if (statut === 'Plus Jamais') counts['Plus Jamais']++;
       });
 
-      document.getElementById('count-termine').textContent = counts.termine;
-      document.getElementById('count-en-cours').textContent = counts['en-cours'];
-      document.getElementById('count-en-pause').textContent = counts['en-pause'];
-      document.getElementById('count-a-regarder').textContent = counts['a-regarder'];
-      document.getElementById('count-abandon').textContent = counts.abandon;
-      document.getElementById('count-plus-jamais').textContent = counts['plus-jamais'];
+      document.getElementById('count-Termine').textContent = counts.Termine;
+      document.getElementById('count-En Cours').textContent = counts['En Cours'];
+      document.getElementById('count-En Pause').textContent = counts['En Pause'];
+      document.getElementById('count-A Regarder').textContent = counts['A Regarder'];
+      document.getElementById('count-Abandon').textContent = counts.Abandon;
+      document.getElementById('count-Plus Jamais').textContent = counts['Plus Jamais'];
     }
 
     // Appelle au chargement initial
