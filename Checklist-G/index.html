@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checklist-G</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>Checklist-G</h1>
+      <p class="subtitle">Tes progressions de jeux vidéo</p>
+    </header>
+
+    <main class="container">
+      <section id="games-view" class="view">
+        <div class="section-header">
+          <h2>Mes jeux</h2>
+          <button type="button" id="add-game-btn" class="btn btn-primary">
+            + Ajouter un jeu
+          </button>
+        </div>
+
+        <div id="games-list" class="games-list"></div>
+        <p id="games-empty" class="empty-state hidden">
+          Aucun jeu pour l'instant. Ajoute ton premier jeu pour commencer.
+        </p>
+      </section>
+
+      <section id="game-detail-view" class="view hidden">
+        <button type="button" id="back-btn" class="btn btn-ghost">
+          ← Retour aux jeux
+        </button>
+
+        <div class="section-header">
+          <div>
+            <h2 id="game-title"></h2>
+            <p id="game-progress" class="progress-text"></p>
+          </div>
+          <button type="button" id="delete-game-btn" class="btn btn-danger">
+            Supprimer le jeu
+          </button>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+
+        <form id="add-step-form" class="add-step-form">
+          <input
+            type="text"
+            id="step-input"
+            placeholder="Nouvelle étape (ex : Battre le premier boss)"
+            required
+          />
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+
+        <ul id="steps-list" class="steps-list"></ul>
+        <p id="steps-empty" class="empty-state hidden">
+          Aucune étape. Ajoute ta première tâche pour ce jeu.
+        </p>
+      </section>
+    </main>
+
+    <dialog id="add-game-dialog" class="dialog">
+      <form method="dialog" id="add-game-form" class="dialog-form">
+        <h3>Ajouter un jeu</h3>
+        <label for="game-name-input">Nom du jeu</label>
+        <input
+          type="text"
+          id="game-name-input"
+          placeholder="Ex : Terraria, Skyrim, Valheim..."
+          required
+        />
+        <div class="dialog-actions">
+          <button type="button" id="cancel-game-btn" class="btn btn-ghost">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
