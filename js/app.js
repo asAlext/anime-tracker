@@ -1,4 +1,4 @@
-let data = loadData();
+let data = { games: [] };
 let activeGameId = null;
 
 const gamesView = document.getElementById("games-view");
@@ -17,90 +17,116 @@ const addChapterDialog = document.getElementById("add-chapter-dialog");
 const addChapterForm = document.getElementById("add-chapter-form");
 const chapterNameInput = document.getElementById("chapter-name-input");
 
-document.getElementById("add-game-btn").addEventListener("click", () => {
-  gameNameInput.value = "";
-  addGameDialog.showModal();
-});
+function initApp() {
+  data = loadData();
 
-document.getElementById("cancel-game-btn").addEventListener("click", () => {
-  addGameDialog.close();
-});
+  const addGameBtn = document.getElementById("add-game-btn");
+  const addChapterBtn = document.getElementById("add-chapter-btn");
+  const backBtn = document.getElementById("back-btn");
+  const deleteGameBtn = document.getElementById("delete-game-btn");
+  const cancelGameBtn = document.getElementById("cancel-game-btn");
+  const cancelChapterBtn = document.getElementById("cancel-chapter-btn");
 
-addGameForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const name = gameNameInput.value.trim();
-  if (!name) {
+  if (
+    !addGameBtn ||
+    !addChapterBtn ||
+    !addGameDialog ||
+    !addChapterDialog ||
+    !chaptersList
+  ) {
+    alert(
+      "Le site n'est pas à jour dans ton navigateur. Fais Ctrl+F5 pour recharger la page."
+    );
     return;
   }
 
-  data.games.push({
-    id: createId(),
-    name,
-    chapters: [],
+  addGameBtn.addEventListener("click", () => {
+    gameNameInput.value = "";
+    addGameDialog.showModal();
   });
 
-  saveData(data);
-  addGameDialog.close();
+  cancelGameBtn.addEventListener("click", () => {
+    addGameDialog.close();
+  });
+
+  addGameForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const name = gameNameInput.value.trim();
+    if (!name) {
+      return;
+    }
+
+    data.games.push({
+      id: createId(),
+      name,
+      chapters: [],
+    });
+
+    saveData(data);
+    addGameDialog.close();
+    renderGamesView();
+  });
+
+  addChapterBtn.addEventListener("click", () => {
+    chapterNameInput.value = "";
+    addChapterDialog.showModal();
+  });
+
+  cancelChapterBtn.addEventListener("click", () => {
+    addChapterDialog.close();
+  });
+
+  addChapterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const game = getActiveGame();
+    if (!game) {
+      return;
+    }
+
+    const name = chapterNameInput.value.trim();
+    if (!name) {
+      return;
+    }
+
+    game.chapters.push({
+      id: createId(),
+      name,
+      items: [],
+    });
+
+    saveData(data);
+    addChapterDialog.close();
+    renderGameDetail();
+  });
+
+  backBtn.addEventListener("click", () => {
+    activeGameId = null;
+    showGamesView();
+  });
+
+  deleteGameBtn.addEventListener("click", () => {
+    const game = getActiveGame();
+    if (!game) {
+      return;
+    }
+
+    const confirmed = confirm(
+      `Supprimer "${game.name}" et tous ses chapitres ?`
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    data.games = data.games.filter((entry) => entry.id !== game.id);
+    saveData(data);
+    activeGameId = null;
+    showGamesView();
+  });
+
   renderGamesView();
-});
-
-document.getElementById("add-chapter-btn").addEventListener("click", () => {
-  chapterNameInput.value = "";
-  addChapterDialog.showModal();
-});
-
-document.getElementById("cancel-chapter-btn").addEventListener("click", () => {
-  addChapterDialog.close();
-});
-
-addChapterForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const game = getActiveGame();
-  if (!game) {
-    return;
-  }
-
-  const name = chapterNameInput.value.trim();
-  if (!name) {
-    return;
-  }
-
-  game.chapters.push({
-    id: createId(),
-    name,
-    items: [],
-  });
-
-  saveData(data);
-  addChapterDialog.close();
-  renderGameDetail();
-});
-
-document.getElementById("back-btn").addEventListener("click", () => {
-  activeGameId = null;
-  showGamesView();
-});
-
-document.getElementById("delete-game-btn").addEventListener("click", () => {
-  const game = getActiveGame();
-  if (!game) {
-    return;
-  }
-
-  const confirmed = confirm(
-    `Supprimer "${game.name}" et tous ses chapitres ?`
-  );
-  if (!confirmed) {
-    return;
-  }
-
-  data.games = data.games.filter((entry) => entry.id !== game.id);
-  saveData(data);
-  activeGameId = null;
-  showGamesView();
-});
+}
 
 function getActiveGame() {
   return data.games.find((game) => game.id === activeGameId) ?? null;
@@ -178,8 +204,9 @@ function renderGameDetail() {
 }
 
 function createChapterElement(game, chapter) {
+  const items = Array.isArray(chapter.items) ? chapter.items : [];
   const chapterProgress = getChapterProgress(chapter);
-  const completedInChapter = chapter.items.filter((item) => item.completed).length;
+  const completedInChapter = items.filter((item) => item.completed).length;
   const section = document.createElement("section");
   section.className = "chapter-card";
 
@@ -188,7 +215,7 @@ function createChapterElement(game, chapter) {
   header.innerHTML = `
     <div>
       <h4>${escapeHtml(chapter.name)}</h4>
-      <p class="chapter-progress-text">${completedInChapter} / ${chapter.items.length} étapes · ${chapterProgress}%</p>
+      <p class="chapter-progress-text">${completedInChapter} / ${items.length} étapes · ${chapterProgress}%</p>
     </div>
     <button type="button" class="btn btn-danger btn-small">Supprimer</button>
   `;
@@ -228,6 +255,10 @@ function createChapterElement(game, chapter) {
       return;
     }
 
+    if (!Array.isArray(chapter.items)) {
+      chapter.items = [];
+    }
+
     chapter.items.push({
       id: createId(),
       label,
@@ -243,18 +274,19 @@ function createChapterElement(game, chapter) {
   const stepsList = document.createElement("ul");
   stepsList.className = "steps-list";
 
-  if (!chapter.items.length) {
+  section.appendChild(header);
+  section.appendChild(progressBar);
+  section.appendChild(addStepForm);
+
+  if (!items.length) {
     const empty = document.createElement("p");
     empty.className = "chapter-empty";
     empty.textContent = "Aucune étape dans ce chapitre.";
-    section.appendChild(header);
-    section.appendChild(progressBar);
-    section.appendChild(addStepForm);
     section.appendChild(empty);
     return section;
   }
 
-  chapter.items.forEach((item) => {
+  items.forEach((item) => {
     const li = document.createElement("li");
     li.className = `step-item${item.completed ? " completed" : ""}`;
 
@@ -290,9 +322,6 @@ function createChapterElement(game, chapter) {
     stepsList.appendChild(li);
   });
 
-  section.appendChild(header);
-  section.appendChild(progressBar);
-  section.appendChild(addStepForm);
   section.appendChild(stepsList);
 
   return section;
@@ -304,4 +333,4 @@ function escapeHtml(text) {
   return element.innerHTML;
 }
 
-renderGamesView();
+initApp();
