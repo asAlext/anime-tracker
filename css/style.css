@@ -1,0 +1,296 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f4f4f5;
+  color: #18181b;
+  line-height: 1.5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.header {
+  background: #18181b;
+  color: #fafafa;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  color: #a1a1aa;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.view {
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.progress-text {
+  margin: 0.25rem 0 0;
+  color: #71717a;
+  font-size: 0.95rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #3f3f46;
+  padding-left: 0;
+}
+
+.btn-ghost:hover {
+  color: #18181b;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: #fecaca;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #a1a1aa;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.btn-icon:hover {
+  color: #b91c1c;
+}
+
+.games-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.game-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.game-card:hover {
+  border-color: #2563eb;
+}
+
+.game-card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.game-card p {
+  margin: 0;
+  color: #71717a;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e4e4e7;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  transition: width 0.2s ease;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.chapters-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.chapter-card {
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.chapter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-header h4 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+
+.chapter-progress-text {
+  margin: 0;
+  color: #71717a;
+  font-size: 0.85rem;
+}
+
+.chapter-progress-bar {
+  margin-bottom: 0.9rem;
+}
+
+.chapter-empty {
+  margin: 0.5rem 0 0;
+  color: #a1a1aa;
+  font-size: 0.9rem;
+}
+
+.btn-small {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.add-step-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.add-step-form input,
+.dialog-form input {
+  flex: 1;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d4d4d8;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.steps-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+}
+
+.step-item.completed .step-label {
+  text-decoration: line-through;
+  color: #a1a1aa;
+}
+
+.step-label {
+  flex: 1;
+}
+
+.empty-state {
+  text-align: center;
+  color: #71717a;
+  padding: 2rem 1rem;
+}
+
+.dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 420px;
+  width: calc(100% - 2rem);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.dialog-form {
+  padding: 1.25rem;
+}
+
+.dialog-form h3 {
+  margin: 0 0 1rem;
+}
+
+.dialog-form label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: #52525b;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
